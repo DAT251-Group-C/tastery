@@ -9,7 +9,6 @@ export default defineConfig({
       ...tsconfigBaseAliases(__dirname),
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
       '@': path.resolve(__dirname, './src'),
-      '@agient/widget': path.resolve(__dirname, '../widget/public-api/index.ts'),
     },
   },
   publicDir: path.resolve(__dirname, './public'),

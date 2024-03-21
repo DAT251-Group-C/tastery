@@ -15,8 +15,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["app/src/*"],
-      "@agient/widget": ["widget/public-api/index.ts"]
+      "@/*": ["widget/src/*"]
     }
   },
   "references": [
