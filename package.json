@@ -1,25 +1,21 @@
 {
-  "name": "feedapp",
-  "displayName": "FeedApp",
+  "name": "agient",
+  "displayName": "AGIent",
   "version": "0.0.1",
-  "private": false,
-  "description": "Monorepo for a complete application that allows for creating and voting on polls",
-  "license": "MIT",
+  "private": true,
+  "description": "An AI chatbot that will perform actions on the behalf of users to help them get things done",
   "author": "Eirik Måseidvåg",
   "workspaces": [
     "app",
-    "backend",
-    "packages/*"
+    "backend"
   ],
   "scripts": {
     "build": "nx run-many -t build --parallel 10",
-    "build-storybook": "nx run-many -t build-storybook --parallel 10",
     "kill": "lsof -i :8080 | awk 'FNR == 2 {print $2}' | xargs kill -9",
     "lint": "nx run-many -t lint,stylelint --parallel 10 && nx format:check --all",
     "lint:fix": "nx run-many -t lint:fix,stylelint:fix --parallel 10 && nx format:write --all",
     "serve:app": "nx serve app --port 8080",
     "serve:backend": "nx serve backend --port 3005",
-    "storybook": "nx storybook app",
     "test": "nx run-many -t test --parallel 10",
     "generate-types": "swagger-typescript-api -p http://localhost:3000/docs-json -o app/src/services/api --modular --extract-enums --single-http-client --axios -n ./types.ts --templates src/templates --type-prefix Api --clean-output"
   },

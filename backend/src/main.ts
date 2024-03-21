@@ -38,11 +38,11 @@ async function bootstrap() {
   );
 
   const swaggerDocConfig = new DocumentBuilder()
-    .setTitle('FeedApp REST API')
-    .setDescription('OpenAPI doc for FeedApp REST API')
+    .setTitle('AGIent REST API')
+    .setDescription('OpenAPI doc for AGIent REST API')
     .setVersion(VERSION_PREFIX)
     .setExternalDoc('OpenAPI', '/docs')
-    .addTag('FeedApp')
+    .addTag('AGIent')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(nestApp, swaggerDocConfig);
