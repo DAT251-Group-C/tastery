@@ -1,0 +1,29 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "strict": true,
+    "module": "es2022",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["app/src/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.eslint.json"
+    }
+  ]
+}

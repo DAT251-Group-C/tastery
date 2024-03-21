@@ -1,0 +1,72 @@
+{
+  "name": "app",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/app"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development",
+          "host": true
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "nx-vue3-vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "app:build",
+        "port": 8080
+      }
+    },
+    "test": {
+      "executor": "@nrwl/vite:test",
+      "outputs": ["{workspaceRoot}/coverage/e2e/app"],
+      "options": {
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["app/**/*.{html,js,ts,vue}"]
+      }
+    },
+    "lint:fix": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "fix": true,
+        "lintFilePatterns": ["app/**/*.{html,js,ts,vue}"]
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["{app,projects}/**/*.{scss,css}"]
+      }
+    },
+    "stylelint:fix": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "fix": true,
+        "lintFilePatterns": ["{app,projects}/**/*.{scss,css}"]
+      }
+    }
+  }
+}
