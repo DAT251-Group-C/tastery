@@ -1,6 +1,8 @@
 <template>
-  <p>Hello!</p>
-  <button @click="increment">count is: {{ count }}</button>
+  <div class="widget">
+    <p>Hello!</p>
+    <button @click="increment">count is: {{ count }}</button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -12,3 +14,11 @@ const increment = () => {
   count.value++;
 };
 </script>
+
+<style scoped>
+.widget {
+  border-radius: 4px;
+  border: 1px solid grey;
+  padding: 2rem;
+}
+</style>

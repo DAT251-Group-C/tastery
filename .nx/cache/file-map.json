@@ -1,0 +1,537 @@
+{
+  "version": "6.0",
+  "nxVersion": "16.10.0",
+  "deps": {
+    "@nestjs/axios": "^3.0.0",
+    "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/core": "^10.0.2",
+    "@nestjs/jwt": "^10.1.1",
+    "@nestjs/microservices": "^10.2.8",
+    "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^7.1.13",
+    "@nestjs/typeorm": "^10.0.0",
+    "@vueuse/core": "^10.5.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "code-tag": "^1.1.0",
+    "es6-shim": "^0.35.8",
+    "openai": "^4.29.2",
+    "pg": "^8.11.3",
+    "pinia": "^2.1.4",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "swagger-ui-express": "^5.0.0",
+    "tslib": "^2.5.3",
+    "typeorm": "^0.3.17",
+    "uuid": "^9.0.1",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
+    "@nestjs/schematics": "^10.0.1",
+    "@nestjs/testing": "^10.0.2",
+    "@nrwl/vite": "^16.10.0",
+    "@nx/eslint-plugin": "^16.10.0",
+    "@nx/jest": "^16.10.0",
+    "@nx/js": "^16.10.0",
+    "@nx/linter": "^16.10.0",
+    "@nx/nest": "^16.10.0",
+    "@nx/node": "^16.10.0",
+    "@nx/vite": "^16.10.0",
+    "@nx/webpack": "^16.10.0",
+    "@nx/workspace": "^16.10.0",
+    "@pinia/testing": "^0.1.2",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.2",
+    "@types/sinon": "^10.0.15",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "axios": "^1.5.1",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-vue": "^9.15.1",
+    "happy-dom": "^9.20.3",
+    "jest": "^29.4.1",
+    "jest-environment-node": "^29.4.1",
+    "jest-mock-extended": "^3.0.5",
+    "nx": "^16.10.0",
+    "nx-stylelint": "^16.0.1",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.69.2",
+    "sinon": "^15.2.0",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard-scss": "^11.0.0",
+    "swagger-typescript-api": "^13.0.3",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "tsconfig": "^7.0.0",
+    "typescript": "~5.1.6",
+    "vite": "^4.3.9",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^0.32.0",
+    "vue-eslint-parser": "^9.3.1",
+    "vue-tsc": "^1.8.19",
+    "workbox-window": "^7.0.0"
+  },
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "2903032928387685478"
+      },
+      {
+        "file": ".env.template",
+        "hash": "2602239596520882570"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "3424065281884934693"
+      },
+      {
+        "file": ".eslintrc.js",
+        "hash": "15504889843071895877"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "1014956162002818126"
+      },
+      {
+        "file": ".nx/cache/d/daemon.log",
+        "hash": "11257609857561750366"
+      },
+      {
+        "file": ".nx/cache/d/server-process.json",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": ".nx/cache/file-map.json",
+        "hash": "2299652939313866489"
+      },
+      {
+        "file": ".nx/cache/lockfile.hash",
+        "hash": "12924291912901391166"
+      },
+      {
+        "file": ".nx/cache/parsed-lock-file.json",
+        "hash": "17724845480664086749"
+      },
+      {
+        "file": ".nx/cache/project-graph.json",
+        "hash": "4529347866403017124"
+      },
+      {
+        "file": ".nx/cache/run.json",
+        "hash": "1478335316241008252"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/11856899264667090460",
+        "hash": "4987438161602918199"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/16456847978452065385",
+        "hash": "3247393166453838434"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5043925722954043557"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "830338170127841140"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "2581850737294709577"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "13399815126719133499"
+      },
+      {
+        "file": "LICENSE",
+        "hash": "238929320018054685"
+      },
+      {
+        "file": "README.md",
+        "hash": "6449606780102230270"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "17250300324035218778"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "13496940188072967120"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "11912856740465808773"
+      },
+      {
+        "file": "nx.json",
+        "hash": "12386003069203540306"
+      },
+      {
+        "file": "package.json",
+        "hash": "9085217127850553718"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "13746309785081745493"
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "hash": "10708356987013782144"
+      },
+      {
+        "file": "stylelint.config.js",
+        "hash": "4577327308202310001"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "2631156348753552112"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/5430783302644758320",
+        "hash": "16650865361212432898"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/12172500050734394879",
+        "hash": "9900290216320924803"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/6631074846167388442",
+        "hash": "2613492858009064075"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/144046858168363811",
+        "hash": "12250861076163901236"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/16150393241961794470",
+        "hash": "14077180785068971992"
+      }
+    ],
+    "projectFileMap": {
+      "app": [
+        {
+          "file": "app/.eslintrc.js",
+          "hash": "5736504462961647083"
+        },
+        {
+          "file": "app/README.md",
+          "hash": "1080984510928872549"
+        },
+        {
+          "file": "app/index.html",
+          "hash": "6266038545791770271"
+        },
+        {
+          "file": "app/jest.config.ts",
+          "hash": "13894140207653369762"
+        },
+        {
+          "file": "app/project.json",
+          "hash": "16437841371341338231"
+        },
+        {
+          "file": "app/src/App.vue",
+          "hash": "18202755293984340291"
+        },
+        {
+          "file": "app/src/components/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "app/src/env.d.ts",
+          "hash": "1691197428849636078",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "app/src/index.scss",
+          "hash": "7334820393702974768"
+        },
+        {
+          "file": "app/src/main.ts",
+          "hash": "16981350754046565104",
+          "deps": [
+            "npm:@agient/widget",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "app/src/plugins/router/index.ts",
+          "hash": "5664446818842990331",
+          "deps": [
+            "npm:vue-router",
+            [
+              "npm:@/views/index/IndexView.vue",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "app/src/views/index/IndexView.vue",
+          "hash": "1125986374131552425"
+        },
+        {
+          "file": "app/tsconfig.eslint.json",
+          "hash": "11796648079877582545"
+        },
+        {
+          "file": "app/tsconfig.json",
+          "hash": "17644098464974097104"
+        },
+        {
+          "file": "app/tsconfig.spec.json",
+          "hash": "12612140541118818048"
+        },
+        {
+          "file": "app/unit.setup.ts",
+          "hash": "10030691262233339657",
+          "deps": [
+            "npm:@pinia/testing",
+            "npm:@vue/test-utils",
+            "npm:sinon"
+          ]
+        },
+        {
+          "file": "app/vite.config.ts",
+          "hash": "7860338682108021207",
+          "deps": [
+            "npm:@vitejs/plugin-vue",
+            "npm:path",
+            "npm:vite",
+            "npm:vite-tsconfig-paths"
+          ]
+        },
+        {
+          "file": "app/public/favicon.ico",
+          "hash": "3244421341483603138"
+        }
+      ],
+      "widget": [
+        {
+          "file": "widget/.eslintrc.js",
+          "hash": "5736504462961647083"
+        },
+        {
+          "file": "widget/README.md",
+          "hash": "1080984510928872549"
+        },
+        {
+          "file": "widget/index.html",
+          "hash": "970375772048295160"
+        },
+        {
+          "file": "widget/jest.config.ts",
+          "hash": "13561818527234861863"
+        },
+        {
+          "file": "widget/project.json",
+          "hash": "7223404608908478907"
+        },
+        {
+          "file": "widget/public-api/index.ts",
+          "hash": "16726020970342765099",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/src/App.vue",
+          "hash": "4836062784267828158"
+        },
+        {
+          "file": "widget/src/components/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "widget/src/env.d.ts",
+          "hash": "1691197428849636078",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/src/index.scss",
+          "hash": "7334820393702974768"
+        },
+        {
+          "file": "widget/src/main.ts",
+          "hash": "8209269744044897828",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/tsconfig.eslint.json",
+          "hash": "11796648079877582545"
+        },
+        {
+          "file": "widget/tsconfig.json",
+          "hash": "16646204495026610491"
+        },
+        {
+          "file": "widget/tsconfig.spec.json",
+          "hash": "12612140541118818048"
+        },
+        {
+          "file": "widget/unit.setup.ts",
+          "hash": "10030691262233339657",
+          "deps": [
+            "npm:@pinia/testing",
+            "npm:@vue/test-utils",
+            "npm:sinon"
+          ]
+        },
+        {
+          "file": "widget/vite.config.ts",
+          "hash": "7860338682108021207",
+          "deps": [
+            "npm:@vitejs/plugin-vue",
+            "npm:path",
+            "npm:vite",
+            "npm:vite-tsconfig-paths"
+          ]
+        }
+      ],
+      "backend": [
+        {
+          "file": "backend/.eslintrc.json",
+          "hash": "12484596866900214472"
+        },
+        {
+          "file": "backend/jest.config.ts",
+          "hash": "86839322556913837"
+        },
+        {
+          "file": "backend/project.json",
+          "hash": "7641703333401031338"
+        },
+        {
+          "file": "backend/src/app/app.module.ts",
+          "hash": "14848127752838126271",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "backend/src/app/health/health.controller.spec.ts",
+          "hash": "5439387463214792893",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "backend/src/app/health/health.controller.ts",
+          "hash": "9831872559885798810",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "backend/src/app/health/health.module.ts",
+          "hash": "5577060007523908571",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "backend/src/app/health/health.service.spec.ts",
+          "hash": "3044854112453067451",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "backend/src/app/health/health.service.ts",
+          "hash": "12278321131796369136",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "backend/src/common/config/app-conf.ts",
+          "hash": "15631009682029316953",
+          "deps": [
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "backend/src/common/config/app-config.module.ts",
+          "hash": "255656077645619470",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config"
+          ]
+        },
+        {
+          "file": "backend/src/common/config/app-config.ts",
+          "hash": "52650154651114937",
+          "deps": [
+            "npm:@nestjs/config",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "backend/src/common/filters/all-exception.filter.ts",
+          "hash": "16772157125420281478",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "backend/src/main.ts",
+          "hash": "12479799386910555160",
+          "deps": [
+            "npm:reflect-metadata",
+            "npm:es6-shim",
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/core",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "backend/src/models/index.ts",
+          "hash": "9031315959580805586"
+        },
+        {
+          "file": "backend/tsconfig.app.json",
+          "hash": "5019261557638279620"
+        },
+        {
+          "file": "backend/tsconfig.json",
+          "hash": "9420862676426701392"
+        },
+        {
+          "file": "backend/tsconfig.spec.json",
+          "hash": "952630764805421657"
+        },
+        {
+          "file": "backend/webpack.config.js",
+          "hash": "1785717660273290209",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ]
+    }
+  }
+}

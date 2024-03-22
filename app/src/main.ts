@@ -1,6 +1,9 @@
+import { createAgient } from '@agient/widget';
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './plugins/router';
 import './index.scss';
+import router from './plugins/router';
 
 createApp(App).use(router).mount('#app');
+createAgient('', '');
+console.log('hello!!');

@@ -24,7 +24,7 @@
       }
     },
     "serve": {
-      "executor": "nx-vue3-vite:dev-server",
+      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "widget:build",
