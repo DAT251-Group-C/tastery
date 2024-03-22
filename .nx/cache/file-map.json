@@ -11,22 +11,22 @@
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/swagger": "^7.1.13",
     "@nestjs/typeorm": "^10.0.0",
-    "@vueuse/core": "^10.5.0",
+    "@vueuse/core": "^10.9.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "code-tag": "^1.1.0",
     "es6-shim": "^0.35.8",
     "openai": "^4.29.2",
     "pg": "^8.11.3",
-    "pinia": "^2.1.4",
+    "pinia": "^2.1.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "swagger-ui-express": "^5.0.0",
     "tslib": "^2.5.3",
     "typeorm": "^0.3.17",
     "uuid": "^9.0.1",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.2",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
     "@intlify/eslint-plugin-vue-i18n": "^2.0.0",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
@@ -46,9 +46,9 @@
     "@types/sinon": "^10.0.15",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-typescript": "^12.0.0",
-    "@vue/test-utils": "^2.4.0",
+    "@vue/test-utils": "^2.4.5",
     "axios": "^1.5.1",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
@@ -76,7 +76,7 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^0.32.0",
     "vue-eslint-parser": "^9.3.1",
-    "vue-tsc": "^1.8.19",
+    "vue-tsc": "^2.0.7",
     "workbox-window": "^7.0.0"
   },
   "pathMappings": {},
@@ -113,31 +113,51 @@
       },
       {
         "file": ".nx/cache/file-map.json",
-        "hash": "2299652939313866489"
+        "hash": "2476975722615897282"
       },
       {
         "file": ".nx/cache/lockfile.hash",
-        "hash": "12924291912901391166"
+        "hash": "2588726658982913204"
       },
       {
         "file": ".nx/cache/parsed-lock-file.json",
-        "hash": "17724845480664086749"
+        "hash": "10063895245652434714"
       },
       {
         "file": ".nx/cache/project-graph.json",
-        "hash": "4529347866403017124"
+        "hash": "17732539158985231763"
       },
       {
         "file": ".nx/cache/run.json",
-        "hash": "1478335316241008252"
+        "hash": "3931100159336442983"
       },
       {
         "file": ".nx/cache/terminalOutputs/11856899264667090460",
         "hash": "4987438161602918199"
       },
       {
+        "file": ".nx/cache/terminalOutputs/12172500050734394879",
+        "hash": "9900290216320924803"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/144046858168363811",
+        "hash": "12250861076163901236"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/16150393241961794470",
+        "hash": "14077180785068971992"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/16456847978452065385",
-        "hash": "3247393166453838434"
+        "hash": "16856184058675797604"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/5430783302644758320",
+        "hash": "16650865361212432898"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/6631074846167388442",
+        "hash": "2613492858009064075"
       },
       {
         "file": ".prettierignore",
@@ -181,11 +201,11 @@
       },
       {
         "file": "package.json",
-        "hash": "9085217127850553718"
+        "hash": "5142357918739948010"
       },
       {
         "file": "pnpm-lock.yaml",
-        "hash": "13746309785081745493"
+        "hash": "17056041535150800721"
       },
       {
         "file": "pnpm-workspace.yaml",
@@ -200,212 +220,27 @@
         "hash": "2631156348753552112"
       },
       {
-        "file": ".nx/cache/terminalOutputs/5430783302644758320",
-        "hash": "16650865361212432898"
+        "file": ".nx/cache/terminalOutputs/816857175772019845",
+        "hash": "11291726192389551732"
       },
       {
-        "file": ".nx/cache/terminalOutputs/12172500050734394879",
-        "hash": "9900290216320924803"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/6631074846167388442",
+        "file": ".nx/cache/terminalOutputs/7141940499478828344",
         "hash": "2613492858009064075"
       },
       {
-        "file": ".nx/cache/terminalOutputs/144046858168363811",
-        "hash": "12250861076163901236"
+        "file": ".nx/cache/terminalOutputs/9623498635835557247",
+        "hash": "14077180785068971992"
       },
       {
-        "file": ".nx/cache/terminalOutputs/16150393241961794470",
-        "hash": "14077180785068971992"
+        "file": ".nx/cache/terminalOutputs/14806564468285501399",
+        "hash": "9900290216320924803"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/8018653071148106276",
+        "hash": "16650865361212432898"
       }
     ],
     "projectFileMap": {
-      "app": [
-        {
-          "file": "app/.eslintrc.js",
-          "hash": "5736504462961647083"
-        },
-        {
-          "file": "app/README.md",
-          "hash": "1080984510928872549"
-        },
-        {
-          "file": "app/index.html",
-          "hash": "6266038545791770271"
-        },
-        {
-          "file": "app/jest.config.ts",
-          "hash": "13894140207653369762"
-        },
-        {
-          "file": "app/project.json",
-          "hash": "16437841371341338231"
-        },
-        {
-          "file": "app/src/App.vue",
-          "hash": "18202755293984340291"
-        },
-        {
-          "file": "app/src/components/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "app/src/env.d.ts",
-          "hash": "1691197428849636078",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "app/src/index.scss",
-          "hash": "7334820393702974768"
-        },
-        {
-          "file": "app/src/main.ts",
-          "hash": "16981350754046565104",
-          "deps": [
-            "npm:@agient/widget",
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "app/src/plugins/router/index.ts",
-          "hash": "5664446818842990331",
-          "deps": [
-            "npm:vue-router",
-            [
-              "npm:@/views/index/IndexView.vue",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "app/src/views/index/IndexView.vue",
-          "hash": "1125986374131552425"
-        },
-        {
-          "file": "app/tsconfig.eslint.json",
-          "hash": "11796648079877582545"
-        },
-        {
-          "file": "app/tsconfig.json",
-          "hash": "17644098464974097104"
-        },
-        {
-          "file": "app/tsconfig.spec.json",
-          "hash": "12612140541118818048"
-        },
-        {
-          "file": "app/unit.setup.ts",
-          "hash": "10030691262233339657",
-          "deps": [
-            "npm:@pinia/testing",
-            "npm:@vue/test-utils",
-            "npm:sinon"
-          ]
-        },
-        {
-          "file": "app/vite.config.ts",
-          "hash": "7860338682108021207",
-          "deps": [
-            "npm:@vitejs/plugin-vue",
-            "npm:path",
-            "npm:vite",
-            "npm:vite-tsconfig-paths"
-          ]
-        },
-        {
-          "file": "app/public/favicon.ico",
-          "hash": "3244421341483603138"
-        }
-      ],
-      "widget": [
-        {
-          "file": "widget/.eslintrc.js",
-          "hash": "5736504462961647083"
-        },
-        {
-          "file": "widget/README.md",
-          "hash": "1080984510928872549"
-        },
-        {
-          "file": "widget/index.html",
-          "hash": "970375772048295160"
-        },
-        {
-          "file": "widget/jest.config.ts",
-          "hash": "13561818527234861863"
-        },
-        {
-          "file": "widget/project.json",
-          "hash": "7223404608908478907"
-        },
-        {
-          "file": "widget/public-api/index.ts",
-          "hash": "16726020970342765099",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "widget/src/App.vue",
-          "hash": "4836062784267828158"
-        },
-        {
-          "file": "widget/src/components/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "widget/src/env.d.ts",
-          "hash": "1691197428849636078",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "widget/src/index.scss",
-          "hash": "7334820393702974768"
-        },
-        {
-          "file": "widget/src/main.ts",
-          "hash": "8209269744044897828",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "widget/tsconfig.eslint.json",
-          "hash": "11796648079877582545"
-        },
-        {
-          "file": "widget/tsconfig.json",
-          "hash": "16646204495026610491"
-        },
-        {
-          "file": "widget/tsconfig.spec.json",
-          "hash": "12612140541118818048"
-        },
-        {
-          "file": "widget/unit.setup.ts",
-          "hash": "10030691262233339657",
-          "deps": [
-            "npm:@pinia/testing",
-            "npm:@vue/test-utils",
-            "npm:sinon"
-          ]
-        },
-        {
-          "file": "widget/vite.config.ts",
-          "hash": "7860338682108021207",
-          "deps": [
-            "npm:@vitejs/plugin-vue",
-            "npm:path",
-            "npm:vite",
-            "npm:vite-tsconfig-paths"
-          ]
-        }
-      ],
       "backend": [
         {
           "file": "backend/.eslintrc.json",
@@ -529,6 +364,191 @@
           "hash": "1785717660273290209",
           "deps": [
             "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "app": [
+        {
+          "file": "app/.eslintrc.js",
+          "hash": "5736504462961647083"
+        },
+        {
+          "file": "app/README.md",
+          "hash": "1080984510928872549"
+        },
+        {
+          "file": "app/index.html",
+          "hash": "6266038545791770271"
+        },
+        {
+          "file": "app/jest.config.ts",
+          "hash": "13894140207653369762"
+        },
+        {
+          "file": "app/project.json",
+          "hash": "16437841371341338231"
+        },
+        {
+          "file": "app/public/favicon.ico",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "app/src/App.vue",
+          "hash": "18202755293984340291"
+        },
+        {
+          "file": "app/src/components/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "app/src/env.d.ts",
+          "hash": "1691197428849636078",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "app/src/index.scss",
+          "hash": "7334820393702974768"
+        },
+        {
+          "file": "app/src/main.ts",
+          "hash": "16981350754046565104",
+          "deps": [
+            "npm:@agient/widget",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "app/src/plugins/router/index.ts",
+          "hash": "5664446818842990331",
+          "deps": [
+            "npm:vue-router",
+            [
+              "npm:@/views/index/IndexView.vue",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "app/src/views/index/IndexView.vue",
+          "hash": "1125986374131552425"
+        },
+        {
+          "file": "app/tsconfig.eslint.json",
+          "hash": "11796648079877582545"
+        },
+        {
+          "file": "app/tsconfig.json",
+          "hash": "17644098464974097104"
+        },
+        {
+          "file": "app/tsconfig.spec.json",
+          "hash": "12612140541118818048"
+        },
+        {
+          "file": "app/unit.setup.ts",
+          "hash": "10030691262233339657",
+          "deps": [
+            "npm:@pinia/testing",
+            "npm:@vue/test-utils",
+            "npm:sinon"
+          ]
+        },
+        {
+          "file": "app/vite.config.ts",
+          "hash": "7860338682108021207",
+          "deps": [
+            "npm:@vitejs/plugin-vue",
+            "npm:path",
+            "npm:vite",
+            "npm:vite-tsconfig-paths"
+          ]
+        }
+      ],
+      "widget": [
+        {
+          "file": "widget/.eslintrc.js",
+          "hash": "5736504462961647083"
+        },
+        {
+          "file": "widget/README.md",
+          "hash": "1080984510928872549"
+        },
+        {
+          "file": "widget/index.html",
+          "hash": "970375772048295160"
+        },
+        {
+          "file": "widget/jest.config.ts",
+          "hash": "13561818527234861863"
+        },
+        {
+          "file": "widget/project.json",
+          "hash": "7223404608908478907"
+        },
+        {
+          "file": "widget/public-api/index.ts",
+          "hash": "16726020970342765099",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/src/App.vue",
+          "hash": "4836062784267828158"
+        },
+        {
+          "file": "widget/src/components/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "widget/src/env.d.ts",
+          "hash": "1691197428849636078",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/src/index.scss",
+          "hash": "7334820393702974768"
+        },
+        {
+          "file": "widget/src/main.ts",
+          "hash": "8209269744044897828",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "widget/tsconfig.eslint.json",
+          "hash": "11796648079877582545"
+        },
+        {
+          "file": "widget/tsconfig.json",
+          "hash": "16646204495026610491"
+        },
+        {
+          "file": "widget/tsconfig.spec.json",
+          "hash": "12612140541118818048"
+        },
+        {
+          "file": "widget/unit.setup.ts",
+          "hash": "10030691262233339657",
+          "deps": [
+            "npm:@pinia/testing",
+            "npm:@vue/test-utils",
+            "npm:sinon"
+          ]
+        },
+        {
+          "file": "widget/vite.config.ts",
+          "hash": "7860338682108021207",
+          "deps": [
+            "npm:@vitejs/plugin-vue",
+            "npm:path",
+            "npm:vite",
+            "npm:vite-tsconfig-paths"
           ]
         }
       ]

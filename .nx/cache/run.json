@@ -1,8 +1,8 @@
 {
   "run": {
     "command": "nx run-many -t lint:fix,stylelint:fix --parallel 10",
-    "startTime": "2024-03-22T14:46:15.437Z",
-    "endTime": "2024-03-22T14:46:16.462Z",
+    "startTime": "2024-03-22T14:48:33.097Z",
+    "endTime": "2024-03-22T14:48:34.122Z",
     "inner": false
   },
   "tasks": [
@@ -10,9 +10,9 @@
       "taskId": "widget:stylelint:fix",
       "target": "stylelint:fix",
       "projectName": "widget",
-      "hash": "16150393241961794470",
-      "startTime": "2024-03-22T14:46:15.500Z",
-      "endTime": "2024-03-22T14:46:15.808Z",
+      "hash": "9623498635835557247",
+      "startTime": "2024-03-22T14:48:33.158Z",
+      "endTime": "2024-03-22T14:48:33.411Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
@@ -21,9 +21,9 @@
       "taskId": "app:stylelint:fix",
       "target": "stylelint:fix",
       "projectName": "app",
-      "hash": "12172500050734394879",
-      "startTime": "2024-03-22T14:46:15.500Z",
-      "endTime": "2024-03-22T14:46:15.809Z",
+      "hash": "14806564468285501399",
+      "startTime": "2024-03-22T14:48:33.158Z",
+      "endTime": "2024-03-22T14:48:33.419Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
@@ -33,19 +33,8 @@
       "target": "lint:fix",
       "projectName": "backend",
       "hash": "144046858168363811",
-      "startTime": "2024-03-22T14:46:15.500Z",
-      "endTime": "2024-03-22T14:46:16.176Z",
-      "params": "",
-      "cacheStatus": "cache-miss",
-      "status": 0
-    },
-    {
-      "taskId": "app:lint:fix",
-      "target": "lint:fix",
-      "projectName": "app",
-      "hash": "6631074846167388442",
-      "startTime": "2024-03-22T14:46:15.500Z",
-      "endTime": "2024-03-22T14:46:16.460Z",
+      "startTime": "2024-03-22T14:48:33.157Z",
+      "endTime": "2024-03-22T14:48:33.823Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
@@ -54,9 +43,20 @@
       "taskId": "widget:lint:fix",
       "target": "lint:fix",
       "projectName": "widget",
-      "hash": "5430783302644758320",
-      "startTime": "2024-03-22T14:46:15.500Z",
-      "endTime": "2024-03-22T14:46:16.462Z",
+      "hash": "8018653071148106276",
+      "startTime": "2024-03-22T14:48:33.158Z",
+      "endTime": "2024-03-22T14:48:34.121Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "app:lint:fix",
+      "target": "lint:fix",
+      "projectName": "app",
+      "hash": "7141940499478828344",
+      "startTime": "2024-03-22T14:48:33.158Z",
+      "endTime": "2024-03-22T14:48:34.121Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
