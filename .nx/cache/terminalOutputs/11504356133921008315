@@ -1,0 +1,13 @@
+
+Linting Styles "app"...
+The CommonJS Node.js API is deprecated. See https://stylelint.io/migration-guide/to-16
+`output` is deprecated. Use `report` or `code` instead.
+
+]8;;file:///root/agident/app/src/index.scssapp/src/index.scss]8;;
+ [2m2:12[22m  [31m[31m✖[39m  Missed semicolon  [2mCssSyntaxError[22m
+
+1 problem ([31m1 error[39m, [33m0 warnings[39m)
+
+
+[1m[31m[39m[22m
+[1m[31mLint errors found in the listed files.[39m[22m

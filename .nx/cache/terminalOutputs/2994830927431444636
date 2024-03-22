@@ -1,0 +1,10 @@
+
+Linting "app"...
+
+ [31m>[39m [0m[7m[1m[31m NX [39m[22m[27m[0m  [31mFailed to load plugin '@intlify/vue-i18n' declared in 'app/.eslintrc.js#overrides[0]': Cannot find module '@intlify/eslint-plugin-vue-i18n'[39m
+
+   Require stack:
+   - /root/agident/app/__placeholder__.js
+   Referenced from: /root/agident/app/.eslintrc.js
+   Pass --verbose to see the stacktrace.
+

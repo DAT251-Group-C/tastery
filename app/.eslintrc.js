@@ -8,13 +8,7 @@ module.exports = {
       },
       files: ['*.ts', '*.html', '*.vue', '*.js'],
       plugins: ['import'],
-      extends: [
-        'plugin:vue/vue3-recommended',
-        'plugin:@intlify/vue-i18n/recommended',
-        '@vue/typescript/recommended',
-        'eslint:recommended',
-        'prettier',
-      ],
+      extends: ['plugin:vue/vue3-recommended', '@vue/typescript/recommended', 'eslint:recommended', 'prettier'],
       parser: 'vue-eslint-parser',
       parserOptions: {
         ecmaVersion: 2022,
@@ -96,19 +90,8 @@ module.exports = {
         'vue/multi-word-component-names': 'off',
         'vue/attribute-hyphenation': ['error', 'never'],
         'vue/require-default-prop': 'off',
-        '@intlify/vue-i18n/no-unused-keys': [
-          'error',
-          {
-            src: './src',
-            extensions: ['.js', '.vue'],
-          },
-        ],
-        '@intlify/vue-i18n/no-raw-text': 'off',
       },
       settings: {
-        'vue-i18n': {
-          localeDir: './src/translations/*.json',
-        },
         'import/resolver': {
           node: {
             extensions: ['.js', '.ts', '.vue', '.json'],
