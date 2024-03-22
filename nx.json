@@ -46,5 +46,6 @@
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "useInferencePlugins": false
+  "useInferencePlugins": false,
+  "nxCloudAccessToken": "YjE0YTM0NjUtY2Q4OS00NTU1LTljYmUtZDNhMzQzNzZjMTJkfHJlYWQtd3JpdGU="
 }

@@ -12,13 +12,13 @@
   ],
   "scripts": {
     "build": "nx run-many -t build --parallel 10",
+    "generate-types": "swagger-typescript-api -p http://localhost:3000/docs-json -o app/src/services/api --modular --extract-enums --single-http-client --axios -n ./types.ts --templates src/templates --type-prefix Api --clean-output",
     "kill": "lsof -i :8080 | awk 'FNR == 2 {print $2}' | xargs kill -9",
     "lint": "nx run-many -t lint,stylelint --parallel 10 && nx format:check --all",
     "lint:fix": "nx run-many -t lint:fix,stylelint:fix --parallel 10 && nx format:write --all",
     "serve:app": "nx serve app --port 8080",
     "serve:backend": "nx serve backend --port 3005",
-    "test": "nx run-many -t test --parallel 10",
-    "generate-types": "swagger-typescript-api -p http://localhost:3000/docs-json -o app/src/services/api --modular --extract-enums --single-http-client --axios -n ./types.ts --templates src/templates --type-prefix Api --clean-output"
+    "test": "nx run-many -t test --parallel 10"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@nestjs/schematics": "^10.1.1",
     "@nestjs/testing": "^10.3.5",
-    "@nrwl/vite": "18.1.2",
+    "@nx/eslint": "18.1.2",
     "@nx/eslint-plugin": "18.1.2",
     "@nx/jest": "18.1.2",
     "@nx/js": "18.1.2",
@@ -95,13 +95,11 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "0.34.6",
     "vue-eslint-parser": "^9.4.2",
-    "vue-tsc": "^2.0.7",
-    "workbox-window": "^7.0.0",
-    "@nx/eslint": "18.1.2"
+    "vue-tsc": "^2.0.7"
   },
   "engines": {
-    "node": ">=16.14.0",
-    "npm": ">=8.14.0",
-    "pnpm": ">=8.6.0"
+    "node": ">=20.11.0",
+    "npm": ">=10.2.4",
+    "pnpm": ">=8.6.5"
   }
 }

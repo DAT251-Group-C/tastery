@@ -90,9 +90,6 @@ importers:
       '@nestjs/testing':
         specifier: ^10.3.5
         version: 10.3.5(@nestjs/common@10.3.5)(@nestjs/core@10.3.5)(@nestjs/microservices@10.3.5)(@nestjs/platform-express@10.3.5)
-      '@nrwl/vite':
-        specifier: 18.1.2
-        version: 18.1.2(@types/node@18.19.26)(nx@18.1.2)(typescript@5.4.3)(vite@5.2.3)(vitest@0.34.6)
       '@nx/eslint':
         specifier: 18.1.2
         version: 18.1.2(@types/node@18.19.26)(nx@18.1.2)
@@ -231,9 +228,6 @@ importers:
       vue-tsc:
         specifier: ^2.0.7
         version: 2.0.7(typescript@5.4.3)
-      workbox-window:
-        specifier: ^7.0.0
-        version: 7.0.0
 
 packages:
 
@@ -3622,10 +3616,6 @@ packages:
 
   /@types/swagger-schema-official@2.0.22:
     resolution: {integrity: sha512-7yQiX6MWSFSvc/1wW5smJMZTZ4fHOd+hqLr3qr/HONDxHEa2bnYAsOcGBOEqFIjd4yetwMOdEDdeW+udRAQnHA==}
-    dev: true
-
-  /@types/trusted-types@2.0.7:
-    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
     dev: true
 
   /@types/validator@13.11.9:
@@ -11894,17 +11884,6 @@ packages:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
-    dev: true
-
-  /workbox-core@7.0.0:
-    resolution: {integrity: sha512-81JkAAZtfVP8darBpfRTovHg8DGAVrKFgHpOArZbdFd78VqHr5Iw65f2guwjE2NlCFbPFDoez3D3/6ZvhI/rwQ==}
-    dev: true
-
-  /workbox-window@7.0.0:
-    resolution: {integrity: sha512-j7P/bsAWE/a7sxqTzXo3P2ALb1reTfZdvVp6OJ/uLr/C2kZAMvjeWGm8V4htQhor7DOvYg0sSbFN2+flT5U0qA==}
-    dependencies:
-      '@types/trusted-types': 2.0.7
-      workbox-core: 7.0.0
     dev: true
 
   /wrap-ansi@7.0.0:
