@@ -39,18 +39,13 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["widget/**/*.{html,js,ts,vue}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "lint:fix": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "fix": true,
-        "lintFilePatterns": ["widget/**/*.{html,js,ts,vue}"]
+        "fix": true
       }
     },
     "stylelint": {

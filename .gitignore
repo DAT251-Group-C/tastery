@@ -5,6 +5,8 @@ dev-dist
 dist
 tmp
 /out-tsc
+/.nx-cache
+/.nx
 
 # dependencies
 node_modules
@@ -36,8 +38,10 @@ testem.log
 /typings
 debug.log
 __pycache__
+.nx
 
 # System Files
 .DS_Store
 Thumbs.db
 .env
+.nx/cache
