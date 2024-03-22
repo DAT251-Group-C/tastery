@@ -9945,15 +9945,6 @@
         "hash": "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="
       }
     },
-    "npm:prettier": {
-      "type": "npm",
-      "name": "npm:prettier",
-      "data": {
-        "version": "2.8.8",
-        "packageName": "prettier",
-        "hash": "sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q=="
-      }
-    },
     "npm:prettier@3.0.0": {
       "type": "npm",
       "name": "npm:prettier@3.0.0",
@@ -9961,6 +9952,15 @@
         "version": "3.0.0",
         "packageName": "prettier",
         "hash": "sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g=="
+      }
+    },
+    "npm:prettier": {
+      "type": "npm",
+      "name": "npm:prettier",
+      "data": {
+        "version": "3.2.5",
+        "packageName": "prettier",
+        "hash": "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="
       }
     },
     "npm:pretty-format": {
@@ -11772,13 +11772,22 @@
         "hash": "sha512-sJ0T08dV5eoZroaq9uPKBoNcGslHBR4E4y+EBHs//SiGbblGe7IeduP/IH4ddCcj0qp3PHwDwGnuvqEAnKlq/Q=="
       }
     },
-    "npm:typescript": {
+    "npm:typescript@5.1.6": {
       "type": "npm",
-      "name": "npm:typescript",
+      "name": "npm:typescript@5.1.6",
       "data": {
         "version": "5.1.6",
         "packageName": "typescript",
         "hash": "sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA=="
+      }
+    },
+    "npm:typescript": {
+      "type": "npm",
+      "name": "npm:typescript",
+      "data": {
+        "version": "5.4.3",
+        "packageName": "typescript",
+        "hash": "sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg=="
       }
     },
     "npm:ufo": {
@@ -15845,6 +15854,11 @@
       "type": "static"
     },
     {
+      "source": "npm:@nrwl/js",
+      "target": "npm:@nx/js",
+      "type": "static"
+    },
+    {
       "source": "npm:@nrwl/linter",
       "target": "npm:@nx/linter",
       "type": "static"
@@ -16260,6 +16274,156 @@
       "type": "static"
     },
     {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/core",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/plugin-proposal-class-properties",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/plugin-proposal-decorators",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/plugin-transform-runtime",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/preset-env",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/preset-typescript",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@babel/runtime",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@nrwl/js",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@nx/devkit",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@nx/workspace",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:@phenomnomnominal/tsquery",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:babel-plugin-const-enum",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:babel-plugin-macros",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:babel-plugin-transform-typescript-metadata",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:chalk",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:columnify",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:detect-port",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:fast-glob",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:fs-extra",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:ignore",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:js-tokens",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:minimatch",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:npm-package-arg",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:npm-run-path",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:ora",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:semver",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:source-map-support",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:ts-node@10.9.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:tsconfig-paths",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/js",
+      "target": "npm:tslib",
+      "type": "static"
+    },
+    {
       "source": "npm:@nx/linter",
       "target": "npm:@nrwl/linter",
       "type": "static"
@@ -16296,7 +16460,7 @@
     },
     {
       "source": "npm:@nx/linter",
-      "target": "npm:typescript",
+      "target": "npm:typescript@5.1.6",
       "type": "static"
     },
     {
@@ -16662,6 +16826,16 @@
     {
       "source": "npm:@parcel/watcher",
       "target": "npm:node-gyp-build",
+      "type": "static"
+    },
+    {
+      "source": "npm:@phenomnomnominal/tsquery",
+      "target": "npm:esquery",
+      "type": "static"
+    },
+    {
+      "source": "npm:@phenomnomnominal/tsquery",
+      "target": "npm:typescript@5.1.6",
       "type": "static"
     },
     {
@@ -26466,7 +26640,7 @@
     },
     {
       "source": "npm:swagger-typescript-api",
-      "target": "npm:typescript",
+      "target": "npm:typescript@5.1.6",
       "type": "static"
     },
     {
@@ -26762,6 +26936,81 @@
     {
       "source": "npm:ts-loader",
       "target": "npm:webpack",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@cspotcode/source-map-support",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@tsconfig/node10",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@tsconfig/node12",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@tsconfig/node14",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@tsconfig/node16",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:@types/node",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:acorn",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:acorn-walk",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:arg",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:create-require",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:diff@4.0.2",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:make-error",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:typescript@5.1.6",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:v8-compile-cache-lib",
+      "type": "static"
+    },
+    {
+      "source": "npm:ts-node@10.9.1",
+      "target": "npm:yn",
       "type": "static"
     },
     {

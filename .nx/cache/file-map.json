@@ -59,7 +59,7 @@
     "jest-mock-extended": "^3.0.5",
     "nx": "^16.10.0",
     "nx-stylelint": "^16.0.1",
-    "prettier": "^2.8.8",
+    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.72.0",
@@ -70,7 +70,7 @@
     "ts-jest": "^29.1.2",
     "ts-node": "10.9.2",
     "tsconfig": "^7.0.0",
-    "typescript": "~5.1.6",
+    "typescript": "~5.4.3",
     "vite": "^5.2.3",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.4.0",
@@ -200,39 +200,83 @@
       },
       {
         "file": ".nx/cache/d/daemon.log",
-        "hash": "17594470377665467292"
+        "hash": "3890356078027212159"
       },
       {
         "file": ".nx/cache/d/server-process.json",
-        "hash": "15553930913208357990"
+        "hash": "3244421341483603138"
       },
       {
         "file": ".nx/cache/file-map.json",
-        "hash": "8299016878355353588"
+        "hash": "8462047512027634962"
       },
       {
         "file": ".nx/cache/lockfile.hash",
-        "hash": "18755088890286553"
+        "hash": "5164796534841291479"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/project-graph.html",
+        "hash": "17036869540637447991"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/3rdpartylicenses.txt",
+        "hash": "5667550289807473445"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/environment.js",
+        "hash": "8884335279882868240"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/favicon.ico",
+        "hash": "9303420814833116677"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/main.js",
+        "hash": "13551439496520482047"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/polyfills.js",
+        "hash": "5617236864114375205"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/runtime.js",
+        "hash": "9652903316845995179"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/styles.css",
+        "hash": "2125456314194136822"
+      },
+      {
+        "file": ".nx/cache/nx-console-project-graph/static/styles.js",
+        "hash": "13596360365094399219"
       },
       {
         "file": ".nx/cache/parsed-lock-file.json",
-        "hash": "2050876322298422785"
+        "hash": "5256646175222304366"
       },
       {
         "file": ".nx/cache/project-graph.json",
-        "hash": "4559473634606436573"
+        "hash": "1022864687843500425"
       },
       {
         "file": ".nx/cache/run.json",
-        "hash": "1957432032097735892"
+        "hash": "12715483780179517625"
       },
       {
         "file": ".nx/cache/terminalOutputs/10462769694058396415",
         "hash": "9900290216320924803"
       },
       {
+        "file": ".nx/cache/terminalOutputs/11504356133921008315",
+        "hash": "10760439736131802528"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/11856899264667090460",
         "hash": "4987438161602918199"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/11916909515582350991",
+        "hash": "14903935611769451338"
       },
       {
         "file": ".nx/cache/terminalOutputs/12116012897675680863",
@@ -241,6 +285,10 @@
       {
         "file": ".nx/cache/terminalOutputs/12172500050734394879",
         "hash": "9900290216320924803"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/12423469946207488789",
+        "hash": "2613492858009064075"
       },
       {
         "file": ".nx/cache/terminalOutputs/12683595181886669873",
@@ -255,8 +303,20 @@
         "hash": "1189717494163661671"
       },
       {
+        "file": ".nx/cache/terminalOutputs/14025032598943502229",
+        "hash": "16650865361212432898"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/144046858168363811",
         "hash": "12250861076163901236"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/14493674527973439003",
+        "hash": "2613492858009064075"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/14689192085803132194",
+        "hash": "2613492858009064075"
       },
       {
         "file": ".nx/cache/terminalOutputs/14806564468285501399",
@@ -271,6 +331,10 @@
         "hash": "13961181123874789018"
       },
       {
+        "file": ".nx/cache/terminalOutputs/15445228077004112390",
+        "hash": "8376897578097421002"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/15527224126988192977",
         "hash": "16650865361212432898"
       },
@@ -283,6 +347,14 @@
         "hash": "16856184058675797604"
       },
       {
+        "file": ".nx/cache/terminalOutputs/16751608754871179340",
+        "hash": "9900290216320924803"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/17194748332911415008",
+        "hash": "2613492858009064075"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/17291489425417317145",
         "hash": "12250861076163901236"
       },
@@ -291,15 +363,59 @@
         "hash": "11203770334523450833"
       },
       {
+        "file": ".nx/cache/terminalOutputs/17668391577791114588",
+        "hash": "2613492858009064075"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/1826410309965649730",
+        "hash": "14077180785068971992"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/2205943877428018601",
+        "hash": "16161786552132277352"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/2301222182909963695",
+        "hash": "231006287953960023"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/2994830927431444636",
+        "hash": "5663079852064108412"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/3728159844426511176",
+        "hash": "9440991929450883172"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/4303948124930948309",
         "hash": "13495067476634066647"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/4748181461668116115",
+        "hash": "2613492858009064075"
       },
       {
         "file": ".nx/cache/terminalOutputs/5430783302644758320",
         "hash": "16650865361212432898"
       },
       {
+        "file": ".nx/cache/terminalOutputs/5977446964019192049",
+        "hash": "16161786552132277352"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/6102861897862134174",
+        "hash": "8376897578097421002"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/6596601805274267568",
+        "hash": "1643362803760090364"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/6631074846167388442",
+        "hash": "2613492858009064075"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/6935779699705071800",
         "hash": "2613492858009064075"
       },
       {
@@ -311,8 +427,24 @@
         "hash": "2613492858009064075"
       },
       {
+        "file": ".nx/cache/terminalOutputs/7433578333757362625",
+        "hash": "16650865361212432898"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/7464728883421259195",
+        "hash": "231006287953960023"
+      },
+      {
         "file": ".nx/cache/terminalOutputs/7495310838751307950",
         "hash": "14077180785068971992"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/7689994916978156852",
+        "hash": "16650865361212432898"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/7857585340837123087",
+        "hash": "1643362803760090364"
       },
       {
         "file": ".nx/cache/terminalOutputs/8018653071148106276",
@@ -321,6 +453,18 @@
       {
         "file": ".nx/cache/terminalOutputs/816857175772019845",
         "hash": "11291726192389551732"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/8511619635692272875",
+        "hash": "14077180785068971992"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/9047122754075510999",
+        "hash": "231006287953960023"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/9352290215002878179",
+        "hash": "9900290216320924803"
       },
       {
         "file": ".nx/cache/terminalOutputs/9623498635835557247",
@@ -368,11 +512,11 @@
       },
       {
         "file": "package.json",
-        "hash": "9054640634122369054"
+        "hash": "9696899127226286043"
       },
       {
         "file": "pnpm-lock.yaml",
-        "hash": "2235647754855491911"
+        "hash": "3860639851510412925"
       },
       {
         "file": "pnpm-workspace.yaml",
@@ -387,148 +531,92 @@
         "hash": "2631156348753552112"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/environment.js",
-        "hash": "7416128355725886432"
+        "file": ".nx/cache/terminalOutputs/5590857715295098853",
+        "hash": "13066782580346195975"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/favicon.ico",
-        "hash": "9303420814833116677"
+        "file": ".nx/cache/12009171166203016221/code",
+        "hash": "1838281907459330133"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/3rdpartylicenses.txt",
-        "hash": "5667550289807473445"
+        "file": ".nx/cache/12009171166203016221/source",
+        "hash": "7550755376967400063"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/main.js",
-        "hash": "13551439496520482047"
+        "file": ".nx/cache/14894266673660890666/source",
+        "hash": "7550755376967400063"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/styles.js",
-        "hash": "13596360365094399219"
+        "file": ".nx/cache/terminalOutputs/14894266673660890666",
+        "hash": "8246680390529290168"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/polyfills.js",
-        "hash": "5617236864114375205"
+        "file": ".nx/cache/12009171166203016221/terminalOutput",
+        "hash": "13495067476634066647"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/styles.css",
-        "hash": "2125456314194136822"
+        "file": ".nx/cache/terminalOutputs/12009171166203016221",
+        "hash": "13495067476634066647"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/static/runtime.js",
-        "hash": "9652903316845995179"
+        "file": ".nx/cache/14894266673660890666/code",
+        "hash": "1838281907459330133"
       },
       {
-        "file": ".nx/cache/nx-console-project-graph/project-graph.html",
-        "hash": "17036869540637447991"
+        "file": ".nx/cache/14894266673660890666/terminalOutput",
+        "hash": "8246680390529290168"
       },
       {
-        "file": ".nx/cache/terminalOutputs/5977446964019192049",
-        "hash": "16161786552132277352"
+        "file": ".nx/cache/12009171166203016221.commit",
+        "hash": "4664556114322093609"
       },
       {
-        "file": ".nx/cache/terminalOutputs/7857585340837123087",
-        "hash": "1643362803760090364"
+        "file": ".nx/cache/14894266673660890666.commit",
+        "hash": "4664556114322093609"
       },
       {
-        "file": ".nx/cache/terminalOutputs/2301222182909963695",
-        "hash": "231006287953960023"
+        "file": ".nx/cache/5590857715295098853/terminalOutput",
+        "hash": "13066782580346195975"
       },
       {
-        "file": ".nx/cache/terminalOutputs/3728159844426511176",
+        "file": ".nx/cache/5590857715295098853/source",
+        "hash": "7550755376967400063"
+      },
+      {
+        "file": ".nx/cache/5590857715295098853.commit",
+        "hash": "4664556114322093609"
+      },
+      {
+        "file": ".nx/cache/5590857715295098853/code",
+        "hash": "1838281907459330133"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/17975575410549452327",
         "hash": "9440991929450883172"
       },
       {
-        "file": ".nx/cache/terminalOutputs/2994830927431444636",
-        "hash": "5663079852064108412"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/9047122754075510999",
-        "hash": "231006287953960023"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/6596601805274267568",
-        "hash": "1643362803760090364"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/2205943877428018601",
-        "hash": "16161786552132277352"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/17194748332911415008",
-        "hash": "2613492858009064075"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/7433578333757362625",
+        "file": ".nx/cache/terminalOutputs/5288234016593859798",
         "hash": "16650865361212432898"
       },
       {
-        "file": ".nx/cache/terminalOutputs/8511619635692272875",
+        "file": ".nx/cache/terminalOutputs/17008980989789188582",
         "hash": "14077180785068971992"
       },
       {
-        "file": ".nx/cache/terminalOutputs/14493674527973439003",
+        "file": ".nx/cache/terminalOutputs/8206977343060486690",
         "hash": "2613492858009064075"
       },
       {
-        "file": ".nx/cache/terminalOutputs/15445228077004112390",
-        "hash": "8376897578097421002"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/6102861897862134174",
-        "hash": "8376897578097421002"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/17668391577791114588",
-        "hash": "2613492858009064075"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/14689192085803132194",
-        "hash": "2613492858009064075"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/7464728883421259195",
-        "hash": "231006287953960023"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/11504356133921008315",
-        "hash": "10760439736131802528"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/6935779699705071800",
-        "hash": "2613492858009064075"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/16751608754871179340",
+        "file": ".nx/cache/terminalOutputs/8750798246923510244",
         "hash": "9900290216320924803"
       },
       {
-        "file": ".nx/cache/terminalOutputs/4748181461668116115",
-        "hash": "2613492858009064075"
+        "file": ".nx/cache/terminalOutputs/16435047545036477050",
+        "hash": "11291726192389551732"
       },
       {
-        "file": ".nx/cache/terminalOutputs/9352290215002878179",
-        "hash": "9900290216320924803"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/11916909515582350991",
-        "hash": "14903935611769451338"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/14025032598943502229",
-        "hash": "16650865361212432898"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/12423469946207488789",
-        "hash": "2613492858009064075"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/7689994916978156852",
-        "hash": "16650865361212432898"
-      },
-      {
-        "file": ".nx/cache/terminalOutputs/1826410309965649730",
-        "hash": "14077180785068971992"
+        "file": ".nx/cache/terminalOutputs/16415685236784155687",
+        "hash": "10497765500763196598"
       }
     ],
     "projectFileMap": {
@@ -543,7 +631,7 @@
         },
         {
           "file": "widget/index.html",
-          "hash": "970375772048295160"
+          "hash": "3353734490501513016"
         },
         {
           "file": "widget/jest.config.ts",
@@ -755,7 +843,7 @@
         },
         {
           "file": "app/index.html",
-          "hash": "6266038545791770271"
+          "hash": "6771356151091344104"
         },
         {
           "file": "app/jest.config.ts",
