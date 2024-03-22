@@ -1,9 +1,16 @@
+import { initialize } from '../src/socket';
 import { createApp } from 'vue';
-import App from '../src/App.vue';
+import Widget from '../src/Widget.vue';
+import { AgientFunctions, AgientInstance } from '../src/socket/types';
 
-const createAgient = (apiKey: string, options: unknown) => {
+export const AGIENT_INSTANCE_TOKEN = Symbol('AGIENT_INSTANCE_TOKEN');
+
+// eslint-disable-next-line
+const createAgient = <TFunctions extends AgientFunctions = any>(apiKey: string, options?: unknown): AgientInstance<TFunctions> => {
   console.log(apiKey);
   console.log(options);
+
+  const { instance, provider } = initialize(apiKey);
 
   // insert a div with the id 'agient-widget' into the DOM
   const widget = document.createElement('div');
@@ -16,9 +23,9 @@ const createAgient = (apiKey: string, options: unknown) => {
 
   document.body.appendChild(widget);
 
-  // attach my vue component to the div
-  const app = createApp(App);
-  app.mount('#agient-widget');
+  createApp(Widget).provide(AGIENT_INSTANCE_TOKEN, provider).mount('#agient-widget');
+
+  return instance;
 };
 
 export { createAgient };

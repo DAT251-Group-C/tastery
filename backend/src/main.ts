@@ -50,7 +50,9 @@ async function bootstrap() {
 
   nestApp.enableCors();
 
-  await nestApp.listen(process.env.PORT || PORT || 3000);
+  const port = process.env.PORT || PORT || 3000;
+  await nestApp.listen(port);
+  console.log(`Application is running on port ${port}`);
 
   if (module.hot) {
     module.hot.accept();

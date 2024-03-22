@@ -13,10 +13,7 @@
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["widget/src/*"]
-    }
+    "forceConsistentCasingInFileNames": true
   },
   "references": [
     {

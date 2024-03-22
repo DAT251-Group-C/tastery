@@ -23,14 +23,6 @@
         }
       }
     },
-    "serve": {
-      "executor": "@nx/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "widget:build",
-        "port": 8080
-      }
-    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/widget"],

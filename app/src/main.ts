@@ -1,9 +1,11 @@
-import { createAgient } from '@agient/widget';
 import { createApp } from 'vue';
 import App from './App.vue';
 import './index.scss';
 import router from './plugins/router';
+import { useAgient } from './plugins/agient';
+import { createPinia } from 'pinia';
 
-createApp(App).use(router).mount('#app');
-createAgient('', '');
-console.log('hello!!');
+const pinia = createPinia();
+
+createApp(App).use(pinia).use(router).mount('#app');
+useAgient();

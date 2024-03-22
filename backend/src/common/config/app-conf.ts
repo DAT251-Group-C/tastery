@@ -6,6 +6,10 @@ export default registerAs('appConfig', () => ({
     version: 'v1',
     env: 'development',
   },
+  openai: {
+    apiKey: process.env.NX_OPENAI_API_KEY,
+    organization: process.env.NX_OPENAI_ORGANIZATION,
+  },
   database: {
     host: process.env.NX_POSTGRES_HOST,
     port: parseInt(process.env.NX_POSTGRES_PORT, 10) || 5432,

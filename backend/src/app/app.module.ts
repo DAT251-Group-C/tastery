@@ -4,11 +4,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../common/config/app-conf';
 import entities from '../models';
+import { GatewayModule } from './gateway/gateway.module';
 import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
     HealthModule,
+    GatewayModule,
     ConfigModule.forRoot({
       load: [appConfig],
     }),
