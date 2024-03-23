@@ -33,10 +33,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/e2e/app"],
-      "options": {
-        "passWithNoTests": true
-      }
+      "outputs": ["{workspaceRoot}/coverage/e2e/app"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
