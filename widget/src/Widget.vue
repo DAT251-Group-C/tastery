@@ -1,26 +1,37 @@
 <template>
   <div class="widget">
     <div class="inner">
-      <p>Agient</p>
-      <p v-for="msg of messages" :key="msg">{{ msg }}</p>
+      <p style="margin-top: -0.5rem; margin-bottom: 0">Agient</p>
+      <p v-for="msg of messages" :key="msg.id" :class="[msg.isUser ? 'right' : 'left', 'message']">{{ msg.text }}</p>
+      <p v-if="context" class="context">{{ context }}...</p>
     </div>
 
     <div class="input">
       <p v-if="writing" class="writing">Agient is writing...</p>
       <input v-model="chat" placeholder="Write a response" />
-      <button @click="submit()">Send</button>
+      <button :disabled="disabled" @click="submit()">Send</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ChatCompletionMessageToolCall } from 'openai/resources';
+import { v4 } from 'uuid';
 import { inject, onMounted, ref } from 'vue';
 import { AGIENT_INSTANCE_TOKEN } from '../public-api';
-import { AgientProvider, TODO } from './socket/types';
+import { AgientProvider } from './socket/types';
 
+interface Message {
+  id: string;
+  text: string;
+  isUser: boolean;
+}
+
+const context = ref<string | null>(null);
 const chat = ref<string>('can you increment my counter by 2, then multiply it by 4?');
 const writing = ref<boolean>(false);
-const messages = ref<string[]>([]);
+const disabled = ref<boolean>(true);
+const messages = ref<Message[]>([]);
 const instance = inject<AgientProvider>(AGIENT_INSTANCE_TOKEN)!;
 
 onMounted(() => {
@@ -31,13 +42,31 @@ onMounted(() => {
   }, 200);
 });
 
-instance.on('response', (value: TODO) => {
-  messages.value.push(value.toString());
+instance.on('response', (value: string) => {
+  messages.value.push({
+    id: v4(),
+    text: value,
+    isUser: false,
+  });
   writing.value = false;
+  context.value = null;
+  disabled.value = false;
+});
+
+instance.on('before_tool_call', (call: ChatCompletionMessageToolCall) => {
+  const data = JSON.parse(call.function.arguments);
+  if (data.__context_message && typeof data.__context_message === 'string') {
+    context.value = data.__context_message;
+  }
 });
 
 const submit = () => {
-  messages.value.push(chat.value);
+  messages.value.push({
+    id: v4(),
+    text: chat.value,
+    isUser: true,
+  });
+  disabled.value = true;
   instance.chat(chat.value);
   chat.value = '';
 
@@ -64,6 +93,34 @@ const submit = () => {
   padding: 1.5rem 1.5rem 0 1.5rem;
   overflow-y: auto;
   font-size: 14px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .message {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    max-width: calc(100% - 3rem);
+    border-radius: 4px;
+
+    &.left {
+      background-color: lightgrey;
+    }
+
+    &.right {
+      background-color: lightblue;
+      align-self: flex-end;
+    }
+  }
+
+  .left + .right {
+    margin-top: 0.5rem;
+  }
+
+  .right + .left {
+    margin-top: 0.5rem;
+  }
 }
 
 .input {
@@ -84,5 +141,12 @@ const submit = () => {
     margin: 0;
     left: 1.5rem;
   }
+}
+
+.context {
+  background-color: lightgreen;
+  font-size: 12px;
+  padding: 0.25rem;
+  align-self: start;
 }
 </style>

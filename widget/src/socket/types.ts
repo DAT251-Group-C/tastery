@@ -10,4 +10,5 @@ export type AgientInstance<TFunctions extends AgientFunctions = TODO> = {
 export type AgientProvider = {
   chat: (message: string) => void;
   on: (event: string, fn: TODO) => void;
+  registeredInstanceListeners: Map<string, AgientFunctions[number]>;
 };

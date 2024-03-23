@@ -14,8 +14,12 @@ const getAvailableFunctionsByApiKey = async (apiKey: string): Promise<FunctionDe
             type: 'number',
             description: 'the amount to increase the counter by',
           },
+          __context_message: {
+            type: 'string',
+            description: 'a short message to show while the task is being performed. Should describe what is happening in the background',
+          },
         },
-        require: ['by'],
+        required: ['by', '__context_message'],
       },
     },
     {
@@ -28,8 +32,12 @@ const getAvailableFunctionsByApiKey = async (apiKey: string): Promise<FunctionDe
             type: 'number',
             description: 'the amount to multiply the counter by',
           },
+          __context_message: {
+            type: 'string',
+            description: 'a short message to show while the task is being performed. Should describe what is happening in the background',
+          },
         },
-        require: ['by'],
+        required: ['by', '__context_message'],
       },
     },
   ]);

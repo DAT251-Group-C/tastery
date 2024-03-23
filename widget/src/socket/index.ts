@@ -13,9 +13,11 @@ const initialize = <TFunction extends AgientFunctions>(
     },
   });
 
+  const provider = createProvider(socket);
+
   return {
-    instance: createInstance(socket),
-    provider: createProvider(socket),
+    instance: createInstance(socket, provider),
+    provider,
   };
 };
 
