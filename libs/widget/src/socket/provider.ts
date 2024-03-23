@@ -29,7 +29,6 @@ const createProvider = (socket: Socket): AgientProvider => {
 
     console.log('starting tools call', calls);
 
-    // async for loop
     for (const call of calls) {
       const listener = registeredInstanceListeners.get(call.function.name);
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="widget">
-    <div class="inner">
+  <div class="widget bg-primary">
+    <div class="inner w-full">
       <p style="margin-top: -0.5rem; margin-bottom: 0">Agient</p>
       <p v-for="msg of messages" :key="msg.id" :class="[msg.isUser ? 'right' : 'left', 'message']">{{ msg.text }}</p>
       <p v-if="context" class="context">{{ context }}...</p>
@@ -20,6 +20,7 @@ import { v4 } from 'uuid';
 import { inject, onMounted, ref } from 'vue';
 import { AGIENT_INSTANCE_TOKEN } from '../public-api';
 import type { AgientProvider } from './socket/types';
+import './main.scss';
 
 interface Message {
   id: string;
@@ -80,6 +81,8 @@ const submit = () => {
 </script>
 
 <style scoped lang="scss">
+@tailwind base;
+
 .widget {
   border-radius: 4px;
   border: 1px solid grey;
@@ -90,10 +93,9 @@ const submit = () => {
 }
 
 .inner {
-  padding: 1.5rem 1.5rem 0 1.5rem;
+  padding: 1.5rem 1.5rem 0;
   overflow-y: auto;
   font-size: 14px;
-
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -127,7 +129,7 @@ const submit = () => {
   position: relative;
   margin-top: auto;
   display: flex;
-  padding: 26px 1.5rem 1.5rem 1.5rem;
+  padding: 26px 1.5rem 1.5rem;
 
   input {
     width: 100%;

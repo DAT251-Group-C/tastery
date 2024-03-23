@@ -5,14 +5,12 @@ import type { AgientFunctions, AgientInstance } from '../src/socket/types';
 
 export const AGIENT_INSTANCE_TOKEN = Symbol('AGIENT_INSTANCE_TOKEN');
 
-// eslint-disable-next-line
-const createAgient = <TFunctions extends AgientFunctions = any>(apiKey: string, options?: unknown): AgientInstance<TFunctions> => {
+const createAgient = <TFunctions extends AgientFunctions>(apiKey: string, options?: unknown): AgientInstance<TFunctions> => {
   console.log(apiKey);
   console.log(options);
 
   const { instance, provider } = initialize(apiKey);
 
-  // insert a div with the id 'agient-widget' into the DOM
   const widget = document.createElement('div');
   widget.id = 'agient-widget';
   widget.style.position = 'fixed';
