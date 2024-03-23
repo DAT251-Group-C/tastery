@@ -1,24 +1,18 @@
 {
-  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "useDefineForClassFields": true,
-    "strict": true,
-    "module": "es2022",
-    "moduleResolution": "node",
     "jsx": "preserve",
-    "isolatedModules": true,
+    "jsxImportSource": "vue",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": false,
-    "noImplicitReturns": true,
-    "noImplicitAny": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["app/src/*"],
       "@agient/widget": ["widget/public-api/index.ts"]
     }
   },
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.spec.json"
@@ -26,5 +20,6 @@
     {
       "path": "./tsconfig.eslint.json"
     }
-  ]
+  ],
+  "extends": "../tsconfig.base.json"
 }
