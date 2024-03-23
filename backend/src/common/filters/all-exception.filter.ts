@@ -55,7 +55,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     if (!responseBody) {
-      const responseError = new HttpException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+      const responseError = new HttpException(String(exception), HttpStatus.INTERNAL_SERVER_ERROR);
       responseBody = {
         statusCode: httpStatus,
         message: responseError.message,
@@ -77,12 +77,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // the function takes an argument called "exception", which can be either a string or an object.
     switch (typeof exception) {
       // check the type of the "exception" argument.
-      case 'object':
+      case 'object': {
         // if it's an object, check if it has a "message" property that is a string and has multiple lines.
-        return typeof exception['message'] === 'string' && exception['message'].split('\n').length > 1
-          ? exception['message'].split('\n')[0] // if it does, return the first line of the message
-          : exception['message']; // if it doesn't, return the entire message
-
+        const message = Object.hasOwn(exception, 'message') ? (exception as { message: unknown })['message'] : null;
+        return message && typeof message === 'string' && message.split('\n').length > 1
+          ? message.split('\n')[0] // if it does, return the first line of the message
+          : String(message); // if it doesn't, return the entire message
+      }
       default:
         // if it's not an object, just return the exception as is (assuming it's a string)
         return exception;

@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strict": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
@@ -9,14 +10,21 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
     "target": "esnext",
     "module": "esnext",
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "downlevelIteration": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": "."
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@agient/widget": ["widget/public-api/index.ts"]
+    }
   },
   "files": [],
   "exclude": ["node_modules", "tmp"]

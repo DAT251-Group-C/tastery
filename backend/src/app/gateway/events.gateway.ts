@@ -1,7 +1,7 @@
 import { OnModuleInit } from '@nestjs/common';
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { ChatCompletionMessageParam, ChatCompletionToolMessageParam } from 'openai/resources';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { OpenAIService } from '../openai/openai.service';
 import { getAvailableFunctionsByApiKey } from './mock-functions';
 
@@ -9,8 +9,7 @@ const messages = new Map<string, ChatCompletionMessageParam[]>();
 
 @WebSocketGateway()
 export class EventsGateway implements OnModuleInit {
-  @WebSocketServer()
-  server: Server;
+  @WebSocketServer() server!: Server;
 
   constructor(private openAI: OpenAIService) {}
 
@@ -38,7 +37,7 @@ export class EventsGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('chat')
-  chat(@MessageBody() body: string, @ConnectedSocket() socket): void {
+  chat(@MessageBody() body: string, @ConnectedSocket() socket: Socket): void {
     const apiKey = socket.handshake.auth.apiKey;
 
     if (!apiKey) {
@@ -55,16 +54,17 @@ export class EventsGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('tools_response')
-  toolsResponse(@MessageBody() responses: Omit<ChatCompletionToolMessageParam, 'role'>[], @ConnectedSocket() socket): void {
+  toolsResponse(@MessageBody() responses: Omit<ChatCompletionToolMessageParam, 'role'>[], @ConnectedSocket() socket: Socket): void {
     const apiKey = socket.handshake.auth.apiKey;
 
     responses.forEach(response => {
-      messages.get(apiKey).push({
+      messages.get(apiKey)?.push({
         role: 'tool',
         content: response.content,
         tool_call_id: response.tool_call_id,
       });
     });
+
     this.generateChat(apiKey);
   }
 

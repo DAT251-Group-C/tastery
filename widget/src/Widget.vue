@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChatCompletionMessageToolCall } from 'openai/resources';
+import type { ChatCompletionMessageToolCall } from 'openai/resources';
 import { v4 } from 'uuid';
 import { inject, onMounted, ref } from 'vue';
 import { AGIENT_INSTANCE_TOKEN } from '../public-api';

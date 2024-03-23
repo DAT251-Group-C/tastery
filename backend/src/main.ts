@@ -1,22 +1,27 @@
-import 'reflect-metadata';
-import 'es6-shim';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import 'es6-shim';
+import 'reflect-metadata';
 import { AppModule } from './app/app.module';
-import { AllExceptionsFilter } from './common/filters/all-exception.filter';
 import appConfig from './common/config/app-conf';
+import { AllExceptionsFilter } from './common/filters/all-exception.filter';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const module: any;
 
 async function bootstrap() {
   const nestApp = await NestFactory.create(AppModule);
+  const config = nestApp.get(ConfigService).get<ConfigType<typeof appConfig>>('appConfig');
 
-  const PORT: number = nestApp.get(ConfigService).get<ConfigType<typeof appConfig>>('appConfig')?.app.port;
+  if (!config) {
+    throw new Error('Config not found');
+  }
 
-  const VERSION_PREFIX: string = nestApp.get(ConfigService).get<ConfigType<typeof appConfig>>('appConfig')?.app.version;
+  const PORT = config.app.port;
+  const VERSION_PREFIX = config.app.version;
+
   nestApp.setGlobalPrefix(VERSION_PREFIX);
   nestApp.enableVersioning({
     type: VersioningType.URI,

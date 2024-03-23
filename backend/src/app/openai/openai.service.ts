@@ -10,6 +10,10 @@ export class OpenAIService {
   constructor(configService: ConfigService) {
     const config = configService.get<ConfigType<typeof appConfig>>('appConfig');
 
+    if (!config) {
+      throw new Error('Config not found');
+    }
+
     this.openai = new OpenAI({
       apiKey: config.openai.apiKey,
       organization: config.openai.organization,

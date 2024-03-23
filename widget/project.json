@@ -1,7 +1,7 @@
 {
   "name": "widget",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
+  "projectType": "library",
   "prefix": "widget",
   "sourceRoot": "widget/src",
   "tags": [],

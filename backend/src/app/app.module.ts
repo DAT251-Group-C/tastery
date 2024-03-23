@@ -19,6 +19,10 @@ import { HealthModule } from './health/health.module';
       useFactory: (configService: ConfigService) => {
         const config = configService.get<ConfigType<typeof appConfig>>('appConfig');
 
+        if (!config) {
+          throw new Error('Config not found');
+        }
+
         return {
           type: 'postgres',
           host: config.database.host,
