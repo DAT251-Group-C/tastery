@@ -5,7 +5,7 @@
     "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node", "vitest"]
   },
   "include": [
-    "../jest.config.ts",
+    "../../jest.config.ts",
     "vite.config.ts",
     "vitest.config.ts",
     "src/**/*.test.ts",

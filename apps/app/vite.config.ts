@@ -10,6 +10,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  publicDir: path.resolve(__dirname, './public'),
   plugins: [vue(), tsconfigPaths()],
   test: {
     globals: true,
@@ -18,9 +19,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.ts'],
     passWithNoTests: true,
     reporters: ['default'],
-    coverage: { reportsDirectory: '../coverage/apps/app', provider: 'v8' },
+    coverage: { reportsDirectory: '../../coverage/apps/app', provider: 'v8' },
     cache: {
-      dir: '../node_modules/.vitest',
+      dir: '../../node_modules/.vitest',
     },
   },
 });

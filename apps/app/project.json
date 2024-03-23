@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "app/src",
@@ -49,7 +49,7 @@
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["{app,projects}/**/*.{scss,css}"]
+        "lintFilePatterns": ["appps/app/src/**/*.{scss,css}"]
       }
     },
     "stylelint:fix": {
@@ -57,7 +57,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": ["{app,projects}/**/*.{scss,css}"]
+        "lintFilePatterns": ["appps/app/src/**/*.{scss,css}"]
       }
     }
   }

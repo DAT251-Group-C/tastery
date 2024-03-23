@@ -1,28 +1,11 @@
 {
   "name": "widget",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "prefix": "widget",
   "sourceRoot": "widget/src",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/widget"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development",
-          "host": true
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
-    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/widget"],
@@ -44,7 +27,7 @@
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["{widget,projects}/**/*.{scss,css}"]
+        "lintFilePatterns": ["libs/widget/src/**/*.{scss,css}"]
       }
     },
     "stylelint:fix": {
@@ -52,7 +35,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": ["{widget,projects}/**/*.{scss,css}"]
+        "lintFilePatterns": ["libs/widget/src/**/*.{scss,css}"]
       }
     }
   }

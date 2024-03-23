@@ -1,7 +1,7 @@
 import { initialize } from '../src/socket';
 import { createApp } from 'vue';
 import Widget from '../src/Widget.vue';
-import { AgientFunctions, AgientInstance } from '../src/socket/types';
+import type { AgientFunctions, AgientInstance } from '../src/socket/types';
 
 export const AGIENT_INSTANCE_TOKEN = Symbol('AGIENT_INSTANCE_TOKEN');
 

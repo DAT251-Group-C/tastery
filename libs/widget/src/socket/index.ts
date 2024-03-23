@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { createInstance } from './instance';
 import { createProvider } from './provider';
-import { AgientFunctions, AgientInstance, AgientProvider } from './types';
+import type { AgientFunctions, AgientInstance, AgientProvider } from './types';
 
 const initialize = <TFunction extends AgientFunctions>(
   apiKey: string,

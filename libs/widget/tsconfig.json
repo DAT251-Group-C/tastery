@@ -7,8 +7,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "paths": {
-      "@/*": ["app/src/*"],
-      "@agient/widget": ["widget/public-api/index.ts"]
+      "@/*": ["apps/app/src/*"]
     }
   },
   "files": [],
@@ -21,5 +20,5 @@
       "path": "./tsconfig.eslint.json"
     }
   ],
-  "extends": "../tsconfig.base.json"
+  "extends": "../../tsconfig.base.json"
 }
