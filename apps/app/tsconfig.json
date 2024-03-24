@@ -7,7 +7,8 @@
     "isolatedModules": true,
     "paths": {
       "@/*": ["apps/app/src/*"],
-      "@agient/widget": ["apps/widget/public-api.ts"]
+      "@agient/widget": ["apps/widget/dist"],
+      "@agient/widget/*": ["apps/widget/dist/*"]
     }
   },
   "files": [],

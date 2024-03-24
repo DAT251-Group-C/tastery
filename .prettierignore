@@ -6,4 +6,4 @@ pnpm-lock.yaml
 .nx
 
 /.nx/cache
-apps/widget/resources/tailwind.css
+apps/widget/resources/styles.css

@@ -30,7 +30,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm tailwindcss -i ./tailwind.css -o ./resources/tailwind.css",
+        "command": "pnpm tailwindcss -i ./src/styles.scss -o ./resources/styles.css",
         "cwd": "apps/widget"
       }
     },
