@@ -4,12 +4,12 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import 'es6-shim';
 import 'reflect-metadata';
+import type { ViteHotContext } from 'vite/types/hot';
 import { AppModule } from './app/app.module';
 import appConfig from './common/config/app-conf';
 import { AllExceptionsFilter } from './common/filters/all-exception.filter';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const module: any;
+declare const module: { hot?: ViteHotContext };
 
 async function bootstrap() {
   const nestApp = await NestFactory.create(AppModule);

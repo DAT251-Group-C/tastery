@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const baseConfig = {
-  content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{vue,js,ts,scss,css}'],
   theme: {
     extend: {
       opacity: {

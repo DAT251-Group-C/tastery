@@ -1,0 +1,16 @@
+{
+  "name": "@agient/widget",
+  "version": "0.0.1",
+  "files": [
+    "core",
+    "ui"
+  ],
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
+}

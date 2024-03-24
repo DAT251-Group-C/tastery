@@ -1,5 +1,5 @@
 <template>
-  <div class="widget bg-primary">
+  <div class="widget bg-neutral-dark">
     <div class="inner w-full">
       <p style="margin-top: -0.5rem; margin-bottom: 0">Agient</p>
       <p v-for="msg of messages" :key="msg.id" :class="[msg.isUser ? 'right' : 'left', 'message']">{{ msg.text }}</p>
@@ -11,16 +11,15 @@
       <input v-model="chat" placeholder="Write a response" />
       <button :disabled="disabled" @click="submit()">Send</button>
     </div>
+    <img id="test" />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { ChatCompletionMessageToolCall } from 'openai/resources';
 import { v4 } from 'uuid';
-import { inject, onMounted, ref } from 'vue';
-import { AGIENT_INSTANCE_TOKEN } from '../public-api';
-import type { AgientProvider } from './socket/types';
-import './main.scss';
+import { onMounted, ref } from 'vue';
+import type { AgientProvider } from '../core/types';
 
 interface Message {
   id: string;
@@ -33,7 +32,9 @@ const chat = ref<string>('can you increment my counter by 2, then multiply it by
 const writing = ref<boolean>(false);
 const disabled = ref<boolean>(true);
 const messages = ref<Message[]>([]);
-const instance = inject<AgientProvider>(AGIENT_INSTANCE_TOKEN)!;
+const { provider } = defineProps<{
+  provider: AgientProvider;
+}>();
 
 onMounted(() => {
   setTimeout(() => {
@@ -43,7 +44,7 @@ onMounted(() => {
   }, 200);
 });
 
-instance.on('response', (value: string) => {
+provider.on('response', (value: string) => {
   messages.value.push({
     id: v4(),
     text: value,
@@ -54,7 +55,7 @@ instance.on('response', (value: string) => {
   disabled.value = false;
 });
 
-instance.on('before_tool_call', (call: ChatCompletionMessageToolCall) => {
+provider.on('before_tool_call', (call: ChatCompletionMessageToolCall) => {
   const data = JSON.parse(call.function.arguments);
   if (data.__context_message && typeof data.__context_message === 'string') {
     context.value = data.__context_message;
@@ -68,7 +69,7 @@ const submit = () => {
     isUser: true,
   });
   disabled.value = true;
-  instance.chat(chat.value);
+  provider.chat(chat.value);
   chat.value = '';
 
   const messagesLength = messages.value.length;
@@ -81,8 +82,6 @@ const submit = () => {
 </script>
 
 <style scoped lang="scss">
-@tailwind base;
-
 .widget {
   border-radius: 4px;
   border: 1px solid grey;
@@ -152,3 +151,4 @@ const submit = () => {
   align-self: start;
 }
 </style>
+./socket/test./core/types.../types../core

@@ -1,9 +1,14 @@
 import { useCounterStore } from '@/stores/counter';
 import { createAgient } from '@agient/widget';
 
+type Functions = {
+  increase: (data: { by: number }) => Promise<string>;
+  multiply: (data: { by: number }) => Promise<string>;
+};
+
 const useAgient = () => {
   const counterStore = useCounterStore();
-  const agient = createAgient('api-key-1');
+  const agient = createAgient<Functions>('api-key-1');
 
   agient.on('increase', async (data: { by: number }) => {
     if (Number.isNaN(Number(data.by))) {

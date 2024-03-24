@@ -1,8 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "strict": true,
+    "baseUrl": ".",
     "rootDir": ".",
+    "strict": true,
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -20,11 +21,7 @@
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@agient/widget": ["widget/public-api/index.ts"]
-    }
+    "forceConsistentCasingInFileNames": true
   },
   "files": [],
   "exclude": ["node_modules", "tmp"]

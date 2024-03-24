@@ -4,10 +4,10 @@
     "jsxImportSource": "vue",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "paths": {
-      "@/*": ["apps/app/src/*"]
+      "@resources/*": ["libs/widget/resources/*"],
+      "@/*": ["libs/widget/src/*"]
     }
   },
   "files": [],

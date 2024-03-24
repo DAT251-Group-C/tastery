@@ -1,8 +1,9 @@
 # Add files here to ignore them from prettier formatting
-/dist
+dist
 /coverage
 .cache
 pnpm-lock.yaml
 .nx
 
 /.nx/cache
+libs/widget/resources/tailwind.css

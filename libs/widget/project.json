@@ -1,11 +1,39 @@
 {
   "name": "widget",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "library",
+  "projectType": "application",
   "prefix": "widget",
   "sourceRoot": "widget/src",
   "tags": [],
   "targets": {
+    "build-widget": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "libs/widget/dist",
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx tailwind widget", "nx build-widget widget"],
+        "parallel": false
+      }
+    },
+    "tailwind": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm tailwindcss -i ./tailwind.css -o ./resources/tailwind.css",
+        "cwd": "libs/widget"
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/e2e/widget"],

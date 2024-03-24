@@ -1,12 +1,11 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-  // TODO: How do we log errors!!!!
-  catch(exception: unknown, host: ArgumentsHost): void {
+  public catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     let httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     let responseBody;
@@ -74,18 +73,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
 
   private getExceptionMessage(exception: string | object): string | string[] {
-    // the function takes an argument called "exception", which can be either a string or an object.
     switch (typeof exception) {
-      // check the type of the "exception" argument.
       case 'object': {
-        // if it's an object, check if it has a "message" property that is a string and has multiple lines.
         const message = Object.hasOwn(exception, 'message') ? (exception as { message: unknown })['message'] : null;
-        return message && typeof message === 'string' && message.split('\n').length > 1
-          ? message.split('\n')[0] // if it does, return the first line of the message
-          : String(message); // if it doesn't, return the entire message
+        return message && typeof message === 'string' && message.split('\n').length > 1 ? message.split('\n')[0] : String(message);
       }
       default:
-        // if it's not an object, just return the exception as is (assuming it's a string)
         return exception;
     }
   }

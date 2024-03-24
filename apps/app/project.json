@@ -10,9 +10,6 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/app"
-      },
       "configurations": {
         "development": {
           "mode": "development",
@@ -49,7 +46,8 @@
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["appps/app/src/**/*.{scss,css}"]
+        "lintFilePatterns": ["apps/app/src/**/*.{scss,css,vue}"],
+        "configFile": ".stylelintrc.js"
       }
     },
     "stylelint:fix": {
@@ -57,7 +55,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": ["appps/app/src/**/*.{scss,css}"]
+        "lintFilePatterns": ["apps/app/src/**/*.{scss,css,vue}"],
+        "configFile": ".stylelintrc.js"
       }
     }
   }
