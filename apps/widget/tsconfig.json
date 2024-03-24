@@ -4,7 +4,6 @@
     "jsxImportSource": "vue",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "verbatimModuleSyntax": false,
     "paths": {
       "@resources/*": ["apps/widget/resources/*"],
       "@/*": ["apps/widget/src/*"]

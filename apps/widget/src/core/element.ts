@@ -1,6 +1,6 @@
 import { defineCustomElement } from 'vue';
-import WidgetVue from '../ui/Widget.vue';
-import { AgientProvider } from './types';
+import WidgetVue from '@/ui/Widget.vue';
+import type { AgientProvider } from './types';
 import tailwindStyles from '@resources/tailwind.css?inline&asset';
 
 const mountWidget = (provider: AgientProvider) => {

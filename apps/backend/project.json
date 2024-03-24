@@ -25,7 +25,9 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "backend:build"
+        "buildTarget": "backend:build",
+        "port": 3000,
+        "inspect": false
       },
       "configurations": {
         "development": {

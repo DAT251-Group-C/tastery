@@ -5,7 +5,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["apps/app/src/*"],
       "@agient/widget": ["apps/widget/public-api.ts"]

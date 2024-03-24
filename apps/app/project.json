@@ -18,6 +18,9 @@
         "production": {
           "mode": "production"
         }
+      },
+      "options": {
+        "outputPath": "dist/app"
       }
     },
     "serve": {

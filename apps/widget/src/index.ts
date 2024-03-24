@@ -1,4 +1,5 @@
-import { AgientFunctions, AgientInstance, initialize } from './core';
+import type { AgientFunctions, AgientInstance } from './core';
+import { initialize } from './core';
 import { mountWidget } from './core/element';
 
 const createAgient = <TFunctions extends AgientFunctions>(apiKey: string, options?: unknown): AgientInstance<TFunctions> => {

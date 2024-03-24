@@ -1,6 +1,6 @@
-import { ChatCompletionMessageToolCall, ChatCompletionToolMessageParam } from 'openai/resources';
+import type { ChatCompletionMessageToolCall, ChatCompletionToolMessageParam } from 'openai/resources';
 import { Socket } from 'socket.io-client';
-import { AgientFunctions, AgientProvider, TODO } from './types';
+import type { AgientFunctions, AgientProvider, TODO } from './types';
 
 const registeredListeners = new Map<string, (...args: TODO[]) => TODO>();
 const registeredInstanceListeners = new Map<string, AgientFunctions[number]>();

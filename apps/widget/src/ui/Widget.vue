@@ -19,7 +19,7 @@
 import type { ChatCompletionMessageToolCall } from 'openai/resources';
 import { v4 } from 'uuid';
 import { onMounted, ref } from 'vue';
-import type { AgientProvider } from '../core/types';
+import type { AgientProvider } from '@/core/types';
 
 interface Message {
   id: string;

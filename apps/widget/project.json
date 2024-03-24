@@ -23,11 +23,11 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx tailwind widget", "nx build-widget widget"],
+        "commands": ["nx serve widget", "nx build-widget widget"],
         "parallel": false
       }
     },
-    "tailwind": {
+    "serve": {
       "executor": "nx:run-commands",
       "options": {
         "command": "pnpm tailwindcss -i ./tailwind.css -o ./resources/tailwind.css",
