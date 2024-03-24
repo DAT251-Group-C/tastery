@@ -1,7 +1,7 @@
 import { defineCustomElement } from 'vue';
-import WidgetVue from '@/ui/Widget.vue';
+import WidgetVue from '../ui/Widget.vue';
 import type { AgientProvider } from './types';
-import tailwindStyles from '@resources/tailwind.css?inline&asset';
+import tailwindStyles from '../../resources/tailwind.css?inline&asset';
 
 const mountWidget = (provider: AgientProvider) => {
   const customElement = defineCustomElement(WidgetVue);
@@ -13,6 +13,7 @@ const mountWidget = (provider: AgientProvider) => {
   instance.style.bottom = '0';
   instance.style.right = '0';
   instance.style.zIndex = '9999';
+  instance.style.margin = '32px';
 
   const style = document.createElement('style');
   style.textContent = tailwindStyles;

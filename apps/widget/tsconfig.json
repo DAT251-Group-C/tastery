@@ -3,11 +3,7 @@
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "paths": {
-      "@resources/*": ["apps/widget/resources/*"],
-      "@/*": ["apps/widget/src/*"]
-    }
+    "esModuleInterop": true
   },
   "files": [],
   "include": [],

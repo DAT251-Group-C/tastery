@@ -2,18 +2,11 @@
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   base: '/',
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@resources': path.resolve(__dirname, './resources'),
-    },
-  },
   plugins: [
     vue(),
     tsconfigPaths(),
@@ -22,7 +15,6 @@ export default defineConfig({
       copyDtsFiles: true,
       tsconfigPath: path.join(__dirname, 'tsconfig.json'),
     }),
-    cssInjectedByJsPlugin(),
   ],
   test: {
     globals: true,
@@ -40,7 +32,6 @@ export default defineConfig({
     sourcemap: false,
     manifest: false,
     emptyOutDir: true,
-    cssCodeSplit: false,
     reportCompressedSize: true,
     lib: {
       entry: 'public-api.ts',

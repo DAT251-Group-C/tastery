@@ -1,17 +1,16 @@
 <template>
-  <div class="widget bg-neutral-dark">
-    <div class="inner w-full">
-      <p style="margin-top: -0.5rem; margin-bottom: 0">Agient</p>
-      <p v-for="msg of messages" :key="msg.id" :class="[msg.isUser ? 'right' : 'left', 'message']">{{ msg.text }}</p>
+  <div class="flex flex-col ring ring-primary bg-neutral-background w-64 h-96 rounded-sm">
+    <div class="p-6 pb-0 overflow-y-auto flex flex-col gap-2">
+      <p class="-mt-2">Agient</p>
+      <p v-for="msg of messages" :key="msg.id" :class="[msg.isUser ? 'right' : 'left', 'px-2 py-1 rounded-xs']">{{ msg.text }}</p>
       <p v-if="context" class="context">{{ context }}...</p>
     </div>
 
-    <div class="input">
-      <p v-if="writing" class="writing">Agient is writing...</p>
+    <div class="relative mt-auto flex p-6">
+      <p v-if="writing" class="absolute -top-1">Agient is writing...</p>
       <input v-model="chat" placeholder="Write a response" />
       <button :disabled="disabled" @click="submit()">Send</button>
     </div>
-    <img id="test" />
   </div>
 </template>
 
@@ -19,7 +18,7 @@
 import type { ChatCompletionMessageToolCall } from 'openai/resources';
 import { v4 } from 'uuid';
 import { onMounted, ref } from 'vue';
-import type { AgientProvider } from '@/core/types';
+import type { AgientProvider } from '../core/types';
 
 interface Message {
   id: string;
@@ -80,75 +79,3 @@ const submit = () => {
   }, 200);
 };
 </script>
-
-<style scoped lang="scss">
-.widget {
-  border-radius: 4px;
-  border: 1px solid grey;
-  width: 300px;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-}
-
-.inner {
-  padding: 1.5rem 1.5rem 0;
-  overflow-y: auto;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  .message {
-    margin: 0;
-    padding: 0.25rem 0.5rem;
-    max-width: calc(100% - 3rem);
-    border-radius: 4px;
-
-    &.left {
-      background-color: lightgrey;
-    }
-
-    &.right {
-      background-color: lightblue;
-      align-self: flex-end;
-    }
-  }
-
-  .left + .right {
-    margin-top: 0.5rem;
-  }
-
-  .right + .left {
-    margin-top: 0.5rem;
-  }
-}
-
-.input {
-  position: relative;
-  margin-top: auto;
-  display: flex;
-  padding: 26px 1.5rem 1.5rem;
-
-  input {
-    width: 100%;
-    padding: 0.5rem;
-  }
-
-  .writing {
-    position: absolute;
-    font-size: 12px;
-    top: 4px;
-    margin: 0;
-    left: 1.5rem;
-  }
-}
-
-.context {
-  background-color: lightgreen;
-  font-size: 12px;
-  padding: 0.25rem;
-  align-self: start;
-}
-</style>
-./socket/test./core/types.../types../core
