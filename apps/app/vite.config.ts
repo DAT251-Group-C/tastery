@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@agient/widget': path.resolve(__dirname, '../../libs/widget/public-api.ts'),
+      '@agient/widget': path.resolve(__dirname, '../widget/public-api.ts'),
     },
   },
   publicDir: path.resolve(__dirname, './public'),

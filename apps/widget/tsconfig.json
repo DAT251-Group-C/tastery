@@ -6,8 +6,8 @@
     "esModuleInterop": true,
     "verbatimModuleSyntax": false,
     "paths": {
-      "@resources/*": ["libs/widget/resources/*"],
-      "@/*": ["libs/widget/src/*"]
+      "@resources/*": ["apps/widget/resources/*"],
+      "@/*": ["apps/widget/src/*"]
     }
   },
   "files": [],

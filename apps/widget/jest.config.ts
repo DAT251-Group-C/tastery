@@ -3,7 +3,7 @@ module.exports = {
   preset: 'jest.preset.js',
   globals: {
     'vue-jest': {
-      tsConfig: 'libs/widget/tsconfig.spec.json',
+      tsConfig: 'apps/widget/tsconfig.spec.json',
     },
   },
   transform: {
@@ -13,7 +13,7 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
   },
-  setupFilesAfterEnv: ['libs/widget/unit.setup.ts'],
+  setupFilesAfterEnv: ['apps/widget/unit.setup.ts'],
   testEnvironment: 'jsdom',
   moduleFileExtensions: ['ts', 'js', 'vue'],
   testTimeout: 10000,

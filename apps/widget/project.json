@@ -11,7 +11,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "libs/widget/dist",
+        "outputPath": "apps/widget/dist",
         "generatePackageJson": true
       },
       "configurations": {
@@ -31,7 +31,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "pnpm tailwindcss -i ./tailwind.css -o ./resources/tailwind.css",
-        "cwd": "libs/widget"
+        "cwd": "apps/widget"
       }
     },
     "test": {
@@ -55,7 +55,7 @@
       "executor": "nx-stylelint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/widget/src/**/*.{scss,css,vue}"],
+        "lintFilePatterns": ["apps/widget/src/**/*.{scss,css,vue}"],
         "configFile": ".stylelintrc.js"
       }
     },
@@ -64,7 +64,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": ["libs/widget/src/**/*.{scss,css,vue}"],
+        "lintFilePatterns": ["apps/widget/src/**/*.{scss,css,vue}"],
         "configFile": ".stylelintrc.js"
       }
     }

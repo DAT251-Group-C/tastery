@@ -8,7 +8,7 @@
     "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["apps/app/src/*"],
-      "@agient/widget": ["libs/widget/public-api.ts"]
+      "@agient/widget": ["apps/widget/public-api.ts"]
     }
   },
   "files": [],
