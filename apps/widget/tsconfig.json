@@ -2,7 +2,6 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "moduleResolution": "node",
     "esModuleInterop": true
   },
   "files": [],

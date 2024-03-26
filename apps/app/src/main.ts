@@ -1,11 +1,12 @@
+import { VueQueryPlugin } from '@tanstack/vue-query';
+import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from './App.vue';
 import './index.scss';
+import prime from './plugins/prime';
 import router from './plugins/router';
-import { useAgient } from './plugins/agient';
-import { createPinia } from 'pinia';
 
 const pinia = createPinia();
 
-createApp(App).use(pinia).use(router).mount('#app');
-useAgient();
+createApp(App).use(pinia).use(VueQueryPlugin).use(prime).use(router).mount('#app');
+// useAgient();

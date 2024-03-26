@@ -6,10 +6,14 @@ import appConfig from '../common/config/app-conf';
 import entities from '../models';
 import { GatewayModule } from './gateway/gateway.module';
 import { HealthModule } from './health/health.module';
+import { UserModule } from './user/user.module';
+import { OrganizationModule } from './organization/organization.module';
 
 @Module({
   imports: [
     HealthModule,
+    UserModule,
+    OrganizationModule,
     GatewayModule,
     ConfigModule.forRoot({
       load: [appConfig],

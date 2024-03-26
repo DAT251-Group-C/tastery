@@ -1,3 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-neutral-100: 238 251 255;
+    --color-neutral-200: 224 247 255;
+    --color-neutral-300: 214 222 222;
+    --color-neutral-400: 161 161 170;
+    --color-neutral-500: 113 122 119;
+    --color-neutral-600: 49 67 61;
+    --color-neutral-700: 52 58 56;
+    --color-neutral-800: 34 39 38;
+    --color-neutral-900: 23 31 28;
+    --color-primary-light: 40 200 104;
+    --color-primary: 28 156 79;
+    --color-primary-dark: 16 107 52;
+    --color-primary-darker: 10 56 29;
+    --color-secondary-light: 183 218 251;
+    --color-secondary: 4 39 72;
+    --color-accent: 201 213 21;
+    --color-error: 152 31 37;
+    --color-error-dark: 52 22 21;
+    --color-success: 40 200 104;
+    --color-success-dark: 16 107 52;
+    --color-warning: 201 213 21;
+    --color-warning-dark: 93 98 16;
+    --color-info: 0 126 167;
+    --color-info-dark: 0 52 89;
+  }
+
+  .view {
+    @apply w-full px-5 space-y-6 mx-auto my-16 max-w-7xl;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;

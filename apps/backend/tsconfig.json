@@ -12,6 +12,7 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "strictPropertyInitialization": false
   }
 }

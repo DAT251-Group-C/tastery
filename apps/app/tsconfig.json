@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "isolatedModules": true,
+    "verbatimModuleSyntax": false,
     "paths": {
       "@/*": ["apps/app/src/*"],
       "@agient/widget": ["apps/widget/dist"],

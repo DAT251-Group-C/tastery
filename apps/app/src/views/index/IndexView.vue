@@ -2,12 +2,16 @@
   <div class="container">
     <h2>Counter</h2>
     <h1 style="font-size: 128px">{{ count }}</h1>
+    <RouterLink to="/signup">
+      <Button>Sign up</Button>
+    </RouterLink>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter';
 import { storeToRefs } from 'pinia';
+import Button from 'primevue/button';
 
 const counterStore = useCounterStore();
 const { count } = storeToRefs(counterStore);
