@@ -93,7 +93,7 @@ export class OrganizationController {
     );
   }
 
-  @Put()
+  @Put(':organizationId')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiParam({ name: 'organizationId', format: 'uuid' })
@@ -118,7 +118,7 @@ export class OrganizationController {
     );
   }
 
-  @Delete()
+  @Delete(':organizationId')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiParam({ name: 'organizationId', format: 'uuid' })

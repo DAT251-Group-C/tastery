@@ -9,6 +9,7 @@ import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 import { OrganizationModule } from './organization/organization.module';
 import { ProjectModule } from './project/project.module';
+import { InviteModule } from './invite/invite.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProjectModule } from './project/project.module';
     UserModule,
     OrganizationModule,
     ProjectModule,
+    InviteModule,
     GatewayModule,
     ConfigModule.forRoot({
       load: [appConfig],

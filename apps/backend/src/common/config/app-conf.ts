@@ -20,6 +20,14 @@ const appConfig = registerAs('appConfig', () => ({
     password: process.env.NX_POSTGRES_PASSWORD,
     database: process.env.NX_POSTGRES_DATABASE,
   },
+  encryption: {
+    hashIterations: process.env.NX_ENCRYPTION_HASH_ITERATIONS,
+    hashKeyLength: process.env.NX_ENCRYPTION_HASH_KEY_LENGTH,
+    hashDigest: process.env.NX_ENCRYPTION_HASH_DIGEST,
+    authEncryptedKey: process.env.NX_ENCRYPTION_AUTH_ENCRYPTED_KEY,
+    ivKey: process.env.NX_ENCRYPTION_IV_KEY,
+    salt: process.env.NX_ENCRYPTION_SALT,
+  },
 }));
 
 export default appConfig;

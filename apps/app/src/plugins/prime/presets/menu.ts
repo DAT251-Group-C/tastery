@@ -104,16 +104,16 @@ const Menu: MenuPassThroughOptions = {
       'text-neutral-500',
     ],
   },
-  separator: {
+  separator: ({ attrs }) => ({
     class: [
       // Spacing
-      'mt-2 mb-1',
+      { 'mt-2 mb-1': attrs.fillHeight, 'my-2': !attrs.fillHeight },
       'h-px',
 
       // Colors
       'bg-neutral-700',
     ],
-  },
+  }),
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',
     enterActiveClass: 'transition-[transform,opacity] ease-[cubic-bezier(0,0,0.2,1)]',

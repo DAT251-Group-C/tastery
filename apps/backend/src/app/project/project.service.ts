@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Observable, catchError, from, map, switchMap, tap } from 'rxjs';
+import { Observable, catchError, from, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { ProjectEntity } from '../../models';
@@ -34,17 +34,35 @@ export class ProjectService {
   }
 
   public getProjectsInOrganization(organizationId: string, userId: string): Observable<ProjectEntity[]> {
-    return this.organizationService
-      .userHasAccessToOrganization(organizationId, userId)
-      .pipe(switchMap(({ id }) => this.projectRepository.findBy({ organizationId: id })));
+    return from(
+      this.projectRepository
+        .createQueryBuilder('project')
+        .innerJoin('project.organization', 'organization')
+        .innerJoin('organization.memberships', 'membership')
+        .where('membership.userId = :userId', { userId })
+        .andWhere('organization.id = :organizationId', { organizationId })
+        .getMany(),
+    );
   }
 
   public getProjectById(projectId: string, userId: string): Observable<ProjectEntity> {
-    return this.userHasAccessToProject(projectId, userId);
+    return from(
+      this.projectRepository
+        .createQueryBuilder('project')
+        .innerJoin('project.organization', 'organization')
+        .innerJoin('organization.memberships', 'membership')
+        .where('membership.userId = :userId', { userId })
+        .andWhere('project.id = :projectId', { projectId })
+        .getOneOrFail(),
+    ).pipe(
+      catchError(() => {
+        throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
+      }),
+    );
   }
 
   public updateProject(projectId: string, userId: string, body: UpdateProjectDto): Observable<UpdateResult> {
-    return this.userHasAccessToProject(projectId, userId).pipe(
+    return this.getProjectById(projectId, userId).pipe(
       switchMap(({ id }) => this.projectRepository.update({ id }, body)),
       tap((result: UpdateResult) => {
         if (result.affected === 0) {
@@ -55,28 +73,12 @@ export class ProjectService {
   }
 
   public deleteProject(projectId: string, userId: string): Observable<DeleteResult> {
-    return this.userHasAccessToProject(projectId, userId).pipe(
+    return this.getProjectById(projectId, userId).pipe(
       switchMap(({ id }) => this.projectRepository.delete({ id })),
       tap((result: DeleteResult) => {
         if (result.affected === 0) {
           throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
         }
-      }),
-    );
-  }
-
-  public userHasAccessToProject(projectId: string, userId: string): Observable<ProjectEntity> {
-    return from(this.projectRepository.findOneBy({ id: projectId })).pipe(
-      map(project => {
-        if (!project) {
-          throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
-        }
-
-        return project;
-      }),
-      tap(({ organizationId }) => this.organizationService.userHasAccessToOrganization(organizationId, userId)),
-      catchError(() => {
-        throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
       }),
     );
   }

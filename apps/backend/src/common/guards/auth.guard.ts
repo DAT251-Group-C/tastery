@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<IRequest>();
-    console.log(this.config);
     const { secret } = this.config.jwt;
 
     if (!secret) {

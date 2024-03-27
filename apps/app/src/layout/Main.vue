@@ -124,7 +124,7 @@ import { ApiOrganizationEntity, ApiProjectEntity } from '@/services/api/data-con
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Menu, { MenuState } from 'primevue/menu';
-import { MenuItem } from 'primevue/menuitem';
+import type { MenuItem } from 'primevue/menuitem';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
