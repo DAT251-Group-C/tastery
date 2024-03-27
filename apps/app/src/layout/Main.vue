@@ -64,6 +64,7 @@
             severity="contrast"
             :label="organizationsLabel"
             aria-haspopup="true"
+            truncate="true"
             aria-controls="overlay_menu"
             @click="!organizationsLoading && organizationMenu?.toggle($event)"
           >
@@ -76,6 +77,7 @@
             v-if="organizationId"
             size="small"
             severity="contrast"
+            truncate="true"
             :label="projectsLabel"
             aria-haspopup="true"
             aria-controls="overlay_menu"

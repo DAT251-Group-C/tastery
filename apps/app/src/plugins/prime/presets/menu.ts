@@ -101,8 +101,7 @@ const Menu: MenuPassThroughOptions = {
       'rounded-tr-none',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-600 dark:text-surface-0/60',
+      'text-neutral-500',
     ],
   },
   separator: {

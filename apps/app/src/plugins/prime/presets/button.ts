@@ -84,7 +84,7 @@ const Button: ButtonPassThroughOptions = {
 
       // Info Button
       {
-        'text-white': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-900': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
         'bg-info': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
         'ring-1 ring-neutral-100/50': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
       },
@@ -117,15 +117,15 @@ const Button: ButtonPassThroughOptions = {
         'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'contrast' && !props.plain,
       },
 
-      // Danger Button
+      // Error Button
       {
-        'text-white': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-900': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
         'bg-error': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
         'ring-1 ring-error-dark': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
       },
-      // Danger Text Button
+      // Error Text Button
       { 'text-error hover:bg-error/25': props.text && props.severity === 'danger' && !props.plain },
-      // Danger Outlined Button
+      // Error Outlined Button
       { 'text-error ring-1 ring-error hover:bg-error/25': props.outlined && props.severity === 'danger' && !props.plain },
 
       // --- Severity Button States ---
@@ -189,7 +189,7 @@ const Button: ButtonPassThroughOptions = {
         'hover:bg-neutral-700/25 focus:bg-neutral-700/25': (props.text || props.outlined) && props.severity === 'contrast' && !props.plain,
       },
 
-      // Danger
+      // Error
       {
         'hover:bg-error/75 hover:ring-error': !props.link && props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
       },
@@ -206,12 +206,13 @@ const Button: ButtonPassThroughOptions = {
       'cursor-pointer overflow-hidden select-none',
     ],
   }),
-  label: ({ props }) => ({
+  label: ({ props, instance }) => ({
     class: [
       {
         underline: props.link,
       },
       { 'flex-1': props.label !== null, 'invisible w-0': props.label == null },
+      { 'line-clamp-1 break-all': instance.$attrs.truncate },
     ],
   }),
   icon: ({ props }) => ({

@@ -71,7 +71,7 @@ const baseConfig = {
       h2: [
         '1.5rem',
         {
-          fontWeight: '700',
+          fontWeight: '500',
           lineHeight: '1.5',
           letterSpacing: '0.006rem',
         },
@@ -79,7 +79,7 @@ const baseConfig = {
       h3: [
         '1.5rem',
         {
-          fontWeight: '600',
+          fontWeight: '500',
           lineHeight: '1.2',
           letterSpacing: '0.006rem',
         },
@@ -87,7 +87,7 @@ const baseConfig = {
       'body-large-bold': [
         '1.25rem',
         {
-          fontWeight: '600',
+          fontWeight: '500',
           lineHeight: '1.4',
           letterSpacing: '0.005rem',
         },
