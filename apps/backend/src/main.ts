@@ -8,6 +8,7 @@ import type { ViteHotContext } from 'vite/types/hot';
 import { AppModule } from './app/app.module';
 import appConfig from './common/config/app-conf';
 import { AllExceptionsFilter } from './common/filters/all-exception.filter';
+import entities from './models';
 
 declare const module: { hot?: ViteHotContext };
 
@@ -50,7 +51,7 @@ async function bootstrap() {
     .addTag('AGIent')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(nestApp, swaggerDocConfig);
+  const document = SwaggerModule.createDocument(nestApp, swaggerDocConfig, { extraModels: entities });
   SwaggerModule.setup('docs', nestApp, document);
 
   nestApp.enableCors();

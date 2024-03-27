@@ -50,6 +50,11 @@ const router = createRouter({
           name: 'Projects',
           component: () => import('@/views/platform/projects/Projects.vue'),
         },
+        {
+          path: 'projects/new',
+          name: 'Create project',
+          component: () => import('@/views/platform/projects/NewProject.vue'),
+        },
       ],
       meta: {
         authRequired: true,

@@ -58,8 +58,8 @@ export class OrganizationService {
   }
 
   public updateOrganization(organizationId: string, userId: string, body: UpdateOrganizationDto): Observable<UpdateResult> {
-    return this.getOrganizationById(organizationId, userId).pipe(
-      switchMap(() => this.organizationRepository.update({ id: organizationId }, body)),
+    return this.userHasAccessToOrganization(organizationId, userId).pipe(
+      switchMap(({ id }) => this.organizationRepository.update({ id }, body)),
       tap((result: UpdateResult) => {
         if (result.affected === 0) {
           throw new ResourceNotFoundException(`Organization with id ${organizationId} not found`);
@@ -69,12 +69,31 @@ export class OrganizationService {
   }
 
   public deleteOrganization(organizationId: string, userId: string): Observable<DeleteResult> {
-    return this.getOrganizationById(organizationId, userId).pipe(
-      switchMap(() => this.organizationRepository.delete({ id: organizationId })),
+    return this.userHasAccessToOrganization(organizationId, userId).pipe(
+      switchMap(({ id }) => this.organizationRepository.delete({ id })),
       tap((result: DeleteResult) => {
         if (result.affected === 0) {
           throw new ResourceNotFoundException(`Organization with id ${organizationId} not found`);
         }
+      }),
+    );
+  }
+
+  public userHasAccessToOrganization(organizationId: string, userId: string): Observable<OrganizationEntity> {
+    return from(
+      this.organizationRepository
+        .createQueryBuilder('organization')
+        .innerJoin('organization.memberships', 'membership')
+        .where('membership.userId = :userId', { userId })
+        .where('organization.id = :id', { id: organizationId })
+        .getOne(),
+    ).pipe(
+      map(organization => {
+        if (!organization) {
+          throw new ResourceNotFoundException(`Organization with id ${organizationId} not found`);
+        }
+
+        return organization;
       }),
     );
   }

@@ -8,12 +8,14 @@ import { GatewayModule } from './gateway/gateway.module';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 import { OrganizationModule } from './organization/organization.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
     HealthModule,
     UserModule,
     OrganizationModule,
+    ProjectModule,
     GatewayModule,
     ConfigModule.forRoot({
       load: [appConfig],

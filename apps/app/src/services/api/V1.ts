@@ -11,7 +11,9 @@
 
 import {
   ApiCreateOrganizationDto,
+  ApiCreateProjectDto,
   ApiOrganizationEntity,
+  ApiProjectEntity,
   ApiUpdateOrganizationDto,
   ApiUpdateUserDto,
   ApiUserEntity,
@@ -182,6 +184,47 @@ export class V1<SecurityDataType = unknown> {
       path: `/v1/organizations/${organizationId}`,
       method: 'GET',
       secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Projects
+   * @name ProjectControllerGetProjects
+   * @request GET:/v1/projects
+   * @secure
+   */
+  projectControllerGetProjects = (params: RequestParams = {}) =>
+    this.http.request<ApiProjectEntity[], any>({
+      path: `/v1/projects`,
+      method: 'GET',
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Projects
+   * @name ProjectControllerCreateProject
+   * @request POST:/v1/projects
+   * @secure
+   */
+  projectControllerCreateProject = (
+    query: {
+      organizationId: string;
+    },
+    data: ApiCreateProjectDto,
+    params: RequestParams = {},
+  ) =>
+    this.http.request<ApiProjectEntity, any>({
+      path: `/v1/projects`,
+      method: 'POST',
+      query: query,
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });

@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useOrganizations } from '../../../plugins/tanstack/organization';
+import { useOrganizations } from '@/composables/organization';
 import Button from 'primevue/button';
 
 const { data, isLoading, isError } = useOrganizations();

@@ -11,7 +11,7 @@
             <form v-if="mode === 'signin'" class="flex flex-col gap-y-4" @submit.prevent="signin">
               <InputText v-model="email" required placeholder="Email" />
               <InputText v-model="password" required type="password" placeholder="Password" />
-              <Button class="bg-slate-500 w-full">Sign In</Button>
+              <Button type="submit" class="bg-slate-500 w-full">Sign In</Button>
             </form>
             <form v-if="mode === 'signup'" class="flex flex-col gap-y-4" @submit.prevent="signup">
               <InputText v-model="firstName" required placeholder="First name" />
@@ -48,8 +48,8 @@ const { mode } = withDefaults(defineProps<{ mode: 'signup' | 'signin' }>(), { mo
 
 const firstName = ref('');
 const lastName = ref('');
-const email = ref('');
-const password = ref('');
+const email = ref('eirik.maaseidvaag@gmail.com');
+const password = ref('password123');
 
 const signup = async () => {
   const response = await supabase.auth.signUp({
@@ -71,6 +71,7 @@ const signup = async () => {
 };
 
 const signin = async () => {
+  console.log('hello?');
   const response = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
@@ -79,7 +80,7 @@ const signin = async () => {
   if (response.error) {
     console.error('Error signing in:', response.error.message);
   } else {
-    console.log('User signed in:', response.data.user);
+    console.log('User signed in:', response.data);
   }
 };
 </script>

@@ -37,7 +37,6 @@ export default class CredentialEntity extends EntitySchema {
   @Column('simple-array')
   referrerUrls: string[];
 
-  @ApiProperty()
   @ManyToOne(() => ProjectEntity, project => project.id, {
     onDelete: 'CASCADE',
   })

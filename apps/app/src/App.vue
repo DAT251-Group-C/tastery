@@ -1,6 +1,6 @@
 <template>
   <Suspense>
-    <RouterView v-if="initialized && (isAuthenticated ? !!user : true)"></RouterView>
+    <RouterView v-if="initialized"></RouterView>
     <div v-else class="w-[100vw] h-[100vh] flex items-center justify-center">
       <p>Loading...</p>
     </div>
@@ -10,29 +10,25 @@
 <script setup lang="ts">
 import { supabase } from '@/plugins/supabase';
 import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
+import { useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import { RouterView, useRouter, type RouteLocationRaw } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const userStore = useUserStore();
+const queryClient = useQueryClient();
 
-const { initialized, isAuthenticated } = storeToRefs(authStore);
-const { user } = storeToRefs(userStore);
+const { initialized } = storeToRefs(authStore);
 
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {
     authStore.loadSession();
     authStore.loadRedirectRoute();
-    try {
-      userStore.loadUser();
-    } catch (err) {
-      console.log('Error loading user:', err);
-    }
+    queryClient.invalidateQueries({ queryKey: ['user'] });
   } else if (event === 'SIGNED_OUT') {
     authStore.clearSession();
-    userStore.clearUser();
+    queryClient.invalidateQueries({ queryKey: ['user'] });
+    router.push({ name: 'Index' });
   }
 });
 
@@ -41,10 +37,12 @@ authStore.$onAction(({ name, store, after }) => {
     after(async () => {
       const redirectRoute = store.redirectRoute;
 
+      await router.isReady();
       if (redirectRoute) {
-        await router.isReady();
         await router.replace(redirectRoute as RouteLocationRaw);
         authStore.clearRedirectRoute();
+      } else {
+        await router.replace({ name: 'Dashboard' });
       }
     });
   }

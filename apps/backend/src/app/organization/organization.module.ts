@@ -1,15 +1,15 @@
 import { Module, forwardRef } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import appConfig from '../../common/config/app-conf';
 import { GuardModule } from '../../common/guards/guard.module';
-import { MembershipEntity, OrganizationEntity } from '../../models';
+import { MembershipEntity, OrganizationEntity, ProjectEntity } from '../../models';
 import { OrganizationController } from './organization.controller';
 import { OrganizationService } from './organization.service';
-import { ConfigModule } from '@nestjs/config';
-import appConfig from '../../common/config/app-conf';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([OrganizationEntity, MembershipEntity]),
+    TypeOrmModule.forFeature([OrganizationEntity, ProjectEntity, MembershipEntity]),
     forwardRef(() => GuardModule),
     ConfigModule.forFeature(appConfig),
   ],

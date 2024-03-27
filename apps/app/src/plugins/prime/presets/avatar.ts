@@ -1,6 +1,6 @@
 import { AvatarPassThroughOptions } from 'primevue/avatar';
 
-const avatar: AvatarPassThroughOptions = {
+const Avatar: AvatarPassThroughOptions = {
   root: ({ props, parent }) => ({
     class: [
       // Font
@@ -48,4 +48,4 @@ const avatar: AvatarPassThroughOptions = {
   }),
 };
 
-export default avatar;
+export default Avatar;

@@ -1,6 +1,6 @@
 import { ButtonPassThroughOptions } from 'primevue/button';
 
-const button: ButtonPassThroughOptions = {
+const Button: ButtonPassThroughOptions = {
   root: ({ props, context, parent }) => ({
     class: [
       'relative',
@@ -27,7 +27,7 @@ const button: ButtonPassThroughOptions = {
       { 'rounded-none first:rounded-l-md last:rounded-r-md self-center': parent.instance.$name == 'InputGroup' },
 
       // Link Button
-      { 'text-neutral-200 bg-transparent ring-transparent': props.link },
+      { '!text-neutral-100 !bg-transparent !ring-transparent hover:!text-neutral-300 focus:!text-info': props.link },
 
       // Plain Button
       { 'text-neutral-200 bg-neutral-800 ring-1 ring-neutral-700': props.plain && !props.outlined && !props.text },
@@ -104,16 +104,18 @@ const button: ButtonPassThroughOptions = {
       // Warning Outlined Button
       { 'text-warning ring-1 ring-warning hover:bg-warning/25': props.outlined && props.severity === 'warning' && !props.plain },
 
-      // Help Button
+      // Contrast Button
       {
-        'text-neutral-900': props.severity === 'help' && !props.text && !props.outlined && !props.plain,
-        'bg-accent': props.severity === 'help' && !props.text && !props.outlined && !props.plain,
-        'ring-1 ring-neutral-900': props.severity === 'help' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-300': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
+        'bg-neutral-800': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
+        'ring-1 ring-neutral-700': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
       },
-      // Help Text Button
-      { 'text-accent hover:bg-accent/25': props.text && props.severity === 'help' && !props.plain },
-      // Help Outlined Button
-      { 'text-accent ring-1 ring-accent hover:bg-accent/25': props.outlined && props.severity === 'help' && !props.plain },
+      // Contrast Text Button
+      { 'text-neutral-300 hover:bg-neutral-700/25': props.text && props.severity === 'contrast' && !props.plain },
+      // Contrast Outlined Button
+      {
+        'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'contrast' && !props.plain,
+      },
 
       // Danger Button
       {
@@ -136,7 +138,7 @@ const button: ButtonPassThroughOptions = {
       // Plain
       { 'hover:bg-neutral-700 hover:ring-gray-600': props.plain && !props.outlined && !props.text },
       // Text & Outlined Button
-      { 'hover:bg-neutral-800/20': props.plain && (props.text || props.outlined) },
+      { 'hover:bg-neutral-800/25': props.plain && (props.text || props.outlined) },
 
       // Primary
       {
@@ -156,43 +158,43 @@ const button: ButtonPassThroughOptions = {
 
       // Success
       {
-        'hover:bg-success/25 hover:ring-success': props.severity === 'success' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-success/75 hover:ring-success':
+          !props.link && props.severity === 'success' && !props.text && !props.outlined && !props.plain,
       },
-      { 'focus:ring-green-500': props.severity === 'success' },
       // Text & Outlined Button
-      { 'hover:bg-green-300/20': (props.text || props.outlined) && props.severity === 'success' && !props.plain },
+      { 'hover:bg-success/25 focus:bg-success/25': (props.text || props.outlined) && props.severity === 'success' && !props.plain },
 
       // Info
       {
-        'hover:bg-info/25 hover:ring-info': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-info/75 hover:ring-info': !props.link && props.severity === 'info' && !props.text && !props.outlined && !props.plain,
       },
-      { 'focus:ring-blue-500': props.severity === 'info' },
       // Text & Outlined Button
-      { 'hover:bg-blue-300/20': (props.text || props.outlined) && props.severity === 'info' && !props.plain },
+      { 'hover:bg-info/25 focus:bg-info/25': (props.text || props.outlined) && props.severity === 'info' && !props.plain },
 
       // Warning
       {
-        'hover:bg-warning/25 hover:ring-warning': props.severity === 'warning' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-warning/75 hover:ring-warning':
+          !props.link && props.severity === 'warning' && !props.text && !props.outlined && !props.plain,
       },
-      { 'focus:ring-orange-500': props.severity === 'warning' },
       // Text & Outlined Button
-      { 'hover:bg-orange-300/20': (props.text || props.outlined) && props.severity === 'warning' && !props.plain },
+      { 'hover:bg-warning/25 focus:bg-warning/25': (props.text || props.outlined) && props.severity === 'warning' && !props.plain },
 
-      // Help
+      // Contrast
       {
-        'hover:bg-purple-600 hover:ring-purple-600': props.severity === 'help' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-neutral-700 hover:ring-neutral-600':
+          !props.link && props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
       },
-      { 'focus:ring-purple-500': props.severity === 'help' },
       // Text & Outlined Button
-      { 'hover:bg-purple-300/20': (props.text || props.outlined) && props.severity === 'help' && !props.plain },
+      {
+        'hover:bg-neutral-700/25 focus:bg-neutral-700/25': (props.text || props.outlined) && props.severity === 'contrast' && !props.plain,
+      },
 
       // Danger
       {
-        'hover:bg-red-600 hover:ring-red-600': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-error/75 hover:ring-error': !props.link && props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
       },
-      { 'focus:ring-red-500': props.severity === 'danger' },
       // Text & Outlined Button
-      { 'hover:bg-red-300/20': (props.text || props.outlined) && props.severity === 'danger' && !props.plain },
+      { 'hover:bg-error/25 focus:bg-error/25': (props.text || props.outlined) && props.severity === 'danger' && !props.plain },
 
       // Disabled
       { 'opacity-60 pointer-events-none cursor-default': context.disabled },
@@ -207,7 +209,7 @@ const button: ButtonPassThroughOptions = {
   label: ({ props }) => ({
     class: [
       {
-        'hover:underline': props.link,
+        underline: props.link,
       },
       { 'flex-1': props.label !== null, 'invisible w-0': props.label == null },
     ],
@@ -241,4 +243,4 @@ const button: ButtonPassThroughOptions = {
   }),
 };
 
-export default button;
+export default Button;

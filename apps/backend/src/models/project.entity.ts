@@ -60,7 +60,6 @@ export default class ProjectEntity extends EntitySchema {
   @OneToMany(() => ToolEntity, tool => tool.project)
   tools: ToolEntity[];
 
-  @ApiProperty()
   @ManyToOne(() => OrganizationEntity, organization => organization.id, {
     onDelete: 'CASCADE',
   })

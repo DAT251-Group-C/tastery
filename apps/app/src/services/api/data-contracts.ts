@@ -38,3 +38,39 @@ export interface ApiCreateOrganizationDto {
 export interface ApiUpdateOrganizationDto {
   name?: string;
 }
+
+export interface ApiCreateProjectDto {
+  name: string;
+}
+
+export interface ApiMembershipEntity {
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiCredentialEntity {
+  id: string;
+  projectId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiProjectEntity {
+  id: string;
+  organizationId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  credentials: string[];
+  tools: string[];
+}
+
+export interface ApiToolEntity {
+  id: string;
+  projectId: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}

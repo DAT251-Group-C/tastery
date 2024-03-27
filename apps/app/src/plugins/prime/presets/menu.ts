@@ -1,6 +1,6 @@
 import { MenuPassThroughOptions } from 'primevue/menu';
 
-const menu: MenuPassThroughOptions = {
+const Menu: MenuPassThroughOptions = {
   root: ({ attrs }) => ({
     class: [
       // Sizing and Shape
@@ -49,8 +49,10 @@ const menu: MenuPassThroughOptions = {
       'transition',
 
       // States
-      'hover:text-neutral-300',
-      'hover:bg-neutral-700',
+      {
+        'hover:text-neutral-300 hover:bg-neutral-700': !context.disabled,
+        '!text-neutral-500': context.disabled,
+      },
     ],
   }),
   action: {
@@ -106,7 +108,7 @@ const menu: MenuPassThroughOptions = {
   separator: {
     class: [
       // Spacing
-      'my-1',
+      'mt-2 mb-1',
       'h-px',
 
       // Colors
@@ -121,4 +123,4 @@ const menu: MenuPassThroughOptions = {
   },
 };
 
-export default menu;
+export default Menu;
