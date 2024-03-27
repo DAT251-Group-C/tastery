@@ -41,8 +41,6 @@ authStore.$onAction(({ name, store, after }) => {
       if (redirectRoute) {
         await router.replace(redirectRoute as RouteLocationRaw);
         authStore.clearRedirectRoute();
-      } else {
-        await router.replace({ name: 'Dashboard' });
       }
     });
   }
