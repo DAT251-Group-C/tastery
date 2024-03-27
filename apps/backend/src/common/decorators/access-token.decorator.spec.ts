@@ -1,11 +1,11 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
-import { AccessToken } from './access-token.decorator';
+import { AccessToken, IAccessToken } from './access-token.decorator';
 
 describe('Access token decorator test', () => {
   const getParamDecoratorFactory = () => {
     class TestDecorator {
-      public test(@AccessToken() value) {
+      public test(@AccessToken() value: IAccessToken) {
         return value;
       }
     }

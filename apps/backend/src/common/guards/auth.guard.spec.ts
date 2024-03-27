@@ -1,5 +1,5 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MockProxy, mock } from 'jest-mock-extended';
@@ -8,21 +8,15 @@ import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
-  let configService: ConfigService;
   const jwtService: MockProxy<JwtService> = mock<JwtService>();
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          load: [appConfig],
-        }),
-      ],
+      imports: [ConfigModule.forRoot({ load: [appConfig] })],
       providers: [AuthGuard, { provide: JwtService, useValue: jwtService }],
     }).compile();
 
     authGuard = module.get<AuthGuard>(AuthGuard);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   afterEach(async () => {
@@ -32,7 +26,6 @@ describe('AuthGuard', () => {
   it('should be defined', () => {
     expect(authGuard).toBeDefined();
     expect(jwtService).toBeDefined();
-    expect(configService).toBeDefined();
   });
 
   it('should return true if jwt token is valid', done => {
