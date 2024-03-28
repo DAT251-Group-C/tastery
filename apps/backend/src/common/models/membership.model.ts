@@ -13,7 +13,7 @@ export enum MembershipRole {
 export class Membership {
   @ApiPropertyUUID() organizationId: string;
   @ApiPropertyUUID() userId: string;
-  @ApiProperty({ enum: MembershipRole }) role: MembershipRole;
+  @ApiProperty({ enum: MembershipRole, enumName: 'MembershipRole' }) role: MembershipRole;
   @ApiPropertyDateTime() createdAt: string;
   @ApiPropertyDateTime() updatedAt: string;
 }

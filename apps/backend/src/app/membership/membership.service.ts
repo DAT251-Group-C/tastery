@@ -35,7 +35,7 @@ export class MembershipService {
 
   public getMemberships(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<MembershipEntity>> {
     const query = this.membershipRepository
-      .createQueryBuilder('organization')
+      .createQueryBuilder('membership')
       .where('membership.userId = :userId', { userId })
       .orderBy('membership.createdAt', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)

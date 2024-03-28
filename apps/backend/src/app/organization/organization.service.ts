@@ -7,10 +7,10 @@ import { PageOptionsDto } from '../../common/dto/page-options.dto';
 import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
+import { MembershipRole } from '../../common/models/membership.model';
 import { MembershipEntity, OrganizationEntity } from '../../entities';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { MembershipRole } from '../../common/models/membership.model';
 
 @Injectable()
 export class OrganizationService {
@@ -22,12 +22,9 @@ export class OrganizationService {
   public createOrganization(body: CreateOrganizationDto, userId: string): Observable<OrganizationEntity> {
     return from(
       this.organizationRepository.manager.transaction(async manager => {
-        const organization = this.organizationRepository.create(body);
-
-        const { generatedMaps } = await manager.insert(OrganizationEntity, organization);
-        const { id } = generatedMaps[0] as OrganizationEntity;
-        await manager.insert(MembershipEntity, { userId, organizationId: id, role: MembershipRole.OWNER });
-        return manager.findOneByOrFail(OrganizationEntity, { id });
+        const organization = await manager.save(OrganizationEntity, this.organizationRepository.create(body));
+        await manager.insert(MembershipEntity, { userId, organizationId: organization.id, role: MembershipRole.OWNER });
+        return organization;
       }),
     );
   }

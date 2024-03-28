@@ -10,13 +10,20 @@
  */
 
 import {
+  ApiCreateInviteDto,
   ApiCreateOrganizationDto,
   ApiCreateProjectDto,
+  ApiFullMembership,
   ApiFullOrganization,
   ApiFullProject,
   ApiInvite,
+  ApiMembership,
   ApiOrganization,
+  ApiPageDto,
   ApiProject,
+  ApiRevokeInviteDto,
+  ApiSortOrder,
+  ApiUpdateMembershipRoleDto,
   ApiUpdateOrganizationDto,
   ApiUpdateUserDto,
   ApiUser,
@@ -111,15 +118,162 @@ export class V1<SecurityDataType = unknown> {
   /**
    * No description
    *
+   * @tags Memberships
+   * @name MembershipControllerGetMemberships
+   * @request GET:/v1/memberships
+   * @secure
+   */
+  membershipControllerGetMemberships = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiMembership[];
+      },
+      any
+    >({
+      path: `/v1/memberships`,
+      method: 'GET',
+      query: query,
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Memberships
+   * @name MembershipControllerGetMembership
+   * @request GET:/v1/memberships/{organizationId}
+   * @secure
+   */
+  membershipControllerGetMembership = (organizationId: string, params: RequestParams = {}) =>
+    this.http.request<ApiFullMembership, any>({
+      path: `/v1/memberships/${organizationId}`,
+      method: 'GET',
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Memberships
+   * @name MembershipControllerGetMembershipsInOrganization
+   * @request GET:/v1/organizations/{organizationId}/memberships
+   * @secure
+   */
+  membershipControllerGetMembershipsInOrganization = (
+    organizationId: string,
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiMembership[];
+      },
+      any
+    >({
+      path: `/v1/organizations/${organizationId}/memberships`,
+      method: 'GET',
+      query: query,
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Memberships
+   * @name MembershipControllerUpdateMembershipRole
+   * @request POST:/v1/organizations/{organizationId}/memberships/role
+   * @secure
+   */
+  membershipControllerUpdateMembershipRole = (organizationId: string, data: ApiUpdateMembershipRoleDto, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/organizations/${organizationId}/memberships/role`,
+      method: 'POST',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Memberships
+   * @name MembershipControllerRemoveMembership
+   * @request DELETE:/v1/organizations/{organizationId}/memberships/{userId}
+   * @secure
+   */
+  membershipControllerRemoveMembership = (organizationId: string, userId: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/organizations/${organizationId}/memberships/${userId}`,
+      method: 'DELETE',
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags Organizations
    * @name OrganizationControllerGetOrganizations
    * @request GET:/v1/organizations
    * @secure
    */
-  organizationControllerGetOrganizations = (params: RequestParams = {}) =>
-    this.http.request<ApiOrganization[], any>({
+  organizationControllerGetOrganizations = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiOrganization[];
+      },
+      any
+    >({
       path: `/v1/organizations`,
       method: 'GET',
+      query: query,
       secure: true,
       format: 'json',
       ...params,
@@ -133,7 +287,7 @@ export class V1<SecurityDataType = unknown> {
    * @secure
    */
   organizationControllerCreateOrganization = (data: ApiCreateOrganizationDto, params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganization, any>({
+    this.http.request<ApiOrganization, any>({
       path: `/v1/organizations`,
       method: 'POST',
       body: data,
@@ -198,10 +352,32 @@ export class V1<SecurityDataType = unknown> {
    * @request GET:/v1/projects
    * @secure
    */
-  projectControllerGetProjects = (params: RequestParams = {}) =>
-    this.http.request<ApiProject[], any>({
+  projectControllerGetProjects = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiProject[];
+      },
+      any
+    >({
       path: `/v1/projects`,
       method: 'GET',
+      query: query,
       secure: true,
       format: 'json',
       ...params,
@@ -214,10 +390,33 @@ export class V1<SecurityDataType = unknown> {
    * @request GET:/v1/organizations/{organizationId}/projects
    * @secure
    */
-  projectControllerGetProjectsInOrganization = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiProject[], any>({
+  projectControllerGetProjectsInOrganization = (
+    organizationId: string,
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiProject[];
+      },
+      any
+    >({
       path: `/v1/organizations/${organizationId}/projects`,
       method: 'GET',
+      query: query,
       secure: true,
       format: 'json',
       ...params,
@@ -231,7 +430,7 @@ export class V1<SecurityDataType = unknown> {
    * @secure
    */
   projectControllerCreateProject = (organizationId: string, data: ApiCreateProjectDto, params: RequestParams = {}) =>
-    this.http.request<ApiFullProject, any>({
+    this.http.request<ApiProject, any>({
       path: `/v1/organizations/${organizationId}/projects`,
       method: 'POST',
       body: data,
@@ -297,7 +496,7 @@ export class V1<SecurityDataType = unknown> {
    * @secure
    */
   inviteControllerGetInvites = (params: RequestParams = {}) =>
-    this.http.request<ApiInvite[], any>({
+    this.http.request<ApiInvite, any>({
       path: `/v1/invites`,
       method: 'GET',
       secure: true,
@@ -326,27 +525,35 @@ export class V1<SecurityDataType = unknown> {
    * @request GET:/v1/invites/organization/{organizationId}
    * @secure
    */
-  inviteControllerGetOrganizationInvites = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiInvite[], any>({
+  inviteControllerGetOrganizationInvites = (
+    organizationId: string,
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiInvite[];
+      },
+      any
+    >({
       path: `/v1/invites/organization/${organizationId}`,
       method: 'GET',
+      query: query,
       secure: true,
       format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerRevokeInvite
-   * @request DELETE:/v1/invites/organization/{organizationId}/revoke
-   * @secure
-   */
-  inviteControllerRevokeInvite = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/invites/organization/${organizationId}/revoke`,
-      method: 'DELETE',
-      secure: true,
       ...params,
     });
   /**
@@ -357,11 +564,13 @@ export class V1<SecurityDataType = unknown> {
    * @request POST:/v1/invites/organization/{organizationId}/create
    * @secure
    */
-  inviteControllerCreateInvite = (organizationId: string, params: RequestParams = {}) =>
+  inviteControllerCreateInvite = (organizationId: string, data: ApiCreateInviteDto, params: RequestParams = {}) =>
     this.http.request<ApiInvite, any>({
       path: `/v1/invites/organization/${organizationId}/create`,
       method: 'POST',
+      body: data,
       secure: true,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     });
@@ -393,6 +602,23 @@ export class V1<SecurityDataType = unknown> {
       path: `/v1/invites/${hash}/decline`,
       method: 'DELETE',
       secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Invites
+   * @name InviteControllerRevokeInvite
+   * @request DELETE:/v1/invites/organization/{organizationId}/revoke
+   * @secure
+   */
+  inviteControllerRevokeInvite = (organizationId: string, data: ApiRevokeInviteDto, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/invites/organization/${organizationId}/revoke`,
+      method: 'DELETE',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       ...params,
     });
 }

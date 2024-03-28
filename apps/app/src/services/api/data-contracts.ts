@@ -10,33 +10,118 @@
  */
 
 export interface ApiUser {
+  /** @format uuid */
   id: string;
+  /** @format email */
   email: string;
+  /** @example "John Doe" */
   name: string;
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
   updatedAt: string;
 }
 
 export interface ApiUpdateUserDto {
   name?: string;
-  avatar?: string;
+}
+
+export interface ApiPageMetaDto {
+  /** @min 1 */
+  page: number;
+  /**
+   * @min 1
+   * @max 50
+   * @default 10
+   */
+  take: number;
+  /** @min 1 */
+  itemCount: number;
+  /** @min 0 */
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface ApiPageDto {
+  meta: ApiPageMetaDto;
+}
+
+export enum ApiMembershipRole {
+  Owner = 'owner',
+  Admin = 'admin',
+  User = 'user',
 }
 
 export interface ApiMembership {
+  /** @format uuid */
   organizationId: string;
+  /** @format uuid */
   userId: string;
-  role: ApiMembershipRoleEnum;
+  role: ApiMembershipRole;
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export enum ApiSortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+
+export interface ApiOrganization {
+  /** @format uuid */
+  id: string;
+  name: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface ApiFullMembership {
+  /** @format uuid */
+  organizationId: string;
+  /** @format uuid */
+  userId: string;
+  role: ApiMembershipRole;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  organization: ApiOrganization;
+  user: ApiUser;
+}
+
+export interface ApiUpdateMembershipRoleDto {
+  role: ApiMembershipRole;
+  /** @format uuid */
+  userId: string;
+}
+
+export interface ApiProject {
+  /** @format uuid */
+  id: string;
+  /** @format uuid */
+  organizationId: string;
+  name: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
   updatedAt: string;
 }
 
 export interface ApiFullOrganization {
+  /** @format uuid */
   id: string;
   name: string;
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
   updatedAt: string;
-  memberships: ApiMembership[];
-  projects: any[][];
+  memberships: any[][];
+  projects: ApiProject[];
 }
 
 export interface ApiCreateOrganizationDto {
@@ -47,104 +132,101 @@ export interface ApiUpdateOrganizationDto {
   name?: string;
 }
 
-export interface ApiCreateProjectDto {
-  name: string;
-}
-
-export interface ApiInvite {
-  email: string;
-  organizationId: string;
-  createdAt: string;
-  expiresAt: string;
-  organizationName: string;
-}
-
 export interface ApiCredential {
+  /** @format uuid */
   id: string;
+  /** @format uuid */
   projectId: string;
   name: string;
   /** @minItems 1 */
   referrerUrls: string[];
+  /** @format date-time */
   createdAt: string;
-  updatedAt: string;
-}
-
-export interface ApiProject {
-  id: string;
-  organizationId: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ApiFullCredential {
-  id: string;
-  projectId: string;
-  name: string;
-  /** @minItems 1 */
-  referrerUrls: string[];
-  createdAt: string;
-  updatedAt: string;
-  project: ApiProject;
-}
-
-export interface ApiFullMembership {
-  organizationId: string;
-  userId: string;
-  role: ApiFullMembershipRoleEnum;
-  createdAt: string;
-  updatedAt: string;
-  organization: object;
-  user: ApiUser;
-}
-
-export interface ApiOrganization {
-  id: string;
-  name: string;
-  createdAt: string;
+  /** @format date-time */
   updatedAt: string;
 }
 
 export interface ApiTool {
+  /** @format uuid */
   id: string;
+  /** @format uuid */
   projectId: string;
   name: string;
   description: string;
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
   updatedAt: string;
   parameters: object;
 }
 
 export interface ApiFullProject {
+  /** @format uuid */
   id: string;
+  /** @format uuid */
   organizationId: string;
   name: string;
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
   updatedAt: string;
-  credentials: any[][];
+  credentials: ApiCredential[];
   tools: ApiTool[];
-  organization: ApiOrganization;
+  organization: object;
 }
 
-export interface ApiFullTool {
+export interface ApiCreateProjectDto {
+  name: string;
+}
+
+export interface ApiInvite {
+  /** @format email */
+  email: string;
+  /** @format uuid */
+  organizationId: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  expiresAt: string;
+  organizationName: string;
+}
+
+export interface ApiCreateInviteDto {
+  /** @format email */
+  email: string;
+}
+
+export interface ApiRevokeInviteDto {
+  /** @format email */
+  email: string;
+}
+
+export interface ApiFullCredential {
+  /** @format uuid */
   id: string;
+  /** @format uuid */
   projectId: string;
   name: string;
-  description: string;
+  /** @minItems 1 */
+  referrerUrls: string[];
+  /** @format date-time */
   createdAt: string;
+  /** @format date-time */
   updatedAt: string;
-  parameters: object;
   project: object;
 }
 
-export enum ApiMembershipRoleEnum {
-  Owner = 'owner',
-  Admin = 'admin',
-  User = 'user',
-}
-
-export enum ApiFullMembershipRoleEnum {
-  Owner = 'owner',
-  Admin = 'admin',
-  User = 'user',
+export interface ApiFullTool {
+  /** @format uuid */
+  id: string;
+  /** @format uuid */
+  projectId: string;
+  name: string;
+  description: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  parameters: object;
+  project: object;
 }
