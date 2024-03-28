@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, CreateDateColumn, Entity, EntitySchema, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import MembershipEntity from './membership.entity';
 import ProjectEntity from './project.entity';
+import { InviteEntity } from './invite.entity';
 
 @Entity({
   name: 'organizations',
@@ -43,6 +44,12 @@ export default class OrganizationEntity extends EntitySchema {
     cascade: true,
   })
   memberships: MembershipEntity[];
+
+  @ApiProperty()
+  @OneToMany(() => InviteEntity, invite => invite.organization, {
+    cascade: true,
+  })
+  invites: Promise<InviteEntity[]>;
 
   @ApiProperty()
   @OneToMany(() => ProjectEntity, project => project.organization)

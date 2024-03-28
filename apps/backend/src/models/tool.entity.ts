@@ -50,6 +50,7 @@ export default class ToolEntity extends EntitySchema {
   })
   updatedAt: string;
 
+  @ApiProperty()
   @Column({ type: 'jsonb', nullable: true })
   parameters: Record<string, JSONSchema7>;
 

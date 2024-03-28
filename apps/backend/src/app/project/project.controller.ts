@@ -10,47 +10,37 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
-  Put,
-  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { catchError, lastValueFrom, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import { AuthGuard } from '../../common/guards/auth/auth.guard';
+import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
+import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { ProjectEntity } from '../../models';
+import { MembershipRole } from '../../models/membership.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectService } from './project.service';
 
 @ApiTags('Projects')
-@Controller('projects')
+@Controller()
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Get()
+  @Get('projects')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiQuery({
-    name: 'organizationId',
-    required: false,
-    description: 'If provided, will only return projects within specified organization',
-  })
   @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(ProjectEntity) } } })
-  public getProjects(
-    @AccessToken() accessToken: IAccessToken,
-    @Query('organizationId', ParseUUIDPipe) organizationId?: string,
-  ): Promise<ProjectEntity[]> {
-    const func = organizationId
-      ? this.projectService.getProjectsInOrganization(organizationId, accessToken.sub)
-      : this.projectService.getProjects(accessToken.sub);
-
+  public getProjects(@AccessToken() accessToken: IAccessToken): Promise<ProjectEntity[]> {
     return lastValueFrom(
-      func.pipe(
+      this.projectService.getProjects(accessToken.sub).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -63,7 +53,30 @@ export class ProjectController {
     );
   }
 
-  @Get(':projectId')
+  @Get('organizations/:organizationId/projects')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @ApiParam({ name: 'organizationId', required: true })
+  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(ProjectEntity) } } })
+  public getProjectsInOrganization(
+    @AccessToken() accessToken: IAccessToken,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
+  ): Promise<ProjectEntity[]> {
+    return lastValueFrom(
+      this.projectService.getProjectsInOrganization(organizationId, accessToken.sub).pipe(
+        take(1),
+        catchError(err => {
+          if (err instanceof ResourceNotFoundException) {
+            throw new NotFoundException(err.message);
+          }
+
+          throw new BadRequestException(err.message || err);
+        }),
+      ),
+    );
+  }
+
+  @Get('projects/:projectId')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiOkResponse({ schema: { $ref: getSchemaPath(ProjectEntity) } })
@@ -85,15 +98,16 @@ export class ProjectController {
     );
   }
 
-  @Post()
+  @Post('organizations/:organizationId/projects')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @ApiQuery({ name: 'organizationId', required: true })
+  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
+  @ApiParam({ name: 'organizationId' })
   @ApiBody({ type: CreateProjectDto })
   @ApiOkResponse({ schema: { $ref: getSchemaPath(ProjectEntity) } })
   public createProject(
     @AccessToken() accessToken: IAccessToken,
-    @Query('organizationId', ParseUUIDPipe) organizationId: string,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
     @Body() createProjectDto: CreateProjectDto,
   ): Promise<ProjectEntity> {
     return lastValueFrom(
@@ -106,7 +120,7 @@ export class ProjectController {
     );
   }
 
-  @Put(':projectId')
+  @Patch('organizations/:organizationId/projects/:projectId')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiParam({ name: 'projectId', required: true })
@@ -127,9 +141,10 @@ export class ProjectController {
     );
   }
 
-  @Delete(':projectId')
+  @Delete('organizations/:organizationId/projects/:projectId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
   @ApiParam({ name: 'projectId', required: true })
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteProject(

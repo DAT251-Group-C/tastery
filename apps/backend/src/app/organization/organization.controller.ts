@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -20,11 +21,14 @@ import { catchError, lastValueFrom, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import { AuthGuard } from '../../common/guards/auth/auth.guard';
 import { OrganizationEntity } from '../../models';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { OrganizationService } from './organization.service';
+import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
+import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
+import { MembershipRole } from '../../models/membership.entity';
 
 @ApiTags('Organizations')
 @Controller('organizations')
@@ -93,9 +97,10 @@ export class OrganizationController {
     );
   }
 
-  @Put(':organizationId')
+  @Patch(':organizationId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @MembershipRoles([MembershipRole.OWNER, MembershipRole.ADMIN])
   @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiBody({ type: UpdateOrganizationDto })
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -106,6 +111,7 @@ export class OrganizationController {
   ): Promise<UpdateResult> {
     return lastValueFrom(
       this.organizationService.updateOrganization(organizationId, accessToken.sub, updateOrganizationDto).pipe(
+        take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
@@ -113,14 +119,14 @@ export class OrganizationController {
 
           throw new BadRequestException(err.message || err);
         }),
-        take(1),
       ),
     );
   }
 
   @Delete(':organizationId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @MembershipRoles([MembershipRole.OWNER])
   @ApiParam({ name: 'organizationId', format: 'uuid' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteOrganization(
@@ -129,6 +135,7 @@ export class OrganizationController {
   ): Promise<DeleteResult> {
     return lastValueFrom(
       this.organizationService.deleteOrganization(organizationId, accessToken.sub).pipe(
+        take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
@@ -136,7 +143,6 @@ export class OrganizationController {
 
           throw new BadRequestException(err.message || err);
         }),
-        take(1),
       ),
     );
   }

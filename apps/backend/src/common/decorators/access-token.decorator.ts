@@ -2,7 +2,7 @@ import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@
 import { AuthUser } from '@supabase/supabase-js';
 import { JwtPayload } from 'jsonwebtoken';
 
-export type IAccessToken = AuthUser & Required<Omit<JwtPayload, 'jti' | 'nbf'>> & Pick<JwtPayload, 'jti' | 'nbf'>;
+export type IAccessToken = AuthUser & Required<Pick<JwtPayload, 'iss' | 'sub' | 'aud' | 'exp' | 'iat'>>;
 
 export const AccessToken = createParamDecorator((_, context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest();

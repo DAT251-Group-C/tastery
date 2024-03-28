@@ -10,7 +10,7 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
-  Put,
+  Patch,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,7 +19,7 @@ import { catchError, lastValueFrom, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import { AuthGuard } from '../../common/guards/auth/auth.guard';
 import { UserEntity } from '../../models';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -69,7 +69,7 @@ export class UserController {
     );
   }
 
-  @Put()
+  @Patch()
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiBody({ type: UpdateUserDto })
@@ -77,6 +77,7 @@ export class UserController {
   public updateUser(@AccessToken() accessToken: IAccessToken, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     return lastValueFrom(
       this.userService.updateUser(accessToken.sub, updateUserDto).pipe(
+        take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
@@ -84,7 +85,6 @@ export class UserController {
 
           throw new BadRequestException(err.message || err);
         }),
-        take(1),
       ),
     );
   }
@@ -96,6 +96,7 @@ export class UserController {
   public deleteUser(@AccessToken() accessToken: IAccessToken): Promise<DeleteResult> {
     return lastValueFrom(
       this.userService.deleteUser(accessToken.sub).pipe(
+        take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
@@ -103,7 +104,6 @@ export class UserController {
 
           throw new BadRequestException(err.message || err);
         }),
-        take(1),
       ),
     );
   }

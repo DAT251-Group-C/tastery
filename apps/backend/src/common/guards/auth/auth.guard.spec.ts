@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MockProxy, mock } from 'jest-mock-extended';
-import appConfig from '../config/app-conf';
+import appConfig from '../../config/app-conf';
 import { AuthGuard } from './auth.guard';
+import { lastValueFrom } from 'rxjs';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
@@ -32,7 +33,7 @@ describe('AuthGuard', () => {
     const context = getMockedContext('invalid-token');
     jwtService.verifyAsync.mockResolvedValue({ sub: '123', email: 'email@feedapp.no' });
 
-    authGuard.canActivate(context).then(response => {
+    lastValueFrom(authGuard.canActivate(context)).then(response => {
       expect(response).toBe(true);
       done();
     });
@@ -42,7 +43,7 @@ describe('AuthGuard', () => {
     const context = getMockedContext('invalid-token');
     jwtService.verifyAsync.mockRejectedValue(new Error('invalid token'));
 
-    authGuard.canActivate(context).catch(error => {
+    lastValueFrom(authGuard.canActivate(context)).catch(error => {
       expect(error).toBeInstanceOf(UnauthorizedException);
       done();
     });

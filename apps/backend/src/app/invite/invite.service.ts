@@ -20,7 +20,7 @@ export class InviteService {
     private readonly encryptionService: EncryptionService,
   ) {}
 
-  public createInvite(userId: string, email: string, organizationId: string) {
+  public createInvite(userId: string, email: string, organizationId: string): Observable<InviteEntity> {
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
       switchMap(() =>
         from(

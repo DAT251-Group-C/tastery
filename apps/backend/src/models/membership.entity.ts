@@ -3,18 +3,27 @@ import { CreateDateColumn, Entity, EntitySchema, JoinColumn, ManyToOne, PrimaryC
 import OrganizationEntity from './organization.entity';
 import UserEntity from './user.entity';
 
+export enum MembershipRole {
+  OWNER = 'owner',
+  ADMIN = 'admin',
+  USER = 'user',
+}
+
 @Entity({
   name: 'memberships',
 })
 export default class MembershipEntity extends EntitySchema {
+  @ApiProperty()
   @PrimaryColumn({ type: 'uuid' })
   organizationId: string;
 
+  @ApiProperty()
   @PrimaryColumn({ type: 'uuid' })
   userId: string;
 
-  @PrimaryColumn({ type: 'boolean', default: false })
-  isOwner: boolean;
+  @ApiProperty()
+  @PrimaryColumn({ type: 'enum', enum: MembershipRole, default: MembershipRole.USER })
+  role: MembershipRole;
 
   @ManyToOne(() => OrganizationEntity, organization => organization.id, {
     onDelete: 'CASCADE',
@@ -22,6 +31,7 @@ export default class MembershipEntity extends EntitySchema {
   @JoinColumn({ name: 'organizationId' })
   organization: Promise<OrganizationEntity>;
 
+  @ApiProperty()
   @ManyToOne(() => UserEntity, user => user.id, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;

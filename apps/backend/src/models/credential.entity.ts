@@ -34,6 +34,7 @@ export default class CredentialEntity extends EntitySchema {
   })
   name: string;
 
+  @ApiProperty()
   @Column('simple-array')
   referrerUrls: string[];
 

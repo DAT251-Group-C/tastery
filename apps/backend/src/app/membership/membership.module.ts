@@ -6,9 +6,15 @@ import { GuardModule } from '../../common/guards/guard.module';
 import { MembershipEntity } from '../../models';
 import { MembershipController } from './membership.controller';
 import { MembershipService } from './membership.service';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MembershipEntity]), forwardRef(() => GuardModule), ConfigModule.forFeature(appConfig)],
+  imports: [
+    TypeOrmModule.forFeature([MembershipEntity]),
+    forwardRef(() => GuardModule),
+    OrganizationModule,
+    ConfigModule.forFeature(appConfig),
+  ],
   controllers: [MembershipController],
   providers: [MembershipService],
   exports: [MembershipService],

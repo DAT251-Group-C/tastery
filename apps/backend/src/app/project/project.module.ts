@@ -1,19 +1,21 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../../common/config/app-conf';
 import { GuardModule } from '../../common/guards/guard.module';
 import { ProjectEntity } from '../../models';
+import { MembershipModule } from '../membership/membership.module';
 import { OrganizationModule } from '../organization/organization.module';
 import { ProjectController } from './project.controller';
 import { ProjectService } from './project.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProjectEntity]),
-    forwardRef(() => GuardModule),
-    forwardRef(() => OrganizationModule),
+    GuardModule,
+    MembershipModule,
+    OrganizationModule,
     ConfigModule.forFeature(appConfig),
+    TypeOrmModule.forFeature([ProjectEntity]),
   ],
   controllers: [ProjectController],
   providers: [ProjectService],

@@ -48,7 +48,6 @@ export class InviteEntity extends EntitySchema {
 
   @Exclude()
   @ManyToOne(() => OrganizationEntity, organization => organization.id, {
-    eager: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'organizationId' })
