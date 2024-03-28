@@ -6,7 +6,7 @@ import { EncryptionService } from '../../common/encrypt/encryption.service';
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
-import { InviteEntity, MembershipEntity } from '../../models';
+import { InviteEntity, MembershipEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
 
 @Injectable()
@@ -23,15 +23,13 @@ export class InviteService {
   public createInvite(userId: string, email: string, organizationId: string): Observable<InviteEntity> {
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
       switchMap(() =>
-        from(
-          this.membershipRepository
-            .createQueryBuilder('membership')
-            .innerJoin('membership.organizationId', 'organization')
-            .innerJoin('membership.userId', 'user')
-            .where('user.email = :email', { email })
-            .andWhere('organization.id = :organizationId', { organizationId })
-            .getExists(),
-        ),
+        this.membershipRepository
+          .createQueryBuilder('membership')
+          .innerJoin('membership.organizationId', 'organization')
+          .innerJoin('membership.userId', 'user')
+          .where('user.email = :email', { email })
+          .andWhere('organization.id = :organizationId', { organizationId })
+          .getExists(),
       ),
       tap(exists => {
         if (exists) {

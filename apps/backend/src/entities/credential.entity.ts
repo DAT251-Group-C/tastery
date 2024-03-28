@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -17,15 +16,12 @@ import ProjectEntity from './project.entity';
   name: 'credentials',
 })
 export default class CredentialEntity extends EntitySchema {
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
   @Column('uuid')
   projectId: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -34,7 +30,6 @@ export default class CredentialEntity extends EntitySchema {
   })
   name: string;
 
-  @ApiProperty()
   @Column('simple-array')
   referrerUrls: string[];
 
@@ -44,7 +39,6 @@ export default class CredentialEntity extends EntitySchema {
   @JoinColumn({ name: 'projectId' })
   project: Promise<ProjectEntity>;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -52,7 +46,6 @@ export default class CredentialEntity extends EntitySchema {
   })
   createdAt: string;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',

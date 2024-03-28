@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, from, map, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { UserEntity } from '../../models';
+import { UserEntity } from '../../entities';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()

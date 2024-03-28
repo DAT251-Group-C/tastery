@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../../common/config/app-conf';
 import { GuardModule } from '../../common/guards/guard.module';
-import { MembershipEntity } from '../../models';
+import { MembershipEntity } from '../../entities';
 import { MembershipController } from './membership.controller';
 import { MembershipService } from './membership.service';
 import { OrganizationModule } from '../organization/organization.module';

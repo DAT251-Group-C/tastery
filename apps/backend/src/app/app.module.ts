@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../common/config/app-conf';
-import entities from '../models';
+import entities from '../entities';
 import { GatewayModule } from './gateway/gateway.module';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';

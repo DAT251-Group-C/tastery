@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -18,15 +17,12 @@ import ToolEntity from './tool.entity';
   name: 'projects',
 })
 export default class ProjectEntity extends EntitySchema {
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
   @Column('uuid')
   organizationId: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -35,7 +31,6 @@ export default class ProjectEntity extends EntitySchema {
   })
   name: string;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -43,7 +38,6 @@ export default class ProjectEntity extends EntitySchema {
   })
   createdAt: string;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -52,13 +46,11 @@ export default class ProjectEntity extends EntitySchema {
   })
   updatedAt: string;
 
-  @ApiProperty()
   @OneToMany(() => CredentialEntity, credential => credential.project)
-  credentials: CredentialEntity[];
+  credentials: Promise<CredentialEntity[]>;
 
-  @ApiProperty()
   @OneToMany(() => ToolEntity, tool => tool.project)
-  tools: ToolEntity[];
+  tools: Promise<ToolEntity[]>;
 
   @ManyToOne(() => OrganizationEntity, organization => organization.id, {
     onDelete: 'CASCADE',

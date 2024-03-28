@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { JSONSchema7 } from 'json-schema';
 import { Column, CreateDateColumn, Entity, EntitySchema, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import ProjectEntity from './project.entity';
@@ -7,15 +6,12 @@ import ProjectEntity from './project.entity';
   name: 'tools',
 })
 export default class ToolEntity extends EntitySchema {
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
   @Column('uuid')
   projectId: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -24,7 +20,6 @@ export default class ToolEntity extends EntitySchema {
   })
   name: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -33,7 +28,6 @@ export default class ToolEntity extends EntitySchema {
   })
   description: string;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -41,7 +35,6 @@ export default class ToolEntity extends EntitySchema {
   })
   createdAt: string;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -50,7 +43,6 @@ export default class ToolEntity extends EntitySchema {
   })
   updatedAt: string;
 
-  @ApiProperty()
   @Column({ type: 'jsonb', nullable: true })
   parameters: Record<string, JSONSchema7>;
 

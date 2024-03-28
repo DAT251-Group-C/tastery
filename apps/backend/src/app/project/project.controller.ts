@@ -16,15 +16,15 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { catchError, lastValueFrom, take } from 'rxjs';
+import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { AuthGuard } from '../../common/guards/auth/auth.guard';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
-import { ProjectEntity } from '../../models';
-import { MembershipRole } from '../../models/membership.entity';
+import { FullProject, Project } from '../../common/models';
+import { MembershipRole } from '../../entities/membership.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectService } from './project.service';
 
@@ -37,8 +37,8 @@ export class ProjectController {
   @Get('projects')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(ProjectEntity) } } })
-  public getProjects(@AccessToken() accessToken: IAccessToken): Promise<ProjectEntity[]> {
+  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Project) } } })
+  public getProjects(@AccessToken() accessToken: IAccessToken): Promise<Project[]> {
     return lastValueFrom(
       this.projectService.getProjects(accessToken.sub).pipe(
         take(1),
@@ -57,11 +57,11 @@ export class ProjectController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiParam({ name: 'organizationId', required: true })
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(ProjectEntity) } } })
+  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Project) } } })
   public getProjectsInOrganization(
     @AccessToken() accessToken: IAccessToken,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-  ): Promise<ProjectEntity[]> {
+  ): Promise<Project[]> {
     return lastValueFrom(
       this.projectService.getProjectsInOrganization(organizationId, accessToken.sub).pipe(
         take(1),
@@ -79,14 +79,20 @@ export class ProjectController {
   @Get('projects/:projectId')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(ProjectEntity) } })
+  @ApiOkResponse({ schema: { $ref: getSchemaPath(FullProject) } })
   public getProjectById(
     @AccessToken() accessToken: IAccessToken,
     @Param('projectId', ParseUUIDPipe) projectId: string,
-  ): Promise<ProjectEntity> {
+  ): Promise<FullProject> {
     return lastValueFrom(
       this.projectService.getProjectById(projectId, accessToken.sub).pipe(
         take(1),
+        switchMap(async project => ({
+          ...project,
+          organization: await project.organization,
+          credentials: await project.credentials,
+          tools: await project.tools,
+        })),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
@@ -104,15 +110,21 @@ export class ProjectController {
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
   @ApiParam({ name: 'organizationId' })
   @ApiBody({ type: CreateProjectDto })
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(ProjectEntity) } })
+  @ApiOkResponse({ schema: { $ref: getSchemaPath(FullProject) } })
   public createProject(
     @AccessToken() accessToken: IAccessToken,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
     @Body() createProjectDto: CreateProjectDto,
-  ): Promise<ProjectEntity> {
+  ): Promise<FullProject> {
     return lastValueFrom(
       this.projectService.createProject(createProjectDto, organizationId, accessToken.sub).pipe(
         take(1),
+        switchMap(async project => ({
+          ...project,
+          organization: await project.organization,
+          credentials: await project.credentials,
+          tools: await project.tools,
+        })),
         catchError(err => {
           throw new BadRequestException(err.message || err);
         }),

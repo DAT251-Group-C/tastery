@@ -5,7 +5,7 @@ import { ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY, useOrganizationId } fr
 
 const useProjects = () => {
   return useQuery({
-    queryKey: ['projects', ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY],
+    queryKey: ['projects', 'auth', ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY],
     queryFn: async () => {
       return (await client.projectControllerGetProjects()).data;
     },
@@ -25,7 +25,7 @@ const useCreateProject = () => {
         throw new Error('Organization ID is required');
       }
 
-      return (await client.projectControllerCreateProject({ organizationId: organizationId.value }, data)).data;
+      return (await client.projectControllerCreateProject(organizationId.value, data)).data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });

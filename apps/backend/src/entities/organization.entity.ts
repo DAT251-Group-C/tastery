@@ -1,18 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, CreateDateColumn, Entity, EntitySchema, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { InviteEntity } from './invite.entity';
 import MembershipEntity from './membership.entity';
 import ProjectEntity from './project.entity';
-import { InviteEntity } from './invite.entity';
 
 @Entity({
   name: 'organizations',
 })
 export default class OrganizationEntity extends EntitySchema {
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -21,7 +19,6 @@ export default class OrganizationEntity extends EntitySchema {
   })
   name: string;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -29,7 +26,6 @@ export default class OrganizationEntity extends EntitySchema {
   })
   createdAt: string;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -38,20 +34,17 @@ export default class OrganizationEntity extends EntitySchema {
   })
   updatedAt: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: MembershipEntity, isArray: true })
   @OneToMany(() => MembershipEntity, membership => membership.organization, {
-    eager: true,
     cascade: true,
   })
-  memberships: MembershipEntity[];
+  memberships: Promise<MembershipEntity[]>;
 
-  @ApiProperty()
   @OneToMany(() => InviteEntity, invite => invite.organization, {
     cascade: true,
   })
   invites: Promise<InviteEntity[]>;
 
-  @ApiProperty()
   @OneToMany(() => ProjectEntity, project => project.organization)
-  projects: ProjectEntity[];
+  projects: Promise<ProjectEntity[]>;
 }

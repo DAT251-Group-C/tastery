@@ -1,15 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Column, CreateDateColumn, Entity, EntitySchema, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({
   name: 'users',
 })
 export default class UserEntity extends EntitySchema {
-  @ApiProperty()
   @PrimaryColumn('uuid')
   id: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -19,7 +16,6 @@ export default class UserEntity extends EntitySchema {
   })
   email: string;
 
-  @ApiProperty()
   @Column({
     type: 'varchar',
     length: 255,
@@ -28,7 +24,6 @@ export default class UserEntity extends EntitySchema {
   })
   name: string;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -36,7 +31,6 @@ export default class UserEntity extends EntitySchema {
   })
   createdAt: string;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',

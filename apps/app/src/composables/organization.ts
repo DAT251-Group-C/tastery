@@ -5,7 +5,7 @@ import { ORGANIZATION_ID_QUERY_KEY } from './tokens';
 
 const useOrganizations = () => {
   return useQuery({
-    queryKey: ['organizations', ORGANIZATION_ID_QUERY_KEY],
+    queryKey: ['organizations', 'auth', ORGANIZATION_ID_QUERY_KEY],
     queryFn: async () => {
       return (await client.organizationControllerGetOrganizations()).data;
     },

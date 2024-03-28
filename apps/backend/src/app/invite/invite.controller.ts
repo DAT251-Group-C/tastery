@@ -22,11 +22,11 @@ import { AccessToken, IAccessToken } from '../../common/decorators/access-token.
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { AuthGuard } from '../../common/guards/auth/auth.guard';
-import { InviteEntity } from '../../models';
-import { InviteService } from './invite.service';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
-import { MembershipRole } from '../../models/membership.entity';
+import { Invite } from '../../common/models';
+import { MembershipRole } from '../../entities/membership.entity';
+import { InviteService } from './invite.service';
 
 @ApiTags('Invites')
 @Controller('invites')
@@ -37,8 +37,8 @@ export class InviteController {
   @Get()
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(InviteEntity) } } })
-  public getInvites(@AccessToken() accessToken: IAccessToken): Promise<InviteEntity[]> {
+  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Invite) } } })
+  public getInvites(@AccessToken() accessToken: IAccessToken): Promise<Invite[]> {
     if (!accessToken.email) {
       throw new BadRequestException('Invalid access token');
     }
@@ -54,8 +54,8 @@ export class InviteController {
   }
 
   @Get(':hash')
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(InviteEntity) } })
-  public getInviteByHash(hash: string): Promise<InviteEntity> {
+  @ApiOkResponse({ schema: { $ref: getSchemaPath(Invite) } })
+  public getInviteByHash(hash: string): Promise<Invite> {
     return lastValueFrom(
       this.inviteService.getInviteByHash(hash).pipe(
         take(1),
@@ -74,11 +74,11 @@ export class InviteController {
   @ApiParam({ name: 'organizationId', required: true })
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(InviteEntity) } } })
+  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Invite) } } })
   public getOrganizationInvites(
     @AccessToken() accessToken: IAccessToken,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-  ): Promise<InviteEntity[]> {
+  ): Promise<Invite[]> {
     if (!accessToken.email) {
       throw new BadRequestException('Invalid access token');
     }
@@ -127,12 +127,12 @@ export class InviteController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard, MembershipRoleGuard)
   @MembershipRoles([MembershipRole.OWNER, MembershipRole.ADMIN])
-  @ApiOkResponse({ type: InviteEntity })
+  @ApiOkResponse({ type: Invite })
   public createInvite(
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
     @Body('email') email: string,
     @AccessToken() accessToken: IAccessToken,
-  ): Promise<InviteEntity> {
+  ): Promise<Invite> {
     return lastValueFrom(
       this.inviteService.createInvite(accessToken.sub, email, organizationId).pipe(
         take(1),

@@ -20,7 +20,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { AuthGuard } from '../../common/guards/auth/auth.guard';
-import { UserEntity } from '../../models';
+import { User } from '../../common/models';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -33,8 +33,8 @@ export class UserController {
   @Get()
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(UserEntity) } })
-  public getUser(@AccessToken() accessToken: IAccessToken): Promise<UserEntity> {
+  @ApiOkResponse({ schema: { $ref: getSchemaPath(User) } })
+  public getUser(@AccessToken() accessToken: IAccessToken): Promise<User> {
     return lastValueFrom(
       this.userService.getUserById(accessToken.sub).pipe(
         take(1),
@@ -53,8 +53,8 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @ApiParam({ name: 'userId', format: 'uuid' })
-  @ApiOkResponse({ type: UserEntity })
-  public getUserById(@Param('userId', new ParseUUIDPipe()) userId: string): Promise<UserEntity> {
+  @ApiOkResponse({ type: User })
+  public getUserById(@Param('userId', new ParseUUIDPipe()) userId: string): Promise<User> {
     return lastValueFrom(
       this.userService.getUserById(userId).pipe(
         take(1),

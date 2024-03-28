@@ -13,10 +13,12 @@ import { useAuthStore } from '@/stores/auth';
 import { useQueryClient } from '@tanstack/vue-query';
 import { storeToRefs } from 'pinia';
 import { RouterView, useRouter, type RouteLocationRaw } from 'vue-router';
+import { useOrganizationId } from './composables/tokens';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const queryClient = useQueryClient();
+const { setOrganizationId } = useOrganizationId();
 
 const { initialized } = storeToRefs(authStore);
 
@@ -24,10 +26,11 @@ supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {
     authStore.loadSession();
     authStore.loadRedirectRoute();
-    queryClient.invalidateQueries({ queryKey: ['user'] });
+    queryClient.invalidateQueries({ queryKey: ['auth'] });
   } else if (event === 'SIGNED_OUT') {
     authStore.clearSession();
-    queryClient.invalidateQueries({ queryKey: ['user'] });
+    setOrganizationId(null);
+    queryClient.invalidateQueries({ queryKey: ['auth'] });
     router.push({ name: 'Index' });
   }
 });

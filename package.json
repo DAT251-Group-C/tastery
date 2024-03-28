@@ -15,7 +15,7 @@
     "build:app": "nx build app",
     "build:widget": "nx build widget",
     "build:backend": "nx build backend",
-    "generate-types": "swagger-typescript-api -p http://localhost:3000/docs-json -o apps/app/src/services/api --modular --extract-enums --single-http-client --axios -n ./types.ts --templates src/templates --type-prefix Api --clean-output",
+    "generate-types": "swagger-typescript-api -p http://localhost:3000/docs-json -o apps/app/src/services/api --modular --extract-enums --single-http-client --axios -n ./types.ts --type-prefix Api --clean-output",
     "kill": "lsof -i :8080 | awk 'FNR == 2 {print $2}' | xargs kill -9",
     "lint": "nx run-many -t lint,stylelint --parallel 10 && nx format:check --all",
     "lint:fix": "nx run-many -t lint:fix,stylelint:fix --parallel 10 && nx format:write --all",

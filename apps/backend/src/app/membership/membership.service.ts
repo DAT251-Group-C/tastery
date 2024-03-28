@@ -4,9 +4,9 @@ import { Observable, from, map, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository } from 'typeorm';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
-import { MembershipEntity } from '../../models';
+import { MembershipEntity } from '../../entities';
+import { MembershipRole } from '../../entities/membership.entity';
 import { OrganizationService } from '../organization/organization.service';
-import { MembershipRole } from '../../models/membership.entity';
 
 @Injectable()
 export class MembershipService {
@@ -34,9 +34,10 @@ export class MembershipService {
 
   public removeMembership(userId: string, userIdToRemove: string, organizationId: string): Observable<DeleteResult> {
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
-      tap(organization => {
-        const userMembership = organization.memberships.find(membership => membership.userId === userId);
-        const userToRemoveMembership = organization.memberships.find(membership => membership.userId === userId);
+      switchMap(organization => from(organization.memberships)),
+      tap(memberships => {
+        const userMembership = memberships.find(membership => membership.userId === userId);
+        const userToRemoveMembership = memberships.find(membership => membership.userId === userId);
 
         if (!userMembership || userToRemoveMembership) {
           throw new ResourceNotFoundException('Membership not found');

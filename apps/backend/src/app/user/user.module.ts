@@ -2,7 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GuardModule } from '../../common/guards/guard.module';
-import { UserEntity } from '../../models';
+import { UserEntity } from '../../entities';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import appConfig from '../../common/config/app-conf';

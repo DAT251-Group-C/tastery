@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import entities from '../../models';
+import entities from '../../entities';
 import appConfig from './app-conf';
 
 const config = appConfig();

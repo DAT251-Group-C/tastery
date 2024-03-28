@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Observable, catchError, from, switchMap, tap } from 'rxjs';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { ProjectEntity } from '../../models';
+import { ProjectEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -53,10 +53,14 @@ export class ProjectService {
         .innerJoin('organization.memberships', 'membership')
         .where('membership.userId = :userId', { userId })
         .andWhere('project.id = :projectId', { projectId })
-        .getOneOrFail(),
+        .getOne(),
     ).pipe(
-      catchError(() => {
-        throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
+      map(project => {
+        if (!project) {
+          throw new ResourceNotFoundException(`Project with id ${projectId} not found`);
+        }
+
+        return project;
       }),
     );
   }
