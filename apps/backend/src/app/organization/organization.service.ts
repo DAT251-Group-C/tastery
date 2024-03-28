@@ -8,9 +8,9 @@ import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipEntity, OrganizationEntity } from '../../entities';
-import { MembershipRole } from '../../entities/membership.entity';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { MembershipRole } from '../../common/models/membership.model';
 
 @Injectable()
 export class OrganizationService {

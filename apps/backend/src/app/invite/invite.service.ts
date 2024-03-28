@@ -112,7 +112,10 @@ export class InviteService {
       .leftJoinAndSelect('invite.organization', 'organization')
       .innerJoin('organization.memberships', 'membership')
       .where('membership.userId = :userId', { userId })
-      .andWhere('organization.id = :id', { id: organizationId });
+      .andWhere('organization.id = :id', { id: organizationId })
+      .orderBy('invite.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
 
     return combineLatest([query.getCount(), query.getMany()]).pipe(
       map(([itemCount, invites]) => {

@@ -16,7 +16,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
@@ -27,7 +27,7 @@ import ResourceNotFoundException from '../../common/exceptions/resource-not-foun
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullOrganization, Organization } from '../../common/models';
-import { MembershipRole } from '../../entities/membership.entity';
+import { MembershipRole } from '../../common/models/membership.model';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { OrganizationService } from './organization.service';
@@ -40,7 +40,6 @@ export class OrganizationController {
 
   @Get()
   @ApiBearerAuth()
-  @ApiQuery({ type: PageOptionsDto, required: false })
   @ApiOkResponsePaginated(Organization)
   public getOrganizations(@UserId() userId: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Organization>> {
     return lastValueFrom(
@@ -63,7 +62,7 @@ export class OrganizationController {
   @ApiOkResponse({ type: FullOrganization })
   public getOrganizationById(
     @UserId() userId: string,
-    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
   ): Promise<FullOrganization> {
     return lastValueFrom(
       this.organizationService.getOrganizationById(organizationId, userId).pipe(
@@ -108,7 +107,7 @@ export class OrganizationController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public updateOrganization(
     @UserId() userId: string,
-    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
     @Body() body: UpdateOrganizationDto,
   ): Promise<UpdateResult> {
     return lastValueFrom(
@@ -133,7 +132,7 @@ export class OrganizationController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteOrganization(
     @UserId() userId: string,
-    @Param('organizationId', new ParseUUIDPipe()) organizationId: string,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
   ): Promise<DeleteResult> {
     return lastValueFrom(
       this.organizationService.deleteOrganization(organizationId, userId).pipe(

@@ -1,12 +1,7 @@
 import { CreateDateColumn, Entity, EntitySchema, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import OrganizationEntity from './organization.entity';
 import UserEntity from './user.entity';
-
-export enum MembershipRole {
-  OWNER = 'owner',
-  ADMIN = 'admin',
-  USER = 'user',
-}
+import { MembershipRole } from '../common/models/membership.model';
 
 @Entity({
   name: 'memberships',

@@ -16,7 +16,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, take } from 'rxjs';
 import { DeleteResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
@@ -30,10 +30,10 @@ import ResourceNotFoundException from '../../common/exceptions/resource-not-foun
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { Invite } from '../../common/models';
-import { MembershipRole } from '../../entities/membership.entity';
+import { MembershipRole } from '../../common/models/membership.model';
 import { CreateInviteDto } from './dto/create-invite.dto';
-import { InviteService } from './invite.service';
 import { RevokeInviteDto } from './dto/delete-invite.dto';
+import { InviteService } from './invite.service';
 
 @ApiTags('Invites')
 @Controller('invites')
@@ -74,9 +74,8 @@ export class InviteController {
   }
 
   @Get('/organization/:organizationId')
-  @ApiParam({ name: 'organizationId', required: true })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiBearerAuth()
-  @ApiQuery({ type: PageOptionsDto, required: false })
   @ApiOkResponsePaginated(Invite)
   public getOrganizationInvites(
     @UserId() userId: string,
@@ -98,7 +97,7 @@ export class InviteController {
   }
 
   @Post('/organization/:organizationId/create')
-  @ApiParam({ name: 'organizationId', required: true })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiBearerAuth()
   @ApiBody({ type: CreateInviteDto })
   @UseGuards(MembershipRoleGuard)
@@ -129,7 +128,7 @@ export class InviteController {
 
   @Post(':hash/accept')
   @ApiBearerAuth()
-  @ApiParam({ name: 'hash', required: true })
+  @ApiParam({ name: 'hash' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public acceptInvite(@Param('hash') hash: string, @UserId() userId: string, @UserEmail() email: string): Promise<void> {
     return lastValueFrom(
@@ -148,7 +147,7 @@ export class InviteController {
 
   @Delete(':hash/decline')
   @ApiBearerAuth()
-  @ApiParam({ name: 'hash', required: true })
+  @ApiParam({ name: 'hash' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public declineInvite(@Param('hash') hash: string, @UserEmail() email: string): Promise<DeleteResult> {
     return lastValueFrom(
@@ -166,7 +165,7 @@ export class InviteController {
   }
 
   @Delete('/organization/:organizationId/revoke')
-  @ApiParam({ name: 'organizationId', required: true })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiBearerAuth()
   @ApiBody({ type: RevokeInviteDto })
   @UseGuards(MembershipRoleGuard)

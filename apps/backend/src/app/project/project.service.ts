@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, combineLatest, from, map, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { PageMetaDto } from '../../common/dto/page-meta.dto';
+import { PageOptionsDto } from '../../common/dto/page-options.dto';
+import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { ProjectEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { PageMetaDto } from '../../common/dto/page-meta.dto';
-import { PageOptionsDto } from '../../common/dto/page-options.dto';
-import { PageDto } from '../../common/dto/page.dto';
 
 @Injectable()
 export class ProjectService {
@@ -30,7 +30,10 @@ export class ProjectService {
       .createQueryBuilder('project')
       .innerJoin('project.organization', 'organization')
       .innerJoin('organization.memberships', 'membership')
-      .where('membership.userId = :userId', { userId });
+      .where('membership.userId = :userId', { userId })
+      .orderBy('project.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
 
     return combineLatest([query.getCount(), query.getMany()]).pipe(
       map(([itemCount, projects]) => {
@@ -50,7 +53,10 @@ export class ProjectService {
       .innerJoin('project.organization', 'organization')
       .innerJoin('organization.memberships', 'membership')
       .where('membership.userId = :userId', { userId })
-      .andWhere('organization.id = :organizationId', { organizationId });
+      .andWhere('organization.id = :organizationId', { organizationId })
+      .orderBy('project.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
 
     return combineLatest([query.getCount(), query.getMany()]).pipe(
       map(([itemCount, projects]) => {

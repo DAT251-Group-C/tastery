@@ -16,7 +16,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
@@ -27,7 +27,7 @@ import ResourceNotFoundException from '../../common/exceptions/resource-not-foun
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullProject, Project } from '../../common/models';
-import { MembershipRole } from '../../entities/membership.entity';
+import { MembershipRole } from '../../common/models/membership.model';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectService } from './project.service';
 
@@ -39,7 +39,6 @@ export class ProjectController {
 
   @Get('projects')
   @ApiBearerAuth()
-  @ApiQuery({ type: PageOptionsDto, required: false })
   @ApiOkResponsePaginated(Project)
   public getProjects(@UserId() userId: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Project>> {
     return lastValueFrom(
@@ -58,8 +57,7 @@ export class ProjectController {
 
   @Get('organizations/:organizationId/projects')
   @ApiBearerAuth()
-  @ApiParam({ name: 'organizationId', required: true })
-  @ApiQuery({ type: PageOptionsDto, required: false })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiOkResponsePaginated(Project)
   public getProjectsInOrganization(
     @UserId() userId: string,
@@ -108,7 +106,7 @@ export class ProjectController {
   @ApiBearerAuth()
   @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
-  @ApiParam({ name: 'organizationId' })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @ApiBody({ type: CreateProjectDto })
   @ApiOkResponse({ type: Project })
   public createProject(
@@ -128,7 +126,7 @@ export class ProjectController {
 
   @Patch('organizations/:organizationId/projects/:projectId')
   @ApiBearerAuth()
-  @ApiParam({ name: 'projectId', required: true })
+  @ApiParam({ name: 'projectId', format: 'uuid' })
   @ApiBody({ type: CreateProjectDto })
   @HttpCode(HttpStatus.NO_CONTENT)
   public updateProject(
@@ -150,7 +148,7 @@ export class ProjectController {
   @ApiBearerAuth()
   @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
-  @ApiParam({ name: 'projectId', required: true })
+  @ApiParam({ name: 'projectId', format: 'uuid' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteProject(@UserId() userId: string, @Param('projectId', ParseUUIDPipe) projectId: string): Promise<DeleteResult> {
     return lastValueFrom(

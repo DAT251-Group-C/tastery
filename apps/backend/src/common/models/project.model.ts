@@ -2,13 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Credential } from './credential.model';
 import { Organization } from './organization.model';
 import { Tool } from './tool.model';
+import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorator';
+import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
 
 export class Project {
-  @ApiProperty() id: string;
-  @ApiProperty() organizationId: string;
+  @ApiPropertyUUID() id: string;
+  @ApiPropertyUUID() organizationId: string;
   @ApiProperty() name: string;
-  @ApiProperty() createdAt: string;
-  @ApiProperty() updatedAt: string;
+  @ApiPropertyDateTime() createdAt: string;
+  @ApiPropertyDateTime() updatedAt: string;
 }
 
 export class FullProject extends Project {

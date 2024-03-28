@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Project } from './project.model';
 import { Membership } from './membership.model';
+import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorator';
+import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
 
 export class Organization {
-  @ApiProperty() id: string;
+  @ApiPropertyUUID() id: string;
   @ApiProperty() name: string;
-  @ApiProperty() createdAt: string;
-  @ApiProperty() updatedAt: string;
+  @ApiPropertyDateTime() createdAt: string;
+  @ApiPropertyDateTime() updatedAt: string;
 }
 
 export class FullOrganization extends Organization {

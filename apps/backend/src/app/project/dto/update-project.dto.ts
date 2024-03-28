@@ -10,5 +10,5 @@ export class UpdateProjectDto {
   @IsString()
   @MinLength(1)
   @MaxLength(63)
-  public name: string;
+  public name?: string;
 }

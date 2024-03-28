@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { ApiPropertyEmail } from '../../../common/decorators/api-property-email.decorator';
 
 export class CreateInviteDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyEmail()
   @Expose()
   @Type(() => String)
   @IsNotEmpty()

@@ -7,16 +7,16 @@ export interface PageMetaDtoParameters {
 }
 
 export class PageMetaDto {
-  @ApiProperty()
+  @ApiProperty({ type: Number, minimum: 1 })
   readonly page: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: Number, minimum: 1, maximum: 50, default: 10 })
   readonly take: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: Number, minimum: 1 })
   readonly itemCount: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: Number, minimum: 0 })
   readonly pageCount: number;
 
   @ApiProperty()

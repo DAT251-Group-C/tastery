@@ -1,14 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MembershipRole } from '../../entities/membership.entity';
 import { Organization } from './organization.model';
 import { User } from './user.model';
+import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorator';
+import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
+
+export enum MembershipRole {
+  OWNER = 'owner',
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 export class Membership {
-  @ApiProperty() organizationId: string;
-  @ApiProperty() userId: string;
+  @ApiPropertyUUID() organizationId: string;
+  @ApiPropertyUUID() userId: string;
   @ApiProperty({ enum: MembershipRole }) role: MembershipRole;
-  @ApiProperty() createdAt: string;
-  @ApiProperty() updatedAt: string;
+  @ApiPropertyDateTime() createdAt: string;
+  @ApiPropertyDateTime() updatedAt: string;
 }
 
 export class FullMembership extends Membership {

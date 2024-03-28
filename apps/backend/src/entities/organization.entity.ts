@@ -34,7 +34,6 @@ export default class OrganizationEntity extends EntitySchema {
   })
   updatedAt: string;
 
-  @ApiProperty({ type: MembershipEntity, isArray: true })
   @OneToMany(() => MembershipEntity, membership => membership.organization, {
     cascade: true,
   })
