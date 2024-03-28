@@ -12,21 +12,28 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, take } from 'rxjs';
 import { DeleteResult } from 'typeorm';
-import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
+import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
+import { Public } from '../../common/decorators/public.decorator';
+import { UserEmail } from '../../common/decorators/user-email.decorator';
+import { UserId } from '../../common/decorators/user-id.decorator';
+import { PageOptionsDto } from '../../common/dto/page-options.dto';
+import { PageDto } from '../../common/dto/page.dto';
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { AuthGuard } from '../../common/guards/auth/auth.guard';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { Invite } from '../../common/models';
 import { MembershipRole } from '../../entities/membership.entity';
+import { CreateInviteDto } from './dto/create-invite.dto';
 import { InviteService } from './invite.service';
+import { RevokeInviteDto } from './dto/delete-invite.dto';
 
 @ApiTags('Invites')
 @Controller('invites')
@@ -36,15 +43,10 @@ export class InviteController {
 
   @Get()
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Invite) } } })
-  public getInvites(@AccessToken() accessToken: IAccessToken): Promise<Invite[]> {
-    if (!accessToken.email) {
-      throw new BadRequestException('Invalid access token');
-    }
-
+  @ApiOkResponse({ type: Invite })
+  public getInvites(@UserEmail() email: string): Promise<Invite[]> {
     return lastValueFrom(
-      this.inviteService.getInvites(accessToken.email).pipe(
+      this.inviteService.getInvites(email).pipe(
         take(1),
         catchError(err => {
           throw new BadRequestException(err.message || err);
@@ -54,7 +56,8 @@ export class InviteController {
   }
 
   @Get(':hash')
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(Invite) } })
+  @Public()
+  @ApiOkResponse({ type: Invite })
   public getInviteByHash(hash: string): Promise<Invite> {
     return lastValueFrom(
       this.inviteService.getInviteByHash(hash).pipe(
@@ -73,43 +76,15 @@ export class InviteController {
   @Get('/organization/:organizationId')
   @ApiParam({ name: 'organizationId', required: true })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Invite) } } })
+  @ApiQuery({ type: PageOptionsDto, required: false })
+  @ApiOkResponsePaginated(Invite)
   public getOrganizationInvites(
-    @AccessToken() accessToken: IAccessToken,
+    @UserId() userId: string,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-  ): Promise<Invite[]> {
-    if (!accessToken.email) {
-      throw new BadRequestException('Invalid access token');
-    }
-
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<Invite>> {
     return lastValueFrom(
-      this.inviteService.getOrganizationInvites(organizationId, accessToken.sub).pipe(
-        take(1),
-        catchError(err => {
-          if (err instanceof ResourceNotFoundException) {
-            throw new NotFoundException(err.message);
-          }
-
-          throw new BadRequestException(err.message || err);
-        }),
-      ),
-    );
-  }
-
-  @Delete('/organization/:organizationId/revoke')
-  @ApiParam({ name: 'organizationId', required: true })
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, MembershipRoleGuard)
-  @MembershipRoles([MembershipRole.OWNER, MembershipRole.ADMIN])
-  @HttpCode(HttpStatus.NO_CONTENT)
-  public revokeInvite(
-    @AccessToken() accessToken: IAccessToken,
-    @Param('organizationId', ParseUUIDPipe) organizationId: string,
-    @Body('email') email: string,
-  ): Promise<DeleteResult> {
-    return lastValueFrom(
-      this.inviteService.revokeInvite(organizationId, accessToken.sub, email).pipe(
+      this.inviteService.getOrganizationInvites(organizationId, userId, pageOptionsDto).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -125,16 +100,17 @@ export class InviteController {
   @Post('/organization/:organizationId/create')
   @ApiParam({ name: 'organizationId', required: true })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @ApiBody({ type: CreateInviteDto })
+  @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.OWNER, MembershipRole.ADMIN])
   @ApiOkResponse({ type: Invite })
   public createInvite(
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-    @Body('email') email: string,
-    @AccessToken() accessToken: IAccessToken,
+    @Body() body: CreateInviteDto,
+    @UserId() userId: string,
   ): Promise<Invite> {
     return lastValueFrom(
-      this.inviteService.createInvite(accessToken.sub, email, organizationId).pipe(
+      this.inviteService.createInvite(userId, body.email, organizationId).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -153,16 +129,11 @@ export class InviteController {
 
   @Post(':hash/accept')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @ApiParam({ name: 'hash', required: true })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public acceptInvite(@Param('hash') hash: string, @AccessToken() accessToken: IAccessToken): Promise<void> {
-    if (!accessToken.email) {
-      throw new BadRequestException('Invalid access token');
-    }
-
+  public acceptInvite(@Param('hash') hash: string, @UserId() userId: string, @UserEmail() email: string): Promise<void> {
     return lastValueFrom(
-      this.inviteService.acceptInvite(accessToken.sub, accessToken.email, hash).pipe(
+      this.inviteService.acceptInvite(userId, email, hash).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -177,16 +148,37 @@ export class InviteController {
 
   @Delete(':hash/decline')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @ApiParam({ name: 'hash', required: true })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public declineInvite(@Param('hash') hash: string, @AccessToken() accessToken: IAccessToken): Promise<DeleteResult> {
-    if (!accessToken.email) {
-      throw new BadRequestException('Invalid access token');
-    }
-
+  public declineInvite(@Param('hash') hash: string, @UserEmail() email: string): Promise<DeleteResult> {
     return lastValueFrom(
-      this.inviteService.declineInvite(accessToken.email, hash).pipe(
+      this.inviteService.declineInvite(email, hash).pipe(
+        take(1),
+        catchError(err => {
+          if (err instanceof ResourceNotFoundException) {
+            throw new NotFoundException(err.message);
+          }
+
+          throw new BadRequestException(err.message || err);
+        }),
+      ),
+    );
+  }
+
+  @Delete('/organization/:organizationId/revoke')
+  @ApiParam({ name: 'organizationId', required: true })
+  @ApiBearerAuth()
+  @ApiBody({ type: RevokeInviteDto })
+  @UseGuards(MembershipRoleGuard)
+  @MembershipRoles([MembershipRole.OWNER, MembershipRole.ADMIN])
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public revokeInvite(
+    @UserId() userId: string,
+    @Param('organizationId', ParseUUIDPipe) organizationId: string,
+    @Body() body: RevokeInviteDto,
+  ): Promise<DeleteResult> {
+    return lastValueFrom(
+      this.inviteService.revokeInvite(organizationId, userId, body.email).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {

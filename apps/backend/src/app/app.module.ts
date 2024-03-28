@@ -10,6 +10,8 @@ import { UserModule } from './user/user.module';
 import { OrganizationModule } from './organization/organization.module';
 import { ProjectModule } from './project/project.module';
 import { InviteModule } from './invite/invite.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '../common/guards/auth/auth.guard';
 
 @Module({
   imports: [
@@ -49,6 +51,6 @@ import { InviteModule } from './invite/invite.module';
     }),
   ],
   controllers: [],
-  providers: [ConfigService],
+  providers: [ConfigService, { provide: APP_GUARD, useClass: AuthGuard }],
 })
 export class AppModule {}

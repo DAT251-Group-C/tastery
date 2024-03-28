@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository } from 'typeorm';
+import { PageMetaDto } from '../../common/dto/page-meta.dto';
+import { PageOptionsDto } from '../../common/dto/page-options.dto';
+import { PageDto } from '../../common/dto/page.dto';
 import { EncryptionService } from '../../common/encrypt/encryption.service';
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
@@ -25,8 +28,8 @@ export class InviteService {
       switchMap(() =>
         this.membershipRepository
           .createQueryBuilder('membership')
-          .innerJoin('membership.organizationId', 'organization')
-          .innerJoin('membership.userId', 'user')
+          .innerJoin('membership.organization', 'organization')
+          .innerJoin('membership.user', 'user')
           .where('user.email = :email', { email })
           .andWhere('organization.id = :organizationId', { organizationId })
           .getExists(),
@@ -37,21 +40,22 @@ export class InviteService {
         }
       }),
       map(() => this.encryptionService.hashWithCrypto(email + organizationId)),
-      switchMap(hash => combineLatest([from(hash), from(this.inviteRepository.findOne({ where: { hash } }))])),
-      map(([hash, invite]) => ({ hash, invite })),
+      switchMap(hash => from(this.inviteRepository.findOne({ where: { hash } })).pipe(map(invite => ({ hash, invite })))),
       tap(({ invite }) => {
         if (invite) {
           throw new ResourceExistsException(`Invite for user with email ${email} already exists`);
         }
       }),
       switchMap(({ hash }) =>
-        this.inviteRepository.save(
-          this.inviteRepository.create({
-            email,
-            organizationId,
-            hash,
-          }),
-        ),
+        from(
+          this.inviteRepository.save(
+            this.inviteRepository.create({
+              email,
+              organizationId,
+              hash,
+            }),
+          ),
+        ).pipe(switchMap(() => this.getInviteByHash(hash))),
       ),
       switchMap(invite => this.sendEmailInvite(invite)),
     );
@@ -102,10 +106,21 @@ export class InviteService {
     return from(this.inviteRepository.find({ where: { email } }));
   }
 
-  public getOrganizationInvites(organizationId: string, userId: string): Observable<InviteEntity[]> {
-    return this.organizationService
-      .userHasAccessToOrganization(organizationId, userId)
-      .pipe(switchMap(() => from(this.inviteRepository.find({ where: { organizationId } }))));
+  public getOrganizationInvites(organizationId: string, userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<InviteEntity>> {
+    const query = this.inviteRepository
+      .createQueryBuilder('invite')
+      .leftJoinAndSelect('invite.organization', 'organization')
+      .innerJoin('organization.memberships', 'membership')
+      .where('membership.userId = :userId', { userId })
+      .andWhere('organization.id = :id', { id: organizationId });
+
+    return combineLatest([query.getCount(), query.getMany()]).pipe(
+      map(([itemCount, invites]) => {
+        const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+
+        return new PageDto(invites, pageMetaDto);
+      }),
+    );
   }
 
   public revokeInvite(organizationId: string, userId: string, email: string): Observable<DeleteResult> {
@@ -138,6 +153,7 @@ export class InviteService {
 
   private sendEmailInvite(invite: InviteEntity): Observable<InviteEntity> {
     // TODO: Implement email sending
+    console.log(invite);
 
     return of(invite);
   }

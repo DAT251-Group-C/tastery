@@ -12,15 +12,18 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { AccessToken, IAccessToken } from '../../common/decorators/access-token.decorator';
+import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
+import { UserId } from '../../common/decorators/user-id.decorator';
+import { PageOptionsDto } from '../../common/dto/page-options.dto';
+import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import { AuthGuard } from '../../common/guards/auth/auth.guard';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullProject, Project } from '../../common/models';
@@ -36,11 +39,11 @@ export class ProjectController {
 
   @Get('projects')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Project) } } })
-  public getProjects(@AccessToken() accessToken: IAccessToken): Promise<Project[]> {
+  @ApiQuery({ type: PageOptionsDto, required: false })
+  @ApiOkResponsePaginated(Project)
+  public getProjects(@UserId() userId: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Project>> {
     return lastValueFrom(
-      this.projectService.getProjects(accessToken.sub).pipe(
+      this.projectService.getProjects(userId, pageOptionsDto).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -55,15 +58,16 @@ export class ProjectController {
 
   @Get('organizations/:organizationId/projects')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @ApiParam({ name: 'organizationId', required: true })
-  @ApiOkResponse({ schema: { items: { $ref: getSchemaPath(Project) } } })
+  @ApiQuery({ type: PageOptionsDto, required: false })
+  @ApiOkResponsePaginated(Project)
   public getProjectsInOrganization(
-    @AccessToken() accessToken: IAccessToken,
+    @UserId() userId: string,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-  ): Promise<Project[]> {
+    @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<Project>> {
     return lastValueFrom(
-      this.projectService.getProjectsInOrganization(organizationId, accessToken.sub).pipe(
+      this.projectService.getProjectsInOrganization(organizationId, userId, pageOptionsDto).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -78,14 +82,10 @@ export class ProjectController {
 
   @Get('projects/:projectId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(FullProject) } })
-  public getProjectById(
-    @AccessToken() accessToken: IAccessToken,
-    @Param('projectId', ParseUUIDPipe) projectId: string,
-  ): Promise<FullProject> {
+  @ApiOkResponse({ type: FullProject })
+  public getProjectById(@UserId() userId: string, @Param('projectId', ParseUUIDPipe) projectId: string): Promise<FullProject> {
     return lastValueFrom(
-      this.projectService.getProjectById(projectId, accessToken.sub).pipe(
+      this.projectService.getProjectById(projectId, userId).pipe(
         take(1),
         switchMap(async project => ({
           ...project,
@@ -106,25 +106,19 @@ export class ProjectController {
 
   @Post('organizations/:organizationId/projects')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
   @ApiParam({ name: 'organizationId' })
   @ApiBody({ type: CreateProjectDto })
-  @ApiOkResponse({ schema: { $ref: getSchemaPath(FullProject) } })
+  @ApiOkResponse({ type: Project })
   public createProject(
-    @AccessToken() accessToken: IAccessToken,
+    @UserId() userId: string,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-    @Body() createProjectDto: CreateProjectDto,
-  ): Promise<FullProject> {
+    @Body() body: CreateProjectDto,
+  ): Promise<Project> {
     return lastValueFrom(
-      this.projectService.createProject(createProjectDto, organizationId, accessToken.sub).pipe(
+      this.projectService.createProject(body, organizationId, userId).pipe(
         take(1),
-        switchMap(async project => ({
-          ...project,
-          organization: await project.organization,
-          credentials: await project.credentials,
-          tools: await project.tools,
-        })),
         catchError(err => {
           throw new BadRequestException(err.message || err);
         }),
@@ -134,17 +128,16 @@ export class ProjectController {
 
   @Patch('organizations/:organizationId/projects/:projectId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @ApiParam({ name: 'projectId', required: true })
   @ApiBody({ type: CreateProjectDto })
   @HttpCode(HttpStatus.NO_CONTENT)
   public updateProject(
-    @AccessToken() accessToken: IAccessToken,
+    @UserId() userId: string,
     @Param('projectId', ParseUUIDPipe) projectId: string,
-    @Body() createProjectDto: CreateProjectDto,
+    @Body() body: CreateProjectDto,
   ): Promise<UpdateResult> {
     return lastValueFrom(
-      this.projectService.updateProject(projectId, accessToken.sub, createProjectDto).pipe(
+      this.projectService.updateProject(projectId, userId, body).pipe(
         take(1),
         catchError(err => {
           throw new BadRequestException(err.message || err);
@@ -155,16 +148,13 @@ export class ProjectController {
 
   @Delete('organizations/:organizationId/projects/:projectId')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, MembershipRoleGuard)
+  @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
   @ApiParam({ name: 'projectId', required: true })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteProject(
-    @AccessToken() accessToken: IAccessToken,
-    @Param('projectId', ParseUUIDPipe) projectId: string,
-  ): Promise<DeleteResult> {
+  public deleteProject(@UserId() userId: string, @Param('projectId', ParseUUIDPipe) projectId: string): Promise<DeleteResult> {
     return lastValueFrom(
-      this.projectService.deleteProject(projectId, accessToken.sub).pipe(
+      this.projectService.deleteProject(projectId, userId).pipe(
         take(1),
         catchError(err => {
           throw new BadRequestException(err.message || err);

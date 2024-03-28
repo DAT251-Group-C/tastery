@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Observable, from, map, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { PageMetaDto } from '../../common/dto/page-meta.dto';
+import { PageOptionsDto } from '../../common/dto/page-options.dto';
+import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipEntity, OrganizationEntity } from '../../entities';
@@ -21,22 +24,27 @@ export class OrganizationService {
       this.organizationRepository.manager.transaction(async manager => {
         const organization = this.organizationRepository.create(body);
 
-        const { raw } = await manager.insert(OrganizationEntity, organization);
-        const createdOrganization = raw[0] as OrganizationEntity;
-        await manager.insert(MembershipEntity, { userId, organizationId: createdOrganization.id, role: MembershipRole.OWNER });
-
-        return createdOrganization;
+        const { generatedMaps } = await manager.insert(OrganizationEntity, organization);
+        const { id } = generatedMaps[0] as OrganizationEntity;
+        await manager.insert(MembershipEntity, { userId, organizationId: id, role: MembershipRole.OWNER });
+        return manager.findOneByOrFail(OrganizationEntity, { id });
       }),
     );
   }
 
-  public getOrganizations(userId: string): Observable<OrganizationEntity[]> {
-    return from(
-      this.organizationRepository
-        .createQueryBuilder('organization')
-        .innerJoin('organization.memberships', 'membership')
-        .where('membership.userId = :userId', { userId })
-        .getMany(),
+  public getOrganizations(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<OrganizationEntity>> {
+    const query = this.organizationRepository
+      .createQueryBuilder('organization')
+      .innerJoin('organization.memberships', 'membership')
+      .where('membership.userId = :userId', { userId })
+      .orderBy('organization.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+
+    return combineLatest([query.getCount(), query.getMany()]).pipe(
+      map(([itemCount, organizations]) => {
+        return new PageDto(organizations, new PageMetaDto({ itemCount, pageOptionsDto }));
+      }),
     );
   }
 
