@@ -45,6 +45,10 @@
   h3 {
     @apply text-h3;
   }
+
+  .font-symbol[data-icon]::after {
+    content: attr(data-icon);
+  }
 }
 
 body {

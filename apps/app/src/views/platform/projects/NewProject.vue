@@ -14,10 +14,10 @@
 </template>
 
 <script setup lang="ts">
+import { useCreateProject } from '@/composables/project';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
-import { useCreateProject } from '@/composables/project';
 
 const { isPending, isError, error, mutate } = useCreateProject();
 

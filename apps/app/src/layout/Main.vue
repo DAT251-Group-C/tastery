@@ -32,25 +32,17 @@
         </template>
         <template #end>
           <div
-            v-if="user"
             class="flex items-center mt-3 mb-2 transition py-0.5 rounded-xs cursor-pointer hover:bg-neutral-700"
             @click="userMenu?.toggle($event)"
           >
-            <Avatar :label="user.name[0]" class="mx-1 bg-primary !text-neutral-200" size="large" />
+            <Avatar :label="user?.name[0] || '?'" class="mx-1 bg-primary !text-neutral-200" size="large" />
             <div class="ml-1 opacity-0 group-hover:opacity-100 group-[.menu-open]:opacity-100 transition-opacity min-w-0">
-              <p class="text-body-small-bold text-neutral-300 truncate">{{ user.name }}</p>
-              <p class="text-caption text-neutral-500 truncate">{{ user.email }}</p>
+              <p class="text-body-small-bold text-neutral-300 truncate">{{ user?.name || 'Loading...' }}</p>
+              <p class="text-caption text-neutral-500 truncate">{{ user?.email || 'Loading...' }}</p>
             </div>
           </div>
 
-          <Menu ref="userMenu" :model="userMenuItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700">
-            <template #item="{ item, props }">
-              <a class="flex align-items-center" v-bind="props.action">
-                <span v-if="item.icon" class="font-symbol mr-2">{{ item.icon }}</span>
-                <span>{{ item.label }}</span>
-              </a>
-            </template>
-          </Menu>
+          <Menu ref="userMenu" :model="userMenuItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
         </template>
       </Menu>
     </aside>
@@ -60,51 +52,38 @@
           <p class="text-body">Agient</p>
 
           <Button
+            v-if="organizations && organizationsFetched"
             size="small"
-            severity="contrast"
-            :label="organizationsLabel"
+            severity="neutral"
+            :label="organizations?.data.find(p => p.id === organizationId)?.name ?? 'Select organization'"
             aria-haspopup="true"
+            iconPos="right"
+            icon="expand_more"
             truncate="true"
-            aria-controls="overlay_menu"
-            @click="!organizationsLoading && organizationMenu?.toggle($event)"
-          >
-            <template #icon>
-              <i class="font-symbol order-1 ml-2">expand_more</i>
-            </template>
-          </Button>
+            aria-controls="organization_menu"
+            @click="organizationsFetched && organizationMenu?.toggle($event)"
+          />
+          <Menu
+            id="organization_menu"
+            ref="organizationMenu"
+            :model="organizationItems"
+            :popup="true"
+            class="bg-neutral-800 ring-1 ring-neutral-700"
+          />
 
           <Button
-            v-if="organizationId"
+            v-if="organizationId && projectsFetched"
+            :label="projects?.data.find(p => p.id === projectId)?.name ?? 'Select project'"
             size="small"
-            severity="contrast"
+            severity="neutral"
             truncate="true"
-            :label="projectsLabel"
+            iconPos="right"
+            icon="expand_more"
             aria-haspopup="true"
-            aria-controls="overlay_menu"
-            @click="!projectsLoading && projectMenu?.toggle($event)"
-          >
-            <template #icon>
-              <i class="font-symbol order-1 ml-2">expand_more</i>
-            </template>
-          </Button>
-
-          <Menu ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700">
-            <template #item="{ item, props }">
-              <a class="flex align-items-center" v-bind="props.action">
-                <span v-if="item.icon" class="font-symbol mr-2">{{ item.icon }}</span>
-                <span>{{ item.label }}</span>
-              </a>
-            </template>
-          </Menu>
-
-          <Menu ref="organizationMenu" :model="organizationItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700">
-            <template #item="{ item, props }">
-              <a class="flex align-items-center" v-bind="props.action">
-                <span v-if="item.icon" class="font-symbol mr-2">{{ item.icon }}</span>
-                <span>{{ item.label }}</span>
-              </a>
-            </template>
-          </Menu>
+            aria-controls="projects_menu"
+            @click="projectsFetched && projectMenu?.toggle($event)"
+          />
+          <Menu id="projects_menu" ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
         </div>
       </nav>
       <main>
@@ -120,7 +99,7 @@ import { useProjects } from '@/composables/project';
 import { useOrganizationId, useProjectId } from '@/composables/tokens';
 import { useUser } from '@/composables/user';
 import { supabase } from '@/plugins/supabase';
-import { ApiOrganizationEntity, ApiProjectEntity } from '@/services/api/data-contracts';
+import { ApiOrganization, ApiProject } from '@/services/api/data-contracts';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Menu, { MenuState } from 'primevue/menu';
@@ -129,8 +108,8 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const { data: user } = useUser();
-const { data: projects, isLoading: projectsLoading } = useProjects();
-const { data: organizations, isLoading: organizationsLoading } = useOrganizations();
+const { data: projects, isFetched: projectsFetched } = useProjects();
+const { data: organizations, isFetched: organizationsFetched } = useOrganizations();
 
 const projectMenu = ref<Menu>();
 const organizationMenu = ref<Menu>();
@@ -139,25 +118,15 @@ const router = useRouter();
 const { projectId, setProjectId } = useProjectId();
 const { organizationId, setOrganizationId } = useOrganizationId();
 
-const mapOrganization = (organization: ApiOrganizationEntity): MenuItem => ({
-  label: organization.name,
-  command: () => setOrganizationId(organization.id),
-});
-
-const organizationsLabel = computed(() => {
-  const currentOrganization = organizations.value?.find(p => p.id === organizationId.value);
-  return currentOrganization ? currentOrganization.name : organizationsLoading.value ? 'Loading...' : 'Select organization';
-});
-
-const projectsLabel = computed(() => {
-  const currentProject = projects.value?.find(p => p.id === projectId.value);
-  return currentProject ? currentProject.name : projectsLoading.value ? 'Loading...' : 'Select project';
-});
-
 const organizationItems = computed<MenuItem[]>(() => {
+  const mapOrganization = (organization: ApiOrganization): MenuItem => ({
+    label: organization.name,
+    command: () => setOrganizationId(organization.id),
+  });
+
   return [
-    ...(organizations.value && organizations.value.length > 0
-      ? organizations.value.map(mapOrganization)
+    ...(organizations.value && organizations.value.data.length > 0
+      ? organizations.value.data.map(mapOrganization)
       : [{ label: 'You have no organizations', disabled: true }]),
     {
       separator: true,
@@ -170,24 +139,28 @@ const organizationItems = computed<MenuItem[]>(() => {
   ];
 });
 
-const mapProject = (project: ApiProjectEntity): MenuItem => ({
-  label: project.name,
-  command: () => setProjectId(project.id),
-});
+const projectItems = computed<MenuItem[]>(() => {
+  const mapProject = (project: ApiProject): MenuItem => ({
+    label: project.name,
+    command: () => setProjectId(project.id),
+  });
 
-const projectItems = computed<MenuItem[]>(() => [
-  ...(projects.value && projects.value.length > 0 ? projects.value.map(mapProject) : [{ label: 'You have no projects', disabled: true }]),
-  {
-    separator: true,
-  },
-  {
-    label: 'New project',
-    icon: 'add',
-    command: () => {
-      router.push('/platform/projects/new');
+  return [
+    ...(projects.value && projects.value.data.length > 0
+      ? projects.value.data.map(mapProject)
+      : [{ label: 'You have no projects', disabled: true }]),
+    {
+      separator: true,
     },
-  },
-]);
+    {
+      label: 'New project',
+      icon: 'add',
+      command: () => {
+        router.push('/platform/projects/new');
+      },
+    },
+  ];
+});
 
 const userMenuItems: MenuItem[] = [
   {
@@ -208,60 +181,70 @@ const userMenuItems: MenuItem[] = [
   },
 ];
 
-const items: MenuItem[] = [
-  {
-    label: 'Home',
-    icon: 'home',
-    route: '/platform',
-    exact: true,
-  },
-  {
-    separator: true,
-    class: '-mx-2',
-  },
-  {
-    label: 'Organizations',
-    icon: 'corporate_fare',
-    route: '/platform/organizations',
-  },
-  {
-    label: 'Projects',
-    icon: 'view_list',
-    route: '/platform/projects',
-  },
-  {
-    separator: true,
-    class: '-mx-2',
-  },
-  {
-    label: 'Chatbots',
-    icon: 'robot_2',
-    route: '/platform/bots',
-  },
-  {
-    label: 'Credentials',
-    icon: 'key',
-    route: '/platform/credentials',
-  },
-  {
-    label: 'Tools',
-    icon: 'build',
-    route: '/platform/credentials',
-  },
-  {
-    label: 'Documentation',
-    icon: 'description',
-    route: '/platform/docs',
-    class: 'mt-auto',
-  },
-  {
-    label: 'Settings',
-    icon: 'settings',
-    route: '/platform/settings',
-  },
-  {
-    separator: true,
-    class: '-mx-2',
-  },
-];
+const items = computed<MenuItem[]>(() => {
+  let extraItems = [
+    {
+      separator: true,
+      class: '-mx-2',
+    },
+    {
+      label: 'Chatbots',
+      icon: 'robot_2',
+      route: '/platform/bots',
+    },
+    {
+      label: 'Credentials',
+      icon: 'key',
+      route: '/platform/credentials',
+    },
+    {
+      label: 'Tools',
+      icon: 'build',
+      route: '/platform/credentials',
+    },
+  ];
+
+  if (!organizationId.value || !projectId.value) {
+    extraItems = [];
+  }
+
+  return [
+    {
+      label: 'Home',
+      icon: 'home',
+      route: '/platform',
+      exact: true,
+    },
+    {
+      separator: true,
+      class: '-mx-2',
+    },
+    {
+      label: 'Organizations',
+      icon: 'corporate_fare',
+      route: '/platform/organizations',
+    },
+    {
+      label: 'Projects',
+      icon: 'view_list',
+      route: '/platform/projects',
+    },
+    ...extraItems,
+    {
+      label: 'Documentation',
+      icon: 'description',
+      route: '/platform/docs',
+      class: 'mt-auto',
+    },
+    {
+      label: 'Settings',
+      icon: 'settings',
+      route: '/platform/settings',
+    },
+    {
+      separator: true,
+      class: '-mx-2',
+    },
+  ];
+});
 </script>

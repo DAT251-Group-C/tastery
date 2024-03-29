@@ -106,27 +106,27 @@ const Button: ButtonPassThroughOptions = {
 
       // Contrast Button
       {
-        'text-neutral-300': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
-        'bg-neutral-800': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
-        'ring-1 ring-neutral-700': props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-300': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
+        'bg-neutral-800': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
+        'ring-1 ring-neutral-700': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
       },
       // Contrast Text Button
-      { 'text-neutral-300 hover:bg-neutral-700/25': props.text && props.severity === 'contrast' && !props.plain },
+      { 'text-neutral-300 hover:bg-neutral-700/25': props.text && props.severity === 'neutral' && !props.plain },
       // Contrast Outlined Button
       {
-        'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'contrast' && !props.plain,
+        'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'neutral' && !props.plain,
       },
 
       // Error Button
       {
-        'text-neutral-900': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-        'bg-error': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-        'ring-1 ring-error-dark': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-900': props.severity === 'error' && !props.text && !props.outlined && !props.plain,
+        'bg-error': props.severity === 'error' && !props.text && !props.outlined && !props.plain,
+        'ring-1 ring-error-dark': props.severity === 'error' && !props.text && !props.outlined && !props.plain,
       },
       // Error Text Button
-      { 'text-error hover:bg-error/25': props.text && props.severity === 'danger' && !props.plain },
+      { 'text-error hover:bg-error/25': props.text && props.severity === 'error' && !props.plain },
       // Error Outlined Button
-      { 'text-error ring-1 ring-error hover:bg-error/25': props.outlined && props.severity === 'danger' && !props.plain },
+      { 'text-error ring-1 ring-error hover:bg-error/25': props.outlined && props.severity === 'error' && !props.plain },
 
       // --- Severity Button States ---
       'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-offset-neutral-900',
@@ -182,19 +182,19 @@ const Button: ButtonPassThroughOptions = {
       // Contrast
       {
         'hover:bg-neutral-700 hover:ring-neutral-600':
-          !props.link && props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
+          !props.link && props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
       },
       // Text & Outlined Button
       {
-        'hover:bg-neutral-700/25 focus:bg-neutral-700/25': (props.text || props.outlined) && props.severity === 'contrast' && !props.plain,
+        'hover:bg-neutral-700/25 focus:bg-neutral-700/25': (props.text || props.outlined) && props.severity === 'neutral' && !props.plain,
       },
 
       // Error
       {
-        'hover:bg-error/75 hover:ring-error': !props.link && props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+        'hover:bg-error/75 hover:ring-error': !props.link && props.severity === 'error' && !props.text && !props.outlined && !props.plain,
       },
       // Text & Outlined Button
-      { 'hover:bg-error/25 focus:bg-error/25': (props.text || props.outlined) && props.severity === 'danger' && !props.plain },
+      { 'hover:bg-error/25 focus:bg-error/25': (props.text || props.outlined) && props.severity === 'error' && !props.plain },
 
       // Disabled
       { 'opacity-60 pointer-events-none cursor-default': context.disabled },
@@ -217,7 +217,7 @@ const Button: ButtonPassThroughOptions = {
   }),
   icon: ({ props }) => ({
     class: [
-      'mx-0',
+      `font-symbol mx-0`,
       {
         'mr-2': props.iconPos == 'left' && props.label != null,
         'ml-2 order-1': props.iconPos == 'right' && props.label != null,
@@ -225,19 +225,20 @@ const Button: ButtonPassThroughOptions = {
         'mt-2': props.iconPos == 'bottom' && props.label != null,
       },
     ],
+    'data-icon': props.icon,
   }),
   loadingIcon: ({ props }) => ({
     class: [
-      'h-3 w-3',
-      'mx-0',
+      'font-symbol mx-0',
+      'animate-spin',
       {
         'mr-2': props.iconPos == 'left' && props.label != null,
         'ml-2 order-1': props.iconPos == 'right' && props.label != null,
         'mb-2': props.iconPos == 'top' && props.label != null,
         'mt-2': props.iconPos == 'bottom' && props.label != null,
       },
-      'animate-spin',
     ],
+    'data-icon': props.loadingIcon,
   }),
   badge: ({ props }) => ({
     class: [{ 'ml-2 w-4 h-4 leading-none flex items-center justify-center': props.badge }],

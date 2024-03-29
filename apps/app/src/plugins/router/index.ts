@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { authGuard } from './guards/auth';
+import { authGuard } from './guards/auth.guard';
+import { organizationGuard } from './guards/organization.guard';
+import { projectGuard } from './guards/project.guard';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +14,7 @@ const router = createRouter({
     {
       path: '/signup',
       name: 'Sign up',
-      component: () => import('@/views/auth/Auth.vue'),
+      component: () => import('@/views/auth/Signup.vue'),
       props: {
         mode: 'signup',
       },
@@ -20,7 +22,7 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'Sign in',
-      component: () => import('@/views/auth/Auth.vue'),
+      component: () => import('@/views/auth/Signin.vue'),
       props: {
         mode: 'signin',
       },
@@ -55,6 +57,15 @@ const router = createRouter({
           name: 'Create project',
           component: () => import('@/views/platform/projects/NewProject.vue'),
         },
+        {
+          path: 'projects/:projectId',
+          name: 'Project',
+          component: () => import('@/views/platform/projects/Project.vue'),
+          meta: {
+            organizationRequired: true,
+            projectRequired: true,
+          },
+        },
       ],
       meta: {
         authRequired: true,
@@ -64,5 +75,7 @@ const router = createRouter({
 });
 
 router.beforeEach(authGuard);
+router.beforeEach(organizationGuard);
+router.beforeEach(projectGuard);
 
 export default router;

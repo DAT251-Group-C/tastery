@@ -1,13 +1,12 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from '../../app/user/user.module';
-import { AuthGuard } from './auth/auth.guard';
-import appConfig from '../config/app-conf';
-import { MembershipRoleGuard } from './membership-role/membership-role.guard';
 import { MembershipModule } from '../../app/membership/membership.module';
+import appConfig from '../config/app-conf';
+import { AuthGuard } from './auth/auth.guard';
+import { MembershipRoleGuard } from './membership-role/membership-role.guard';
 
 @Module({
-  imports: [forwardRef(() => UserModule), ConfigModule.forFeature(appConfig), forwardRef(() => MembershipModule)],
+  imports: [ConfigModule.forFeature(appConfig), forwardRef(() => MembershipModule)],
   providers: [AuthGuard, MembershipRoleGuard],
   exports: [AuthGuard, MembershipRoleGuard],
 })

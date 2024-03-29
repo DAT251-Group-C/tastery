@@ -76,12 +76,10 @@ const Menu: MenuPassThroughOptions = {
       'select-none',
     ],
   },
-  icon: {
-    class: [
-      // Spacing
-      'mr-2',
-    ],
-  },
+  icon: ({ context }) => ({
+    class: ['font-symbol mr-2'],
+    'data-icon': context.item.icon,
+  }),
   label: {
     class: ['text-body-small'],
   },

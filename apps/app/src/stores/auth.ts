@@ -16,7 +16,7 @@ type Getters = {
 };
 
 type Actions = {
-  loadSession(refresh?: boolean): Promise<void>;
+  loadSession(): Promise<void>;
   clearSession(): void;
   saveRedirectRoute(route: Partial<RouteLocation>): void;
   loadRedirectRoute(): void;

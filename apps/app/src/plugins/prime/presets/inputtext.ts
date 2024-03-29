@@ -8,10 +8,12 @@ const InputText: InputTextPassThroughOptions = {
 
       // Spacing
       'm-0 transition-[box-shadow]',
+
+      'text-body-small',
       {
-        'py-2 px-3 text-body': props.size == 'large',
-        'py-1 px-2 text-body-small': props.size == 'small',
-        'py-1.5 px-2 text-body-small': props.size == null,
+        'py-2.5 px-3': props.size == 'large',
+        'py-1 px-2': props.size == 'small',
+        'py-1.5 px-2': props.size == null,
       },
 
       // Colors

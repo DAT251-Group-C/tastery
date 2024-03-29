@@ -1,11 +1,11 @@
+import { ApiCreateProjectDto } from '@/services/api/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { client } from '../services/api-client';
-import { ApiCreateProjectDto } from '@/services/api/data-contracts';
-import { ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY, useOrganizationId } from './tokens';
+import { PROJECT_ID_QUERY_KEY, useOrganizationId } from './tokens';
 
 const useProjects = () => {
   return useQuery({
-    queryKey: ['projects', 'auth', ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY],
+    queryKey: ['projects', 'auth', PROJECT_ID_QUERY_KEY],
     queryFn: async () => {
       return (await client.projectControllerGetProjects()).data;
     },
@@ -15,12 +15,11 @@ const useProjects = () => {
 
 const useCreateProject = () => {
   const queryClient = useQueryClient();
+  const { organizationId } = useOrganizationId();
 
   return useMutation({
     mutationKey: ['createProject'],
     mutationFn: async (data: ApiCreateProjectDto) => {
-      const { organizationId } = useOrganizationId();
-
       if (!organizationId.value) {
         throw new Error('Organization ID is required');
       }

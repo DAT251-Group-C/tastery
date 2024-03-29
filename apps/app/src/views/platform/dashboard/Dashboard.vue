@@ -6,38 +6,38 @@
         <div class="flex flex-col gap-y-4">
           <Button :size="selectedSize.code" :label="user"></Button>
           <Button severity="secondary" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="contrast" :size="selectedSize.code" :label="user"></Button>
+          <Button severity="neutral" :size="selectedSize.code" :label="user"></Button>
           <Button severity="success" :size="selectedSize.code" :label="user"></Button>
           <Button severity="info" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="warning" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="danger" :size="selectedSize.code" :label="user"></Button>
+          <Button icon="key" severity="warning" :size="selectedSize.code" :label="user"></Button>
+          <Button severity="error" :size="selectedSize.code" :label="user"></Button>
         </div>
         <div class="flex flex-col gap-y-4">
           <Button :size="selectedSize.code" text :label="user"></Button>
           <Button severity="secondary" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="contrast" :size="selectedSize.code" text :label="user"></Button>
+          <Button severity="neutral" :size="selectedSize.code" text :label="user"></Button>
           <Button severity="success" :size="selectedSize.code" text :label="user"></Button>
           <Button severity="info" :size="selectedSize.code" text :label="user"></Button>
           <Button severity="warning" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="danger" :size="selectedSize.code" text :label="user"></Button>
+          <Button severity="error" :size="selectedSize.code" text :label="user"></Button>
         </div>
         <div class="flex flex-col gap-y-4">
           <Button :size="selectedSize.code" outlined :label="user"></Button>
           <Button severity="secondary" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="contrast" :size="selectedSize.code" outlined :label="user"></Button>
+          <Button severity="neutral" :size="selectedSize.code" outlined :label="user"></Button>
           <Button severity="success" :size="selectedSize.code" outlined :label="user"></Button>
           <Button severity="info" :size="selectedSize.code" outlined :label="user"></Button>
           <Button severity="warning" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="danger" :size="selectedSize.code" outlined :label="user"></Button>
+          <Button severity="error" :size="selectedSize.code" outlined :label="user"></Button>
         </div>
         <div class="flex flex-col gap-y-4">
           <Button :size="selectedSize.code" link :label="user"></Button>
           <Button severity="secondary" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="contrast" :size="selectedSize.code" link :label="user"></Button>
+          <Button severity="neutral" :size="selectedSize.code" link :label="user"></Button>
           <Button severity="success" :size="selectedSize.code" link :label="user"></Button>
           <Button severity="info" :size="selectedSize.code" link :label="user"></Button>
           <Button severity="warning" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="danger" :size="selectedSize.code" link :label="user"></Button>
+          <Button severity="error" :size="selectedSize.code" link :label="user"></Button>
         </div>
       </div>
       <Dropdown v-model="selectedSize" :placeholder="'Size'" optionLabel="name" :options="sizes"></Dropdown>

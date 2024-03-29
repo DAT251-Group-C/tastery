@@ -36,7 +36,7 @@ class ApiHttpClient extends HttpClient {
             const refresh = async (): Promise<boolean> => {
               const authStore = useAuthStore();
               try {
-                await authStore.loadSession(false);
+                await authStore.loadSession();
                 return authStore.currentSession !== null;
               } catch {
                 return false;
