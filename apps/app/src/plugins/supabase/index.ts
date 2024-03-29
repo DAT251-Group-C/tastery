@@ -13,3 +13,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     persistSession: true,
   },
 });
+
+export const signOut = () => {
+  supabase.auth.signOut({ scope: 'local' });
+};

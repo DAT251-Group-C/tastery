@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import Control from '@/components/Control.vue';
+import Control from '@/components/atoms/Control.vue';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
 import InputText from 'primevue/inputtext';

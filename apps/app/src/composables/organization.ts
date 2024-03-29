@@ -1,16 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
+import { computed } from 'vue';
 import { client } from '../services/api-client';
 import { ApiCreateOrganizationDto } from '../services/api/data-contracts';
 import { ORGANIZATION_ID_QUERY_KEY } from './tokens';
 
 const useOrganizations = () => {
-  return useQuery({
+  const res = useInfiniteQuery({
     queryKey: ['organizations', 'auth', ORGANIZATION_ID_QUERY_KEY],
-    queryFn: async () => {
-      return (await client.organizationControllerGetOrganizations()).data;
+    queryFn: async ({ pageParam }) => {
+      return (await client.organizationControllerGetOrganizations({ page: pageParam, take: 1 })).data;
     },
-    staleTime: 1000 * 60 * 5,
+    initialPageParam: 1,
+    getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
+    staleTime: Infinity,
   });
+
+  return { ...res, items: computed(() => res.data.value?.pages.flatMap(page => page.data) ?? []) };
 };
 
 const useCreateOrganization = () => {

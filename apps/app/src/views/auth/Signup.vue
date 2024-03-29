@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import Control from '@/components/Control.vue';
+import Control from '@/components/atoms/Control.vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';

@@ -1,76 +1,15 @@
 <template>
   <div class="view">
-    <h1>Dashboard</h1>
-    <div class="flex flex-col items-center justify-center gap-6">
-      <div class="flex gap-x-4">
-        <div class="flex flex-col gap-y-4">
-          <Button :size="selectedSize.code" :label="user"></Button>
-          <Button severity="secondary" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="neutral" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="success" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="info" :size="selectedSize.code" :label="user"></Button>
-          <Button icon="key" severity="warning" :size="selectedSize.code" :label="user"></Button>
-          <Button severity="error" :size="selectedSize.code" :label="user"></Button>
-        </div>
-        <div class="flex flex-col gap-y-4">
-          <Button :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="secondary" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="neutral" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="success" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="info" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="warning" :size="selectedSize.code" text :label="user"></Button>
-          <Button severity="error" :size="selectedSize.code" text :label="user"></Button>
-        </div>
-        <div class="flex flex-col gap-y-4">
-          <Button :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="secondary" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="neutral" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="success" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="info" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="warning" :size="selectedSize.code" outlined :label="user"></Button>
-          <Button severity="error" :size="selectedSize.code" outlined :label="user"></Button>
-        </div>
-        <div class="flex flex-col gap-y-4">
-          <Button :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="secondary" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="neutral" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="success" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="info" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="warning" :size="selectedSize.code" link :label="user"></Button>
-          <Button severity="error" :size="selectedSize.code" link :label="user"></Button>
-        </div>
-      </div>
-      <Dropdown v-model="selectedSize" :placeholder="'Size'" optionLabel="name" :options="sizes"></Dropdown>
+    <div class="flex flex-col items-center justify-center gap-6"></div>
+    <div v-for="org in items" :key="org.id">
+      <p>{{ org.name }}</p>
     </div>
+    <p v-if="hasNextPage" @click="fetchNextPage()">Load more</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
-import { ref } from 'vue';
+import { useOrganizations } from '@/composables/organization';
 
-interface Size {
-  name: string;
-  code: 'small' | 'large' | undefined;
-}
-
-const sizes: Size[] = [
-  {
-    name: 'Small',
-    code: 'small',
-  },
-  {
-    name: 'Default',
-    code: undefined,
-  },
-  {
-    name: 'Large',
-    code: 'large',
-  },
-];
-
-const selectedSize = ref<Size>(sizes[1]);
-
-const user = 'Eirik Måseidvåg';
+const { items, hasNextPage, fetchNextPage } = useOrganizations();
 </script>

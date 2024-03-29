@@ -93,10 +93,10 @@ const baseConfig = {
         },
       ],
       'body-large': [
-        '1.25rem',
+        '1.2rem',
         {
           fontWeight: '400',
-          lineHeight: '1.4',
+          lineHeight: '1.25',
           letterSpacing: '0',
         },
       ],
@@ -119,7 +119,7 @@ const baseConfig = {
       'body-small-bold': [
         '0.875rem',
         {
-          fontWeight: '600',
+          fontWeight: '500',
           lineHeight: 'calc(10 / 7)',
           letterSpacing: '0.0035rem',
         },

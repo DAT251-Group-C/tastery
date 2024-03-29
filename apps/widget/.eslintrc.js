@@ -79,13 +79,7 @@ module.exports = {
             mp4: 'always',
           },
         ],
-        indent: [
-          'error',
-          2,
-          {
-            SwitchCase: 0,
-          },
-        ],
+        indent: 'off',
         'vue/comment-directive': 0,
         'vue/multi-word-component-names': 'off',
         'vue/attribute-hyphenation': ['error', 'never'],

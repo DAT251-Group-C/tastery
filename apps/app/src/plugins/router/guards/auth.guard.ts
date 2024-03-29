@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 export async function authGuard(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> {
   const authStore = useAuthStore();
   const isAuth = await isAuthenticated();
-  console.log('guard!');
+
   if (to.meta.authRequired && !isAuth) {
     authStore.saveRedirectRoute(to);
     next({ name: 'Index' });

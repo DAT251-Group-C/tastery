@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import Skeleton from '@/components/Skeleton.vue';
+import Skeleton from '@/components/atoms/Skeleton.vue';
 import { useOrganizations } from '@/composables/organization';
 import Button from 'primevue/button';
 

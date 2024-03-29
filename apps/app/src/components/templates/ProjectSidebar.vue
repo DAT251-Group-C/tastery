@@ -55,7 +55,7 @@
             v-if="organizations && organizationsFetched"
             size="small"
             severity="neutral"
-            :label="organizations?.data.find(p => p.id === organizationId)?.name ?? 'Select organization'"
+            :label="organizations.find(p => p.id === organizationId)?.name ?? 'Select organization'"
             aria-haspopup="true"
             iconPos="right"
             icon="expand_more"
@@ -98,7 +98,7 @@ import { useOrganizations } from '@/composables/organization';
 import { useProjects } from '@/composables/project';
 import { useOrganizationId, useProjectId } from '@/composables/tokens';
 import { useUser } from '@/composables/user';
-import { supabase } from '@/plugins/supabase';
+import { signOut } from '@/plugins/supabase';
 import { ApiOrganization, ApiProject } from '@/services/api/data-contracts';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
@@ -109,7 +109,7 @@ import { useRouter } from 'vue-router';
 
 const { data: user } = useUser();
 const { data: projects, isFetched: projectsFetched } = useProjects();
-const { data: organizations, isFetched: organizationsFetched } = useOrganizations();
+const { items: organizations, isFetched: organizationsFetched } = useOrganizations();
 
 const projectMenu = ref<Menu>();
 const organizationMenu = ref<Menu>();
@@ -118,49 +118,45 @@ const router = useRouter();
 const { projectId, setProjectId } = useProjectId();
 const { organizationId, setOrganizationId } = useOrganizationId();
 
-const organizationItems = computed<MenuItem[]>(() => {
-  const mapOrganization = (organization: ApiOrganization): MenuItem => ({
-    label: organization.name,
-    command: () => setOrganizationId(organization.id),
-  });
+const organizationItems = computed<MenuItem[]>(() => [
+  ...(organizations.value && organizations.value.length > 0
+    ? organizations.value.map(
+        (organization: ApiOrganization): MenuItem => ({
+          label: organization.name,
+          command: () => setOrganizationId(organization.id),
+        }),
+      )
+    : [{ label: 'You have no organizations', disabled: true }]),
+  {
+    separator: true,
+  },
+  {
+    label: 'New organization',
+    icon: 'add',
+    command: () => router.push('/platform/organizations/new'),
+  },
+]);
 
-  return [
-    ...(organizations.value && organizations.value.data.length > 0
-      ? organizations.value.data.map(mapOrganization)
-      : [{ label: 'You have no organizations', disabled: true }]),
-    {
-      separator: true,
+const projectItems = computed<MenuItem[]>(() => [
+  ...(projects.value && projects.value.data.length > 0
+    ? projects.value.data.map(
+        (project: ApiProject): MenuItem => ({
+          label: project.name,
+          command: () => setProjectId(project.id),
+        }),
+      )
+    : [{ label: 'You have no projects', disabled: true }]),
+  {
+    separator: true,
+  },
+  {
+    label: 'New project',
+    icon: 'add',
+    command: () => {
+      router.push('/platform/projects/new');
     },
-    {
-      label: 'New organization',
-      icon: 'add',
-      command: () => router.push('/platform/organizations/new'),
-    },
-  ];
-});
-
-const projectItems = computed<MenuItem[]>(() => {
-  const mapProject = (project: ApiProject): MenuItem => ({
-    label: project.name,
-    command: () => setProjectId(project.id),
-  });
-
-  return [
-    ...(projects.value && projects.value.data.length > 0
-      ? projects.value.data.map(mapProject)
-      : [{ label: 'You have no projects', disabled: true }]),
-    {
-      separator: true,
-    },
-    {
-      label: 'New project',
-      icon: 'add',
-      command: () => {
-        router.push('/platform/projects/new');
-      },
-    },
-  ];
-});
+  },
+]);
 
 const userMenuItems: MenuItem[] = [
   {
@@ -177,7 +173,7 @@ const userMenuItems: MenuItem[] = [
   {
     label: 'Logout',
     icon: 'logout',
-    command: () => supabase.auth.signOut({ scope: 'local' }),
+    command: () => signOut(),
   },
 ];
 
