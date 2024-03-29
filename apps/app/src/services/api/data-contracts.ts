@@ -66,8 +66,8 @@ export interface ApiMembership {
 }
 
 export enum ApiSortOrder {
-  ASC = 'ASC',
   DESC = 'DESC',
+  ASC = 'ASC',
 }
 
 export interface ApiOrganization {
@@ -95,6 +95,7 @@ export interface ApiFullMembership {
 }
 
 export interface ApiUpdateMembershipRoleDto {
+  /** @example "admin" */
   role: ApiMembershipRole;
   /** @format uuid */
   userId: string;

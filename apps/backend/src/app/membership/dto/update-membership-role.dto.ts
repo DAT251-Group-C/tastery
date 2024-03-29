@@ -4,7 +4,7 @@ import { IsEnum, IsUUID } from 'class-validator';
 import { ApiPropertyUUID } from '../../../common/decorators/api-property-uuid.decorator';
 
 export class UpdateMembershipRoleDto {
-  @ApiProperty({ enum: MembershipRole, enumName: 'MembershipRole' })
+  @ApiProperty({ enum: MembershipRole, enumName: 'MembershipRole', example: MembershipRole.ADMIN })
   @IsEnum(MembershipRole)
   public role: MembershipRole;
 

@@ -16,7 +16,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiQuery, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
