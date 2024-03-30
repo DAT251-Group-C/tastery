@@ -7,7 +7,7 @@ const Toast: ToastPassThroughOptions = {
       'w-96 rounded-xs',
 
       // Positioning
-      { '-translate-x-2/4': props.position == 'top-center' || props.position == 'bottom-center' },
+      { '-translate-x-2/4': props.position === 'top-center' || props.position === 'bottom-center' },
     ],
   }),
   container: ({ props }) => ({
@@ -19,10 +19,10 @@ const Toast: ToastPassThroughOptions = {
       // Colors
       {
         'ring-neutral-700 bg-neutral-800': !props.message?.severity,
-        'ring-success bg-success-dark': props.message?.severity == 'success',
-        'ring-info bg-info-dark': props.message?.severity == 'info',
-        'ring-warning bg-warning-dark': props.message?.severity == 'warn',
-        'ring-error bg-error-dark': props.message?.severity == 'error',
+        'ring-success bg-success-dark': props.message?.severity === 'success',
+        'ring-info bg-info-dark': props.message?.severity === 'info',
+        'ring-warning bg-warning-dark': props.message?.severity === 'warn',
+        'ring-error bg-error-dark': props.message?.severity === 'error',
       },
     ],
   }),
@@ -38,10 +38,10 @@ const Toast: ToastPassThroughOptions = {
   icon: ({ props }) => ({
     class: [
       {
-        info: !props.message?.severity || props.message?.severity == 'info',
-        check: props.message?.severity == 'success',
-        warning: props.message?.severity == 'warn',
-        error: props.message?.severity == 'error',
+        info: !props.message?.severity || props.message?.severity === 'info',
+        check: props.message?.severity === 'success',
+        warning: props.message?.severity === 'warn',
+        error: props.message?.severity === 'error',
       },
     ],
   }),

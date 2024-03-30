@@ -19,12 +19,12 @@ const Button: ButtonPassThroughOptions = {
         'px-3 py-2': props.size === 'large',
       },
       {
-        'h-8 w-8 p-0': props.label == null && props.icon !== null,
+        'h-8 w-8 p-0': (props.label === null || props.label === undefined) && props.icon !== null,
       },
 
       // Shapes
       { 'rounded-xs': !props.rounded, 'rounded-full': props.rounded },
-      { 'rounded-none first:rounded-l-md last:rounded-r-md self-center': parent.instance.$name == 'InputGroup' },
+      { 'rounded-none first:rounded-l-md last:rounded-r-md self-center': parent.instance.$name === 'InputGroup' },
 
       // Link Button
       { '!text-neutral-100 !bg-transparent !ring-transparent hover:!text-neutral-300 focus:!text-info': props.link },
@@ -211,7 +211,7 @@ const Button: ButtonPassThroughOptions = {
       {
         underline: props.link,
       },
-      { 'flex-1': props.label !== null, 'invisible w-0': props.label == null },
+      { 'flex-1': props.label !== null, 'invisible w-0': props.label === null || props.label === undefined },
       { 'line-clamp-1 break-all': instance.$attrs.truncate },
     ],
   }),
@@ -219,10 +219,10 @@ const Button: ButtonPassThroughOptions = {
     class: [
       `font-symbol mx-0`,
       {
-        'mr-2': props.iconPos == 'left' && props.label != null,
-        'ml-2 order-1': props.iconPos == 'right' && props.label != null,
-        'mb-2': props.iconPos == 'top' && props.label != null,
-        'mt-2': props.iconPos == 'bottom' && props.label != null,
+        'mr-2': props.iconPos === 'left' && props.label != null,
+        'ml-2 order-1': props.iconPos === 'right' && props.label != null,
+        'mb-2': props.iconPos === 'top' && props.label != null,
+        'mt-2': props.iconPos === 'bottom' && props.label != null,
       },
       {
         'text-[1rem] leading-[1.25] w-5 h-5': props.size === 'small',
@@ -236,10 +236,10 @@ const Button: ButtonPassThroughOptions = {
       'font-symbol mx-0',
       'animate-spin',
       {
-        'mr-2': props.iconPos == 'left' && props.label != null,
-        'ml-2 order-1': props.iconPos == 'right' && props.label != null,
-        'mb-2': props.iconPos == 'top' && props.label != null,
-        'mt-2': props.iconPos == 'bottom' && props.label != null,
+        'mr-2': props.iconPos === 'left' && props.label != null,
+        'ml-2 order-1': props.iconPos === 'right' && props.label != null,
+        'mb-2': props.iconPos === 'top' && props.label != null,
+        'mt-2': props.iconPos === 'bottom' && props.label != null,
       },
       {
         'text-[1rem] leading-[1.25] w-5 h-5': props.size === 'small',

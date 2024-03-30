@@ -5,9 +5,9 @@ const Avatar: AvatarPassThroughOptions = {
     class: [
       // Font
       {
-        'text-body-small-bold': props.size == null || props.size == 'normal',
-        'text-body-bold': props.size == 'large',
-        'text-body-large-bold': props.size == 'xlarge',
+        'text-body-small-bold': props.size === null || props.size === undefined || props.size === 'normal',
+        'text-body-bold': props.size === 'large',
+        'text-body-large-bold': props.size === 'xlarge',
       },
 
       // Alignments
@@ -17,22 +17,22 @@ const Avatar: AvatarPassThroughOptions = {
 
       // Sizes
       {
-        'h-6 w-6': props.size == null || props.size == 'normal',
-        'w-8 h-8': props.size == 'large',
-        'w-10 h-10': props.size == 'xlarge',
+        'h-6 w-6': props.size === null || props.size === undefined || props.size === 'normal',
+        'w-8 h-8': props.size === 'large',
+        'w-10 h-10': props.size === 'xlarge',
       },
-      { '-ml-4': parent.instance.$style?.name == 'avatargroup' },
+      { '-ml-4': parent.instance.$style?.name === 'avatargroup' },
 
       // Shapes
       {
-        'rounded-sm': props.shape == 'square',
-        'rounded-full': props.shape == 'circle',
+        'rounded-sm': props.shape === 'square',
+        'rounded-full': props.shape === 'circle',
       },
-      { 'border-2': parent.instance.$style?.name == 'avatargroup' },
+      { 'border-2': parent.instance.$style?.name === 'avatargroup' },
 
       // Colors
       'bg-neutral-200 text-primary-dark',
-      { 'border-neutral-300': parent.instance.$style?.name == 'avatargroup' },
+      { 'border-neutral-300': parent.instance.$style?.name === 'avatargroup' },
 
       'uppercase',
     ],
@@ -41,8 +41,8 @@ const Avatar: AvatarPassThroughOptions = {
     class: [
       'h-full w-full',
       {
-        'rounded-sm': props.shape == 'square',
-        'rounded-full': props.shape == 'circle',
+        'rounded-sm': props.shape === 'square',
+        'rounded-full': props.shape === 'circle',
       },
     ],
   }),

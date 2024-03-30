@@ -8,13 +8,13 @@ const Dropdown: DropdownPassThroughOptions = {
       'relative',
 
       // Flex
-      { 'flex-1 w-[1%]': parent.instance.$name == 'InputGroup' },
+      { 'flex-1 w-[1%]': parent.instance.$name === 'InputGroup' },
 
       // Shape
       { 'rounded-xs': parent.instance.$name !== 'InputGroup' },
-      { 'first:rounded-l-xs rounded-none last:rounded-r-xs': parent.instance.$name == 'InputGroup' },
-      { 'border-0 border-y border-l last:border-r border-neutral-700': parent.instance.$name == 'InputGroup' },
-      { 'first:ml-0 ml-[-1px]': parent.instance.$name == 'InputGroup' },
+      { 'first:rounded-l-xs rounded-none last:rounded-r-xs': parent.instance.$name === 'InputGroup' },
+      { 'border-0 border-y border-l last:border-r border-neutral-700': parent.instance.$name === 'InputGroup' },
+      { 'first:ml-0 ml-[-1px]': parent.instance.$name === 'InputGroup' },
 
       // Color and Background
       'bg-neutral-800 transition-[box-shadow]',
@@ -49,17 +49,17 @@ const Dropdown: DropdownPassThroughOptions = {
       'bg-transparent',
       'border-0',
       {
-        'text-neutral-300': props.modelValue != undefined,
-        'text-neutral-500': props.modelValue == undefined,
+        'text-neutral-300': props.modelValue !== undefined,
+        'text-neutral-500': props.modelValue === undefined,
       },
       'placeholder:text-neutral-500',
 
       // Sizing and Spacing
       'w-[1%]',
       {
-        'py-2.5 px-3': parent.props.size == 'large',
-        'py-1 px-2': parent.props.size == 'small',
-        'py-1.5 px-2': parent.props.size == null,
+        'py-2.5 px-4': parent.props.size === 'large',
+        'py-1 px-2': parent.props.size === 'small',
+        'py-1.5 px-2': !parent.props.size,
       },
       { 'pr-7': props.showClear },
 

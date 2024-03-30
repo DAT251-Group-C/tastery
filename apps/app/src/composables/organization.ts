@@ -2,7 +2,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { Ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { ApiError, client } from '../services/api-client';
 import {
   ApiCreateOrganizationDto,
@@ -10,6 +11,7 @@ import {
   ApiOrganization,
   ApiUpdateOrganizationDto,
 } from '../services/api/data-contracts';
+import { useOrganizationId } from './tokens';
 
 const useOrganizations = () => {
   const authStore = useAuthStore();
@@ -32,17 +34,21 @@ const useOrganizations = () => {
   return { ...query, organizations };
 };
 
-const useOrganization = (id: string) => {
+const useOrganization = (id: string | Ref<string>) => {
   const queryClient = useQueryClient();
   const authStore = useAuthStore();
   const { isAuthenticated } = storeToRefs(authStore);
 
-  return useQuery({
-    queryKey: ['organization', { id }],
-    queryFn: async () => (await client.organizationControllerGetOrganizationById(id)).data,
+  const getId = (id: string | Ref<string>) => {
+    return typeof id === 'string' ? id : id.value;
+  };
+
+  return useQuery<ApiFullOrganizationWithUsers, AxiosError<ApiError>>({
+    queryKey: ['organization', { id: getId(id) }],
+    queryFn: async () => (await client.organizationControllerGetOrganizationById(getId(id))).data,
     enabled: isAuthenticated,
     placeholderData: () => {
-      return queryClient.getQueryData<ApiFullOrganizationWithUsers[]>(['organizations'])?.find(x => x.id === id);
+      return queryClient.getQueryData<ApiFullOrganizationWithUsers[]>(['organizations'])?.find(x => x.id === getId(id));
     },
   });
 };
@@ -77,4 +83,27 @@ const useUpdateOrganization = () => {
   });
 };
 
-export { useCreateOrganization, useOrganization, useOrganizations, useUpdateOrganization };
+const useDeleteOrganization = () => {
+  const queryClient = useQueryClient();
+  const { organizationId, setOrganizationId } = useOrganizationId();
+  const router = useRouter();
+
+  return useMutation<void, AxiosError<ApiError>, string>({
+    mutationKey: ['deleteOrganization'],
+    mutationFn: async id => {
+      return (await client.organizationControllerDeleteOrganization(id)).data;
+    },
+    onSuccess: async (_, id) => {
+      await queryClient.invalidateQueries({ queryKey: ['organizations'] });
+
+      if (organizationId.value === id) {
+        if (router.currentRoute.value.meta.organizationRequired) {
+          await router.push({ name: 'Projects' });
+        }
+        setOrganizationId(null);
+      }
+    },
+  });
+};
+
+export { useCreateOrganization, useDeleteOrganization, useOrganization, useOrganizations, useUpdateOrganization };

@@ -51,11 +51,11 @@ const router = createRouter({
           },
         },
         {
-          path: '/platform/organizations/:key',
+          path: '/platform/organizations/:organizationId',
           name: 'Organization',
           component: () => import('@/views/platform/organizations/Organization.vue'),
           meta: {
-            organizationGuard: true,
+            organizationRequired: true,
             platformTitle: 'Organization',
             platformSubtitle: 'Settings',
           },
@@ -80,7 +80,7 @@ const router = createRouter({
       component: () => import('@/views/platform/projects/NewProject.vue'),
       meta: {
         authRequired: true,
-        organizationGuard: true,
+        organizationRequired: true,
       },
     },
     {
@@ -95,7 +95,7 @@ const router = createRouter({
       ],
       meta: {
         authRequired: true,
-        organizationGuard: true,
+        organizationRequired: true,
         projectRequired: true,
       },
     },
