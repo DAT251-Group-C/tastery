@@ -1,5 +1,7 @@
+import { useToaster } from '@/composables/toaster';
 import Router from '@/plugins/router';
 import { useAuthStore } from '@/stores/auth';
+import { AxiosError } from 'axios';
 import { V1 } from './api/V1';
 import { HttpClient } from './api/http-client';
 
@@ -35,6 +37,27 @@ class ApiHttpClient extends HttpClient {
       },
       async error => {
         const originalRequest = error.config;
+
+        const notify = (title: string, error: string | Error) => {
+          const toaster = useToaster();
+
+          let message = error;
+
+          if (error instanceof AxiosError) {
+            message = error.response?.data?.message ?? error.message;
+          }
+
+          if (error instanceof Error) {
+            message = error.message;
+          }
+
+          toaster.add({
+            severity: 'error',
+            summary: title,
+            detail: message,
+          });
+        };
+
         if (error.response.status === 401) {
           if (!originalRequest._retry) {
             originalRequest._retry = true;
@@ -50,7 +73,7 @@ class ApiHttpClient extends HttpClient {
             };
 
             if (!(await refresh())) {
-              // TODO: Notification?
+              notify('Authentication error', error);
               await Router.push({ name: 'Sign out' });
               return Promise.reject(error);
             }
@@ -59,7 +82,13 @@ class ApiHttpClient extends HttpClient {
           }
         }
 
+        if (error.response.status === 403) {
+          notify('Authorization error', error);
+          await Router.push({ name: 'Authorization error' });
+        }
+
         if (error.response.status >= 500) {
+          notify('Internal server error', 'An error occurred on the server. We have been notified and will look into it!');
           await Router.push({ name: 'Server error' });
         }
 

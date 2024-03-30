@@ -1,3 +1,4 @@
+import { useToaster } from '@/composables/toaster';
 import { useOrganizationId } from '@/composables/tokens';
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
@@ -7,6 +8,7 @@ export async function organizationGuard(
   next: NavigationGuardNext,
 ): Promise<void> {
   const { organizationId, setOrganizationId } = useOrganizationId();
+  const toaster = useToaster();
 
   if (to.meta.organizationRequired && !organizationId.value) {
     let organizationIdFromParams = to.params.organizationId;
@@ -28,7 +30,11 @@ export async function organizationGuard(
       return next();
     }
 
-    // TODO: Toaster
+    toaster.add({
+      severity: 'info',
+      summary: 'Organization required',
+      detail: 'The page you tried to enter requires an organization to be selected',
+    });
     next({ name: 'Projects' });
   } else {
     next();

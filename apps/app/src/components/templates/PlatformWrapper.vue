@@ -5,7 +5,7 @@
         <!-- Page title -->
         <div class="h-12">
           <h1 class="text-body-large h-full flex items-center">
-            <span class="truncate">{{ route.meta.platformTitle || title }}</span>
+            <span class="truncate">{{ route.meta.platformTitle }}</span>
           </h1>
           <hr class="-mx-6 -mt-px border-neutral-700" />
         </div>
@@ -15,11 +15,11 @@
             <p class="text-body-small text-neutral-500">{{ section.label }}</p>
 
             <template v-for="link in section.items" :key="link.label">
-              <RouterLink v-if="link.to" v-slot="{ isActive }" :to="link.to">
+              <RouterLink v-if="link.to" v-slot="{ isExactActive }" :to="link.to">
                 <p
                   :class="[
                     'flex text-body-small-bold transition-colors hover:text-neutral-300',
-                    isActive ? 'text-neutral-300' : 'text-neutral-400',
+                    isExactActive ? 'text-neutral-300' : 'text-neutral-400',
                   ]"
                 >
                   <span class="truncate">{{ link.label }}</span>
@@ -54,7 +54,7 @@
         <p class="text-body-small text-neutral-400">{{ route.meta.platformSubtitle }}</p>
       </Navbar>
       <main>
-        <RouterView @set-title="title = $event" />
+        <RouterView />
       </main>
     </div>
   </div>
@@ -63,13 +63,12 @@
 <script setup lang="ts">
 import { useOrganizations } from '@/composables/organization';
 import { signOut } from '@/plugins/supabase';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from './Navbar.vue';
 
 const { organizations, isFetched } = useOrganizations();
 const route = useRoute();
-const title = ref<string | null>(null);
 
 const organizationItems = computed(() =>
   organizations.value.map<Item>(org => ({
@@ -87,11 +86,11 @@ interface Item {
 
 const items = computed<Item[]>(() => [
   {
-    label: 'Projects',
+    label: 'Dashboard',
     items: [
       {
         label: 'All projects',
-        to: '/platform',
+        to: '/platform/projects',
       },
     ],
   },

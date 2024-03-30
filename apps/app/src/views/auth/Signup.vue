@@ -45,12 +45,14 @@
 
 <script setup lang="ts">
 import Control from '@/components/atoms/Control.vue';
+import { useToaster } from '@/composables/toaster';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
 import { supabase } from '../../plugins/supabase';
 import Auth from './Auth.vue';
 
+const toaster = useToaster();
 const firstName = ref('');
 const lastName = ref('');
 const email = ref('eirik.maaseidvaag@gmail.com');
@@ -74,7 +76,6 @@ const startResendCountdown = () => {
   }, 1000);
 };
 
-// should be http://<current>/platform
 const emailRedirectTo = `${window.location.origin}/platform`;
 
 const signUp = async () => {
@@ -108,9 +109,17 @@ const resendEmail = async () => {
   });
 
   if (response.error) {
-    console.error('Error resending email:', response.error.message);
+    toaster.add({
+      summary: 'Error resending email',
+      detail: response.error.message,
+      severity: 'error',
+    });
   } else {
-    // TODO: Toaster success message
+    toaster.add({
+      summary: 'Email resent',
+      detail: 'An email has been resent to your email address. Please check your inbox!',
+      severity: 'info',
+    });
     startResendCountdown();
   }
 };

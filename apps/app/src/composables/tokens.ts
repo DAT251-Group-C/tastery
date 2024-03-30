@@ -5,8 +5,6 @@ import { useRouter } from 'vue-router';
 /**
  * Organization
  */
-const ORGANIZATION_ID_QUERY_KEY = 'require-org-id';
-
 const useOrganizationId = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -34,8 +32,6 @@ const useOrganizationId = () => {
 /**
  * Project
  */
-const PROJECT_ID_QUERY_KEY = 'require-org-id';
-
 const useProjectId = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -58,4 +54,4 @@ const useProjectId = () => {
   return { projectId, setProjectId };
 };
 
-export { ORGANIZATION_ID_QUERY_KEY, PROJECT_ID_QUERY_KEY, useOrganizationId, useProjectId };
+export { useOrganizationId, useProjectId };

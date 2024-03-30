@@ -1,5 +1,5 @@
 <template>
-  <div class="platform-view my-6">
+  <div class="platform-view">
     <div class="flex gap-x-4 items-center">
       <RouterLink v-if="organizations.length > 0" to="/platform/projects/new" tabindex="-1">
         <Button size="small" label="New project"></Button>

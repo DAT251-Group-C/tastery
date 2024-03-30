@@ -56,6 +56,7 @@ const router = createRouter({
           component: () => import('@/views/platform/organizations/Organization.vue'),
           meta: {
             organizationGuard: true,
+            platformTitle: 'Organization',
             platformSubtitle: 'Settings',
           },
           props: true,
@@ -105,5 +106,9 @@ const router = createRouter({
 router.beforeEach(authGuard);
 router.beforeEach(organizationGuard);
 router.beforeEach(projectGuard);
+router.beforeEach(to => {
+  const title = String(to.meta?.title ?? to.name);
+  document.title = title ? `${title} | Agient` : 'Agient';
+});
 
 export default router;

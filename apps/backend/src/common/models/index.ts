@@ -1,11 +1,14 @@
-import { FullCredential } from './credential.model';
+import { Credential } from './credential.model';
+import { FullCredential } from './full-credential.model';
+import { FullMembership } from './full-membership.model';
+import { FullOrganization } from './full-organization.model';
+import { FullProject } from './full-project.model';
 import { Invite } from './invite.model';
-import { FullMembership, Membership } from './membership.model';
-import { FullOrganization, Organization } from './organization.model';
-import { FullProject, Project } from './project.model';
+import { Membership } from './membership.model';
+import { Organization } from './organization.model';
+import { Project } from './project.model';
 import { FullTool, Tool } from './tool.model';
 import { User } from './user.model';
-import { Credential } from './credential.model';
 
 const models = [
   User,

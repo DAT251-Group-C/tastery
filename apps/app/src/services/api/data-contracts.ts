@@ -122,7 +122,7 @@ export interface ApiFullOrganization {
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
-  memberships: any[][];
+  memberships: ApiMembership[];
   projects: ApiProject[];
 }
 
@@ -175,7 +175,7 @@ export interface ApiFullProject {
   updatedAt: string;
   credentials: ApiCredential[];
   tools: ApiTool[];
-  organization: object;
+  organization: ApiOrganization;
 }
 
 export interface ApiCreateProjectDto {
@@ -203,34 +203,4 @@ export interface ApiCreateInviteDto {
 export interface ApiRevokeInviteDto {
   /** @format email */
   email: string;
-}
-
-export interface ApiFullCredential {
-  /** @format uuid */
-  id: string;
-  /** @format uuid */
-  projectId: string;
-  name: string;
-  /** @minItems 1 */
-  referrerUrls: string[];
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  project: object;
-}
-
-export interface ApiFullTool {
-  /** @format uuid */
-  id: string;
-  /** @format uuid */
-  projectId: string;
-  name: string;
-  description: string;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  parameters: object;
-  project: object;
 }

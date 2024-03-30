@@ -1,6 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Organization } from './organization.model';
-import { User } from './user.model';
 import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorator';
 import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
 
@@ -16,9 +14,4 @@ export class Membership {
   @ApiProperty({ enum: MembershipRole, enumName: 'MembershipRole' }) role: MembershipRole;
   @ApiPropertyDateTime() createdAt: string;
   @ApiPropertyDateTime() updatedAt: string;
-}
-
-export class FullMembership extends Membership {
-  @ApiProperty({ type: Organization }) organization: Organization;
-  @ApiProperty({ type: User }) user: User;
 }

@@ -1,19 +1,22 @@
+import { useAuthStore } from '@/stores/auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
+import { storeToRefs } from 'pinia';
 import { Ref, computed } from 'vue';
 import { ApiError, client } from '../services/api-client';
 import { ApiCreateOrganizationDto, ApiFullOrganization, ApiOrganization } from '../services/api/data-contracts';
-import { ORGANIZATION_ID_QUERY_KEY } from './tokens';
-
-export const USE_ORGANIZATIONS_QUERY_KEY = ['organizations', 'auth', ORGANIZATION_ID_QUERY_KEY];
 
 const useOrganizations = () => {
+  const authStore = useAuthStore();
+  const { isAuthenticated } = storeToRefs(authStore);
+
   const query = useQuery({
     queryKey: ['organizations'],
     queryFn: async () => {
       console.log('query!');
       return (await client.organizationControllerGetOrganizations()).data;
     },
+    enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -26,11 +29,13 @@ const useOrganizations = () => {
 
 const useOrganization = (id: Ref<string>) => {
   const queryClient = useQueryClient();
+  const authStore = useAuthStore();
+  const { isAuthenticated } = storeToRefs(authStore);
+
   return useQuery({
     queryKey: ['organization', { id }],
-    queryFn: async () => {
-      return (await client.organizationControllerGetOrganizationById(id.value)).data;
-    },
+    queryFn: async () => (await client.organizationControllerGetOrganizationById(id.value)).data,
+    enabled: isAuthenticated,
     placeholderData: () => {
       return queryClient.getQueryData<ApiFullOrganization[]>(['organizations'])?.find(x => x.id === id.value);
     },

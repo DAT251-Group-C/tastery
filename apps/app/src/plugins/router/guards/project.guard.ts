@@ -1,8 +1,10 @@
+import { useToaster } from '@/composables/toaster';
 import { useProjectId } from '@/composables/tokens';
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
 export async function projectGuard(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> {
   const { projectId, setProjectId } = useProjectId();
+  const toaster = useToaster();
 
   if (to.meta.projectRequired && !projectId.value) {
     let projectIdFromParams = to.params.projectId;
@@ -24,7 +26,11 @@ export async function projectGuard(to: RouteLocationNormalized, from: RouteLocat
       return next();
     }
 
-    // TODO: Toaster
+    toaster.add({
+      severity: 'info',
+      summary: 'Project required',
+      detail: 'The page you tried to enter requires a project to be selected',
+    });
     next({ name: 'Projects' });
   } else {
     next();

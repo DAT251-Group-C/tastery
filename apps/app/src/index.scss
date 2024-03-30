@@ -30,12 +30,33 @@
     --color-info-dark: 0 52 89;
   }
 
+  html {
+    @apply bg-neutral-900 text-neutral-100;
+
+    color-scheme: dark;
+  }
+
+  .font-symbol {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+
   .view {
     @apply w-full px-5 space-y-6 mx-auto my-16 max-w-7xl;
   }
 
   .platform-view {
-    @apply w-full px-5 space-y-6;
+    @apply w-full px-5 space-y-6 my-6;
   }
 
   h1 {
