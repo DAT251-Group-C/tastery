@@ -28,7 +28,7 @@
       <h1 v-else-if="isError">An error occurred</h1>
       <Skeleton v-else class="w-full max-w-md h-10 rounded-xs" />
 
-      <TabView v-model:activeIndex="activeTab" :scrollable="true">
+      <TabView :activeIndex="activeTab" :scrollable="true" @update:active-index="setActiveTab($event)">
         <TabPanel header="General" />
         <TabPanel header="Members" />
       </TabView>
@@ -44,6 +44,15 @@
           <OrganizationGeneral :key="organization.id" :organization="organization" />
         </template>
       </template>
+      <template v-if="activeTab === 1">
+        <template v-if="isLoading || isPlaceholderData">
+          <Skeleton class="w-full h-[189px] rounded-sm ring-1 ring-neutral-700" />
+          <Skeleton class="w-full h-[236px] rounded-sm ring-1 ring-neutral-700" />
+        </template>
+        <template v-else-if="organization">
+          <OrganizationMembers :key="organization.id" :organization="organization" />
+        </template>
+      </template>
     </div>
   </template>
 </template>
@@ -51,13 +60,28 @@
 <script setup lang="ts">
 import Skeleton from '@/components/atoms/Skeleton.vue';
 import { useOrganization } from '@/composables/organization';
+import { useRouteQuery } from '@vueuse/router';
 import Button from 'primevue/button';
 import TabPanel from 'primevue/tabpanel';
 import TabView from 'primevue/tabview';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import OrganizationGeneral from './OrganizationGeneral.vue';
+import OrganizationMembers from './OrganizationMembers.vue';
 
-const activeTab = ref(0);
+const record: Record<string, number> = {
+  general: 0,
+  members: 1,
+};
+
+const tab = useRouteQuery('tab', 'general', { transform: String });
+const activeTab = computed(() => record[tab.value.toLocaleLowerCase()] ?? 0);
+const setActiveTab = (index: number) => {
+  const found = Object.entries(record).find(([, value]) => value === index);
+  if (found) {
+    tab.value = found[0];
+  }
+};
+
 const { organizationId } = defineProps<{ organizationId: string }>();
 const { data: organization, isLoading, isError, error, isPlaceholderData } = useOrganization(organizationId);
 
