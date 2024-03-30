@@ -23,6 +23,7 @@ import ResourceNotFoundException from '../../common/exceptions/resource-not-foun
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullOrganization, Organization } from '../../common/models';
+import { FullOrganizationWithUsers } from '../../common/models/full-organization-with-users.model';
 import { MembershipRole } from '../../common/models/membership.model';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
@@ -64,18 +65,23 @@ export class OrganizationController {
   @Get(':organizationId')
   @ApiBearerAuth()
   @ApiParam({ name: 'organizationId', format: 'uuid' })
-  @ApiOkResponse({ type: FullOrganization })
+  @ApiOkResponse({ type: FullOrganizationWithUsers })
   public getOrganizationById(
     @UserId() userId: string,
     @Param('organizationId', ParseUUIDPipe) organizationId: string,
-  ): Promise<FullOrganization> {
+  ): Promise<FullOrganizationWithUsers> {
     return lastValueFrom(
       this.organizationService.getOrganizationById(organizationId, userId).pipe(
         take(1),
         switchMap(async organization => ({
           ...organization,
           projects: await organization.projects,
-          memberships: await organization.memberships,
+          memberships: await Promise.all(
+            (await organization.memberships).map(async membership => ({
+              ...membership,
+              user: await membership.user,
+            })),
+          ),
         })),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {

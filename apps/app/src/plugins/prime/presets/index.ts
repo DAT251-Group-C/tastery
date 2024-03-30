@@ -7,6 +7,7 @@ import Dropdown from './dropdown';
 import InputText from './inputtext';
 import Menu from './menu';
 import Toast from './toast';
+import TabView from './tabview';
 
 const preset: PrimeVuePTOptions = {
   avatar: Avatar,
@@ -15,6 +16,7 @@ const preset: PrimeVuePTOptions = {
   divider: Divider,
   dropdown: Dropdown,
   menu: Menu,
+  tabview: TabView,
   inputtext: InputText,
   toast: Toast,
 };

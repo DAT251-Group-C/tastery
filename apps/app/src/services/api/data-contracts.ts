@@ -126,6 +126,31 @@ export interface ApiFullOrganization {
   projects: ApiProject[];
 }
 
+export interface ApiMembershipWithUser {
+  /** @format uuid */
+  organizationId: string;
+  /** @format uuid */
+  userId: string;
+  role: ApiMembershipRole;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  user: ApiUser;
+}
+
+export interface ApiFullOrganizationWithUsers {
+  /** @format uuid */
+  id: string;
+  name: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  memberships: ApiMembershipWithUser[];
+  projects: ApiProject[];
+}
+
 export interface ApiCreateOrganizationDto {
   name: string;
 }

@@ -51,7 +51,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/platform/organizations/:organizationId',
+          path: '/platform/organizations/:key',
           name: 'Organization',
           component: () => import('@/views/platform/organizations/Organization.vue'),
           meta: {
@@ -85,7 +85,6 @@ const router = createRouter({
     },
     {
       path: '/platform/projects/:projectId',
-      name: 'test',
       component: () => import('@/components/templates/ProjectWrapper.vue'),
       children: [
         {

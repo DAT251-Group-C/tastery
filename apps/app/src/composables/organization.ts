@@ -2,9 +2,14 @@ import { useAuthStore } from '@/stores/auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
-import { Ref, computed } from 'vue';
+import { computed } from 'vue';
 import { ApiError, client } from '../services/api-client';
-import { ApiCreateOrganizationDto, ApiFullOrganization, ApiOrganization } from '../services/api/data-contracts';
+import {
+  ApiCreateOrganizationDto,
+  ApiFullOrganizationWithUsers,
+  ApiOrganization,
+  ApiUpdateOrganizationDto,
+} from '../services/api/data-contracts';
 
 const useOrganizations = () => {
   const authStore = useAuthStore();
@@ -27,17 +32,17 @@ const useOrganizations = () => {
   return { ...query, organizations };
 };
 
-const useOrganization = (id: Ref<string>) => {
+const useOrganization = (id: string) => {
   const queryClient = useQueryClient();
   const authStore = useAuthStore();
   const { isAuthenticated } = storeToRefs(authStore);
 
   return useQuery({
     queryKey: ['organization', { id }],
-    queryFn: async () => (await client.organizationControllerGetOrganizationById(id.value)).data,
+    queryFn: async () => (await client.organizationControllerGetOrganizationById(id)).data,
     enabled: isAuthenticated,
     placeholderData: () => {
-      return queryClient.getQueryData<ApiFullOrganization[]>(['organizations'])?.find(x => x.id === id.value);
+      return queryClient.getQueryData<ApiFullOrganizationWithUsers[]>(['organizations'])?.find(x => x.id === id);
     },
   });
 };
@@ -56,4 +61,20 @@ const useCreateOrganization = () => {
   });
 };
 
-export { useCreateOrganization, useOrganization, useOrganizations };
+const useUpdateOrganization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError<ApiError>, ApiUpdateOrganizationDto & { organizationId: string }>({
+    mutationKey: ['updateOrganization'],
+    mutationFn: async data => {
+      const { organizationId, ...rest } = data;
+      return (await client.organizationControllerUpdateOrganization(organizationId, rest)).data;
+    },
+    onSuccess: async (_, { organizationId: id }) => {
+      await queryClient.invalidateQueries({ queryKey: ['organization', { id }] });
+      await queryClient.invalidateQueries({ queryKey: ['organizations'] });
+    },
+  });
+};
+
+export { useCreateOrganization, useOrganization, useOrganizations, useUpdateOrganization };

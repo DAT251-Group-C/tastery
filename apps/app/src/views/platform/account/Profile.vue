@@ -6,7 +6,7 @@
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Email</span>
         <Control size="large" hideLabel class="col-span-2" hideDetails>
-          <InputText v-model="email" size="large" disabled readonly></InputText>
+          <InputText v-model="email" type="email" size="large" disabled readonly></InputText>
         </Control>
       </div>
     </div>

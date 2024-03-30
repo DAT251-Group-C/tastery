@@ -7,7 +7,7 @@
       <Button severity="neutral" :label="'Continue with Google'" size="large"></Button>
       <Divider><span class="bg-neutral-800 text-neutral-300 px-2">or</span></Divider>
       <Control label="Email" size="large">
-        <InputText v-model="email" required placeholder="you@example.com" size="large" />
+        <InputText v-model="email" type="email" required placeholder="you@example.com" size="large" />
       </Control>
       <div class="relative">
         <Button link class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0" label="Forgot password?"></Button>

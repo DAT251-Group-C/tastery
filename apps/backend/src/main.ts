@@ -8,7 +8,6 @@ import type { ViteHotContext } from 'vite/types/hot';
 import { AppModule } from './app/app.module';
 import appConfig from './common/config/app-conf';
 import { AllExceptionsFilter } from './common/filters/all-exception.filter';
-import models from './common/models';
 
 declare const module: { hot?: ViteHotContext };
 

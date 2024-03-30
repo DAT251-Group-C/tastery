@@ -24,7 +24,7 @@
           <InputText v-model="lastName" required placeholder="Doe" size="large" />
         </Control>
         <Control label="Email" size="large">
-          <InputText v-model="email" required placeholder="you@example.com" size="large" />
+          <InputText v-model="email" type="email" required placeholder="you@example.com" size="large" />
         </Control>
         <Control label="Password" size="large">
           <InputText v-model="password" required type="password" placeholder="••••••••" size="large" />

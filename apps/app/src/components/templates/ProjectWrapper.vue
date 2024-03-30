@@ -17,7 +17,9 @@
               @click="navigate"
             >
               <i class="font-symbol">{{ item.icon }}</i>
-              <span class="ml-3 opacity-0 group-hover:opacity-100 group-[.menu-open]:opacity-100 transition-opacity">{{ item.label }}</span>
+              <span class="ml-3 opacity-0 group-hover:opacity-100 group-[.menu-open]:opacity-100 transition-opacity line-clamp-1">
+                {{ item.label }}
+              </span>
             </a>
           </router-link>
         </template>
@@ -150,11 +152,8 @@ const projectItems = computed<MenuItem[]>(() => [
 const userMenuItems: MenuItem[] = [
   {
     label: 'Profile',
-    icon: 'person',
-  },
-  {
-    label: 'Preferences',
-    icon: 'settings',
+    icon: 'account_circle',
+    command: () => router.push('/platform/profile'),
   },
   {
     separator: true,
@@ -168,10 +167,6 @@ const userMenuItems: MenuItem[] = [
 
 const items = computed<MenuItem[]>(() => {
   let extraItems = [
-    {
-      separator: true,
-      class: '-mx-2',
-    },
     {
       label: 'Chatbots',
       icon: 'robot_2',
@@ -195,7 +190,7 @@ const items = computed<MenuItem[]>(() => {
 
   return [
     {
-      label: 'Home',
+      label: 'Dashboard',
       icon: 'home',
       route: '/platform',
       exact: true,
@@ -204,27 +199,17 @@ const items = computed<MenuItem[]>(() => {
       separator: true,
       class: '-mx-2',
     },
-    {
-      label: 'Organizations',
-      icon: 'corporate_fare',
-      route: '/platform/organizations',
-    },
-    {
-      label: 'Projects',
-      icon: 'view_list',
-      route: '/platform/projects',
-    },
     ...extraItems,
     {
       label: 'Documentation',
       icon: 'description',
-      route: '/platform/docs',
+      route: '/docs',
       class: 'mt-auto',
     },
     {
-      label: 'Settings',
+      label: 'Project settings',
       icon: 'settings',
-      route: '/platform/settings',
+      route: projectId.value ? `/platform/projects/${projectId.value}/settings` : '',
     },
   ];
 });
