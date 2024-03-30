@@ -3,6 +3,12 @@ import { useAuthStore } from '@/stores/auth';
 import { V1 } from './api/V1';
 import { HttpClient } from './api/http-client';
 
+export interface ApiError {
+  message: string;
+  statusCode: number;
+  timestamp: string;
+}
+
 class ApiHttpClient extends HttpClient {
   constructor() {
     super({ baseURL: `${import.meta.env.VITE_REST_API_URL}` });

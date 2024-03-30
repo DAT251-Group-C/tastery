@@ -22,7 +22,6 @@ const Dropdown: DropdownPassThroughOptions = {
       // States
       'ring-1 ring-inset',
       {
-        'ring-neutral-700': !state.focused,
         'ring-neutral-500': state.focused,
       },
 
@@ -37,7 +36,7 @@ const Dropdown: DropdownPassThroughOptions = {
       { 'opacity-60': props.disabled, 'pointer-events-none': props.disabled },
     ],
   }),
-  input: ({ props }) => ({
+  input: ({ props, parent }) => ({
     class: [
       //Font
       'text-body-small',
@@ -57,7 +56,11 @@ const Dropdown: DropdownPassThroughOptions = {
 
       // Sizing and Spacing
       'w-[1%]',
-      'py-1.5 px-2',
+      {
+        'py-2.5 px-3': parent.props.size == 'large',
+        'py-1 px-2': parent.props.size == 'small',
+        'py-1.5 px-2': parent.props.size == null,
+      },
       { 'pr-7': props.showClear },
 
       //Shape
@@ -264,6 +267,10 @@ const Dropdown: DropdownPassThroughOptions = {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
+  loadingIcon: ({ props }) => ({
+    class: ['font-symbol mx-0', 'animate-spin', 'text-[1rem] leading-1'],
+    'data-icon': props.loadingIcon,
+  }),
 };
 
 export default Dropdown;

@@ -34,7 +34,7 @@
       <div class="text-caption text-neutral-400 mt-6">
         <p class="flex justify-center items-center">
           Already have an account?
-          <RouterLink to="/signin">
+          <RouterLink to="/signin" tabindex="-1">
             <Button link class="!text-caption" label="Sign in now"></Button>
           </RouterLink>
         </p>

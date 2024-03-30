@@ -8,7 +8,6 @@ const useUser = () => {
     queryFn: async () => {
       return (await client.userControllerGetUser()).data;
     },
-    staleTime: 1000 * 60 * 5,
   });
 };
 

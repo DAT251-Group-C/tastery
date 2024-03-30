@@ -107,6 +107,7 @@ export interface ApiProject {
   /** @format uuid */
   organizationId: string;
   name: string;
+  description: string;
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
@@ -167,6 +168,7 @@ export interface ApiFullProject {
   /** @format uuid */
   organizationId: string;
   name: string;
+  description: string;
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
@@ -178,6 +180,7 @@ export interface ApiFullProject {
 
 export interface ApiCreateProjectDto {
   name: string;
+  description: string;
 }
 
 export interface ApiInvite {

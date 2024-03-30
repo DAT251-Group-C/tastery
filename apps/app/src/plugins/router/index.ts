@@ -29,18 +29,41 @@ const router = createRouter({
     },
     {
       path: '/platform',
-      name: 'Platform',
-      component: () => import('@/views/platform/Platform.vue'),
+      redirect: '/platform/projects',
+      component: () => import('@/components/templates/PlatformWrapper.vue'),
+      children: [
+        {
+          path: '/platform/profile',
+          name: 'Profile',
+          component: () => import('@/views/platform/account/Profile.vue'),
+          meta: {
+            platformTitle: 'Account',
+            platformSubtitle: 'Profile',
+          },
+        },
+        {
+          path: '/platform/projects',
+          name: 'Projects',
+          component: () => import('@/views/platform/projects/Projects.vue'),
+          meta: {
+            platformTitle: 'Dashboard',
+            platformSubtitle: 'Projects',
+          },
+        },
+        {
+          path: '/platform/organizations/:organizationId',
+          name: 'Organization',
+          component: () => import('@/views/platform/organizations/Organization.vue'),
+          meta: {
+            organizationGuard: true,
+            platformSubtitle: 'Settings',
+          },
+          props: true,
+        },
+      ],
       meta: {
         authRequired: true,
       },
-      children: [
-        {
-          path: '',
-          name: 'Dashboard',
-          component: () => import('@/views/platform/dashboard/Dashboard.vue'),
-        },
-      ],
     },
     {
       path: '/platform/organizations/new',
@@ -56,22 +79,23 @@ const router = createRouter({
       component: () => import('@/views/platform/projects/NewProject.vue'),
       meta: {
         authRequired: true,
+        organizationGuard: true,
       },
     },
     {
       path: '/platform/projects/:projectId',
-      name: 'Project',
-      component: () => import('@/components/templates/ProjectSidebar.vue'),
+      name: 'test',
+      component: () => import('@/components/templates/ProjectWrapper.vue'),
       children: [
         {
           path: '',
           name: 'Project',
-          component: () => import('@/views/platform/dashboard/Dashboard.vue'),
+          component: () => import('@/views/platform/projects/Project.vue'),
         },
       ],
       meta: {
         authRequired: true,
-        organizationRequired: true,
+        organizationGuard: true,
         projectRequired: true,
       },
     },

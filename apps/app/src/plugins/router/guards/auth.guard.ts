@@ -9,7 +9,7 @@ export async function authGuard(to: RouteLocationNormalized, from: RouteLocation
     authStore.saveRedirectRoute(to);
     next({ name: 'Index' });
   } else if (['Index', 'Sign up', 'Sign in'].includes(to.name?.toString() ?? '') && isAuth) {
-    next({ name: 'Dashboard' });
+    next({ name: 'Projects' });
   } else {
     next();
   }

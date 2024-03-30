@@ -31,6 +31,14 @@ export default class ProjectEntity extends EntitySchema {
   })
   name: string;
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    default: '',
+  })
+  description: string;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',

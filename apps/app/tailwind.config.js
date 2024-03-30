@@ -141,10 +141,10 @@ const baseConfig = {
         },
       ],
       'button-small': [
-        '0.875rem',
+        '0.75rem',
         {
           fontWeight: '400',
-          lineHeight: 'calc(10 / 7)',
+          lineHeight: 'calc(5 / 3)',
           letterSpacing: '0.0035rem',
         },
       ],

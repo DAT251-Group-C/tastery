@@ -1,10 +1,10 @@
 <template>
   <div class="view">
     <h2>Agient</h2>
-    <RouterLink to="/signup">
+    <RouterLink to="/signup" tabindex="-1">
       <Button>Sign up</Button>
     </RouterLink>
-    <RouterLink to="/signin">
+    <RouterLink to="/signin" tabindex="-1">
       <Button>Sign in</Button>
     </RouterLink>
   </div>

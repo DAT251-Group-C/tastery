@@ -13,16 +13,19 @@ const useOrganizationId = () => {
   const organizationId = useStorage<string | null>('organizationId', null);
   const { setProjectId } = useProjectId();
 
-  const setOrganizationId = (id: string | null) => {
+  const setOrganizationId = async (id: string | null) => {
     organizationId.value = id;
-    if (id === null) {
-      setProjectId(null);
+    setProjectId(null);
 
-      if (router.currentRoute.value.meta.organizationRequired) {
-        router.push({ name: 'Dashboard' });
-      }
+    if (id === null && router.currentRoute.value.meta.organizationRequired) {
+      router.push({ name: 'Projects' });
     }
-    queryClient.invalidateQueries({ queryKey: [ORGANIZATION_ID_QUERY_KEY] });
+
+    await queryClient.invalidateQueries({ queryKey: ['organizations'] });
+
+    if (id) {
+      await queryClient.invalidateQueries({ queryKey: ['organization', { id }] });
+    }
   };
 
   return { organizationId, setOrganizationId };
@@ -42,10 +45,14 @@ const useProjectId = () => {
     projectId.value = id;
 
     if (id === null && router.currentRoute.value.meta.projectRequired) {
-      router.push({ name: 'Dashboard' });
+      router.push({ name: 'Projects' });
     }
 
-    queryClient.invalidateQueries({ queryKey: [ORGANIZATION_ID_QUERY_KEY] });
+    queryClient.invalidateQueries({ queryKey: ['projects'] });
+
+    if (id) {
+      queryClient.invalidateQueries({ queryKey: ['project', { id }] });
+    }
   };
 
   return { projectId, setProjectId };

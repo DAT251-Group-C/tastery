@@ -9,6 +9,7 @@ export class Project {
   @ApiPropertyUUID() id: string;
   @ApiPropertyUUID() organizationId: string;
   @ApiProperty() name: string;
+  @ApiProperty() description: string;
   @ApiPropertyDateTime() createdAt: string;
   @ApiPropertyDateTime() updatedAt: string;
 }

@@ -25,7 +25,7 @@ const { initialized } = storeToRefs(authStore);
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {
     console.log('User signed in');
-    queryClient.invalidateQueries({ queryKey: ['auth'] });
+    queryClient.invalidateQueries({ predicate: ({ queryKey }) => queryKey.includes('auth') });
     authStore.loadSession().then(() => {
       if (authStore.currentSession !== null) {
         authStore.loadRedirectRoute();
@@ -34,7 +34,7 @@ supabase.auth.onAuthStateChange(event => {
   } else if (event === 'SIGNED_OUT') {
     authStore.clearSession();
     setOrganizationId(null);
-    queryClient.invalidateQueries({ queryKey: ['auth'] });
+    queryClient.invalidateQueries({ predicate: ({ queryKey }) => queryKey.includes('auth') });
 
     if (router.currentRoute.value.meta.authRequired) {
       router.push({ name: 'Index' });

@@ -10,4 +10,12 @@ export class CreateProjectDto {
   @MinLength(1)
   @MaxLength(63)
   public name: string;
+
+  @ApiProperty({ type: String })
+  @Expose()
+  @Type(() => String)
+  @IsString()
+  @MinLength(1)
+  @MaxLength(255)
+  public description: string;
 }

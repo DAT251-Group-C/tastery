@@ -20,7 +20,7 @@
     <div class="text-caption text-neutral-400 mt-6">
       <p class="flex justify-center items-center">
         Don't have an account?
-        <RouterLink to="/signup">
+        <RouterLink to="/signup" tabindex="-1">
           <Button link class="!text-caption" label="Sign up now"></Button>
         </RouterLink>
       </p>
@@ -52,7 +52,7 @@ const signIn = async () => {
     console.error('Error signing in:', response.error.message);
   } else {
     console.log('User signed in:', response.data);
-    router.push({ name: 'Dashboard' });
+    router.push({ name: 'Projects' });
   }
 };
 

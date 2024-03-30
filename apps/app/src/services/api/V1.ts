@@ -248,32 +248,10 @@ export class V1<SecurityDataType = unknown> {
    * @request GET:/v1/organizations
    * @secure
    */
-  organizationControllerGetOrganizations = (
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiOrganization[];
-      },
-      any
-    >({
+  organizationControllerGetOrganizations = (params: RequestParams = {}) =>
+    this.http.request<ApiFullOrganization[], any>({
       path: `/v1/organizations`,
       method: 'GET',
-      query: query,
       secure: true,
       format: 'json',
       ...params,

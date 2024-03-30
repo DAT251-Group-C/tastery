@@ -6,17 +6,8 @@
         'fixed h-full flex flex-col overflow-hidden border-r z-40 border-neutral-700 w-14 hover:w-52 transition-[width] py-2 group bg-neutral-800',
       ]"
     >
-      <Menu :model="items" :fillHeight="true" class="!py-0 overflow-y-auto">
-        <template #start>
-          <!-- TODO: Logo -->
-          <div class="h-10 w-10 mb-1 flex items-center justify-center">
-            <span
-              class="w-8 h-8 rounded-full bg-primary-dark text-neutral-100 flex items-center justify-center text-caption ring-1 ring-primary-light"
-            >
-              <span class="bg-primary-dark py-px px-0.5 rounded-xs ring-1 ring-primary-light italic">Agient</span>
-            </span>
-          </div>
-        </template>
+      <Logo class="mb-1 mx-2" />
+      <Menu :model="items" :fillHeight="true" class="!py-0 overflow-y-auto overflow-x-hidden">
         <template #item="{ item, props }">
           <router-link v-slot="{ href, navigate, isActive, isExactActive }" :to="item.route" custom>
             <a
@@ -30,62 +21,59 @@
             </a>
           </router-link>
         </template>
-        <template #end>
-          <div
-            class="flex items-center mt-3 mb-2 transition py-0.5 rounded-xs cursor-pointer hover:bg-neutral-700"
-            @click="userMenu?.toggle($event)"
-          >
-            <Avatar :label="user?.name[0] || '?'" class="mx-1 bg-primary !text-neutral-200" size="large" />
-            <div class="ml-1 opacity-0 group-hover:opacity-100 group-[.menu-open]:opacity-100 transition-opacity min-w-0">
-              <p class="text-body-small-bold text-neutral-300 truncate">{{ user?.name || 'Loading...' }}</p>
-              <p class="text-caption text-neutral-500 truncate">{{ user?.email || 'Loading...' }}</p>
-            </div>
-          </div>
-
-          <Menu ref="userMenu" :model="userMenuItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
-        </template>
       </Menu>
+      <hr class="border-neutral-700 mt-2" />
+      <div
+        class="flex items-center mt-3 mx-2 mb-2 transition py-0.5 rounded-xs cursor-pointer hover:bg-neutral-700"
+        @click="userMenu?.toggle($event)"
+      >
+        <Avatar :label="user?.name[0] || '?'" class="mx-1 bg-primary !text-neutral-200" size="large" />
+        <div class="ml-1 opacity-0 group-hover:opacity-100 group-[.menu-open]:opacity-100 transition-opacity min-w-0">
+          <p class="text-body-small-bold text-neutral-300 truncate">{{ user?.name || 'Loading...' }}</p>
+          <p class="text-caption text-neutral-500 truncate">{{ user?.email || 'Loading...' }}</p>
+        </div>
+      </div>
+
+      <Menu ref="userMenu" :model="userMenuItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
     </aside>
     <div class="ml-14">
-      <nav class="w-full bg-primary-800 border-b border-neutral-700 py-2 px-5 h-12">
-        <div class="flex gap-x-4 items-center h-8">
-          <p class="text-body">Agient</p>
+      <Navbar>
+        <p class="text-body">Agient</p>
 
-          <Button
-            v-if="organizations && organizationsFetched"
-            size="small"
-            severity="neutral"
-            :label="organizations.find(p => p.id === organizationId)?.name ?? 'Select organization'"
-            aria-haspopup="true"
-            iconPos="right"
-            icon="expand_more"
-            truncate="true"
-            aria-controls="organization_menu"
-            @click="organizationsFetched && organizationMenu?.toggle($event)"
-          />
-          <Menu
-            id="organization_menu"
-            ref="organizationMenu"
-            :model="organizationItems"
-            :popup="true"
-            class="bg-neutral-800 ring-1 ring-neutral-700"
-          />
+        <Button
+          v-if="organizationsFetched"
+          size="small"
+          severity="neutral"
+          :label="organizations.find(p => p.id === organizationId)?.name ?? 'Select organization'"
+          aria-haspopup="true"
+          iconPos="right"
+          icon="expand_more"
+          truncate="true"
+          aria-controls="organization_menu"
+          @click="organizationMenu?.toggle($event)"
+        />
+        <Menu
+          id="organization_menu"
+          ref="organizationMenu"
+          :model="organizationItems"
+          :popup="true"
+          class="bg-neutral-800 ring-1 ring-neutral-700"
+        />
 
-          <Button
-            v-if="organizationId && projectsFetched"
-            :label="projects?.data.find(p => p.id === projectId)?.name ?? 'Select project'"
-            size="small"
-            severity="neutral"
-            truncate="true"
-            iconPos="right"
-            icon="expand_more"
-            aria-haspopup="true"
-            aria-controls="projects_menu"
-            @click="projectsFetched && projectMenu?.toggle($event)"
-          />
-          <Menu id="projects_menu" ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
-        </div>
-      </nav>
+        <Button
+          v-if="organizationId && organizationsFetched"
+          :label="projects.find(p => p.id === projectId)?.name ?? 'Select project'"
+          size="small"
+          severity="neutral"
+          truncate="true"
+          iconPos="right"
+          icon="expand_more"
+          aria-haspopup="true"
+          aria-controls="projects_menu"
+          @click="projectMenu?.toggle($event)"
+        />
+        <Menu id="projects_menu" ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
+      </Navbar>
       <main>
         <RouterView></RouterView>
       </main>
@@ -95,7 +83,6 @@
 
 <script setup lang="ts">
 import { useOrganizations } from '@/composables/organization';
-import { useProjects } from '@/composables/project';
 import { useOrganizationId, useProjectId } from '@/composables/tokens';
 import { useUser } from '@/composables/user';
 import { signOut } from '@/plugins/supabase';
@@ -106,10 +93,12 @@ import Menu, { MenuState } from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Logo from '../atoms/Logo.vue';
+import Navbar from './Navbar.vue';
 
 const { data: user } = useUser();
-const { data: projects, isFetched: projectsFetched } = useProjects();
-const { items: organizations, isFetched: organizationsFetched } = useOrganizations();
+const { organizations, isFetched: organizationsFetched } = useOrganizations();
+const projects = computed(() => organizations.value?.flatMap(org => org.projects));
 
 const projectMenu = ref<Menu>();
 const organizationMenu = ref<Menu>();
@@ -119,7 +108,7 @@ const { projectId, setProjectId } = useProjectId();
 const { organizationId, setOrganizationId } = useOrganizationId();
 
 const organizationItems = computed<MenuItem[]>(() => [
-  ...(organizations.value && organizations.value.length > 0
+  ...(organizations.value.length > 0
     ? organizations.value.map(
         (organization: ApiOrganization): MenuItem => ({
           label: organization.name,
@@ -138,8 +127,8 @@ const organizationItems = computed<MenuItem[]>(() => [
 ]);
 
 const projectItems = computed<MenuItem[]>(() => [
-  ...(projects.value && projects.value.data.length > 0
-    ? projects.value.data.map(
+  ...(projects.value && projects.value.length > 0
+    ? projects.value.map(
         (project: ApiProject): MenuItem => ({
           label: project.name,
           command: () => setProjectId(project.id),
@@ -236,10 +225,6 @@ const items = computed<MenuItem[]>(() => {
       label: 'Settings',
       icon: 'settings',
       route: '/platform/settings',
-    },
-    {
-      separator: true,
-      class: '-mx-2',
     },
   ];
 });

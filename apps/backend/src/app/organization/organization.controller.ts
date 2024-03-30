@@ -12,17 +12,13 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
 import { UserId } from '../../common/decorators/user-id.decorator';
-import { PageOptionsDto } from '../../common/dto/page-options.dto';
-import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
@@ -40,11 +36,20 @@ export class OrganizationController {
 
   @Get()
   @ApiBearerAuth()
-  @ApiOkResponsePaginated(Organization)
-  public getOrganizations(@UserId() userId: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Organization>> {
+  @ApiOkResponse({ type: FullOrganization, isArray: true })
+  public getOrganizations(@UserId() userId: string): Promise<FullOrganization[]> {
     return lastValueFrom(
-      this.organizationService.getOrganizations(userId, pageOptionsDto).pipe(
+      this.organizationService.getOrganizations(userId).pipe(
         take(1),
+        switchMap(organizations => {
+          return Promise.all(
+            organizations.map(async organization => ({
+              ...organization,
+              projects: await organization.projects,
+              memberships: await organization.memberships,
+            })),
+          );
+        }),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);

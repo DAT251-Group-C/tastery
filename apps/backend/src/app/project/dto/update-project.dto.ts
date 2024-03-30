@@ -11,4 +11,13 @@ export class UpdateProjectDto {
   @MinLength(1)
   @MaxLength(63)
   public name?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @Expose()
+  @Type(() => String)
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  @MaxLength(63)
+  public description?: string;
 }

@@ -1,27 +1,46 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import { computed } from 'vue';
-import { client } from '../services/api-client';
-import { ApiCreateOrganizationDto } from '../services/api/data-contracts';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { AxiosError } from 'axios';
+import { Ref, computed } from 'vue';
+import { ApiError, client } from '../services/api-client';
+import { ApiCreateOrganizationDto, ApiFullOrganization, ApiOrganization } from '../services/api/data-contracts';
 import { ORGANIZATION_ID_QUERY_KEY } from './tokens';
 
+export const USE_ORGANIZATIONS_QUERY_KEY = ['organizations', 'auth', ORGANIZATION_ID_QUERY_KEY];
+
 const useOrganizations = () => {
-  const res = useInfiniteQuery({
-    queryKey: ['organizations', 'auth', ORGANIZATION_ID_QUERY_KEY],
-    queryFn: async ({ pageParam }) => {
-      return (await client.organizationControllerGetOrganizations({ page: pageParam, take: 1 })).data;
+  const query = useQuery({
+    queryKey: ['organizations'],
+    queryFn: async () => {
+      console.log('query!');
+      return (await client.organizationControllerGetOrganizations()).data;
     },
-    initialPageParam: 1,
-    getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
-    staleTime: Infinity,
+    staleTime: 1000 * 60 * 5,
   });
 
-  return { ...res, items: computed(() => res.data.value?.pages.flatMap(page => page.data) ?? []) };
+  const organizations = computed(() => {
+    return query.data.value ?? [];
+  });
+
+  return { ...query, organizations };
+};
+
+const useOrganization = (id: Ref<string>) => {
+  const queryClient = useQueryClient();
+  return useQuery({
+    queryKey: ['organization', { id }],
+    queryFn: async () => {
+      return (await client.organizationControllerGetOrganizationById(id.value)).data;
+    },
+    placeholderData: () => {
+      return queryClient.getQueryData<ApiFullOrganization[]>(['organizations'])?.find(x => x.id === id.value);
+    },
+  });
 };
 
 const useCreateOrganization = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<ApiOrganization, AxiosError<ApiError>, ApiCreateOrganizationDto>({
     mutationKey: ['createOrganization'],
     mutationFn: async (data: ApiCreateOrganizationDto) => {
       return (await client.organizationControllerCreateOrganization(data)).data;
@@ -32,4 +51,4 @@ const useCreateOrganization = () => {
   });
 };
 
-export { useCreateOrganization, useOrganizations };
+export { useCreateOrganization, useOrganization, useOrganizations };

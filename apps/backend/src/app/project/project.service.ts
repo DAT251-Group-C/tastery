@@ -31,7 +31,7 @@ export class ProjectService {
       .innerJoin('project.organization', 'organization')
       .innerJoin('organization.memberships', 'membership')
       .where('membership.userId = :userId', { userId })
-      .orderBy('project.createdAt', pageOptionsDto.order)
+      .orderBy('project.updatedAt', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.take);
 
@@ -54,7 +54,7 @@ export class ProjectService {
       .innerJoin('organization.memberships', 'membership')
       .where('membership.userId = :userId', { userId })
       .andWhere('organization.id = :organizationId', { organizationId })
-      .orderBy('project.createdAt', pageOptionsDto.order)
+      .orderBy('project.updatedAt', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.take);
 

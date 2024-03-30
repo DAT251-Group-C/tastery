@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Observable, combineLatest, from, map, switchMap, tap } from 'rxjs';
+import { Observable, from, map, switchMap, tap } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { PageMetaDto } from '../../common/dto/page-meta.dto';
-import { PageOptionsDto } from '../../common/dto/page-options.dto';
-import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipRole } from '../../common/models/membership.model';
@@ -29,19 +26,22 @@ export class OrganizationService {
     );
   }
 
-  public getOrganizations(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<OrganizationEntity>> {
-    const query = this.organizationRepository
-      .createQueryBuilder('organization')
-      .innerJoin('organization.memberships', 'membership')
-      .where('membership.userId = :userId', { userId })
-      .orderBy('organization.createdAt', pageOptionsDto.order)
-      .skip(pageOptionsDto.skip)
-      .take(pageOptionsDto.take);
-
-    return combineLatest([query.getCount(), query.getMany()]).pipe(
-      map(([itemCount, organizations]) => {
-        return new PageDto(organizations, new PageMetaDto({ itemCount, pageOptionsDto }));
-      }),
+  public getOrganizations(userId: string): Observable<OrganizationEntity[]> {
+    return from(
+      this.organizationRepository
+        .createQueryBuilder('organization')
+        .innerJoin('organization.memberships', 'membership')
+        .where('membership.userId = :userId', { userId })
+        .leftJoin('organization.projects', 'recents')
+        .addSelect('MAX(recents.updatedAt)', 'recent')
+        .leftJoinAndSelect('organization.projects', 'projects')
+        .groupBy('organization.id')
+        .orderBy({
+          ['recent']: { order: 'DESC', nulls: 'NULLS LAST' },
+          ['projects.updatedAt']: 'DESC',
+        })
+        .addGroupBy('projects.id')
+        .getMany(),
     );
   }
 

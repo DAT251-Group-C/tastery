@@ -14,8 +14,8 @@ const Button: ButtonPassThroughOptions = {
         'text-button': props.size !== 'small',
       },
       {
+        'px-2 py-0.5': props.size === 'small',
         'px-2 py-1 min-w-[2rem]': props.size === null,
-        'px-2 py-1': props.size === 'small',
         'px-3 py-2': props.size === 'large',
       },
       {
@@ -224,6 +224,10 @@ const Button: ButtonPassThroughOptions = {
         'mb-2': props.iconPos == 'top' && props.label != null,
         'mt-2': props.iconPos == 'bottom' && props.label != null,
       },
+      {
+        'text-[1rem] leading-[1.25] w-5 h-5': props.size === 'small',
+        'text-[1.5rem] leading-1 w-6 h-6': props.size !== 'small',
+      },
     ],
     'data-icon': props.icon,
   }),
@@ -237,11 +241,15 @@ const Button: ButtonPassThroughOptions = {
         'mb-2': props.iconPos == 'top' && props.label != null,
         'mt-2': props.iconPos == 'bottom' && props.label != null,
       },
+      {
+        'text-[1rem] leading-[1.25] w-5 h-5': props.size === 'small',
+        'text-[1.5rem] leading-1 w-6 h-6': props.size !== 'small',
+      },
     ],
     'data-icon': props.loadingIcon,
   }),
   badge: ({ props }) => ({
-    class: [{ 'ml-2 w-4 h-4 leading-none flex items-center justify-center': props.badge }],
+    class: [{ 'absolute right-0 top-0': props.badge }],
   }),
 };
 
