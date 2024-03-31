@@ -67,15 +67,17 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from './Navbar.vue';
 
-const { organizations, isFetched } = useOrganizations();
+const { organizations } = useOrganizations();
 const route = useRoute();
 
-const organizationItems = computed(() =>
-  organizations.value.map<Item>(org => ({
+const organizationItems = computed(() => {
+  const items = organizations.value.map<Item>(org => ({
     label: org.name,
     to: `/platform/organizations/${org.id}`,
-  })),
-);
+  }));
+
+  return items;
+});
 
 interface Item {
   label: string;
@@ -94,7 +96,7 @@ const items = computed<Item[]>(() => [
       },
     ],
   },
-  ...(!isFetched.value
+  ...(organizationItems.value.length === 0
     ? []
     : [
         {

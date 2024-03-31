@@ -1,6 +1,7 @@
 <template>
   <div class="platform-view max-w-4xl">
-    <div class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm">
+    <Skeleton v-if="isFetching" class="w-full h-[128px] ring-1 ring-neutral-700 rounded-sm"></Skeleton>
+    <div v-else class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm">
       <h1 class="text-body text-neutral-200 mb-4">Account information</h1>
 
       <div class="grid grid-cols-3">
@@ -11,7 +12,8 @@
       </div>
     </div>
 
-    <form class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm" @submit.prevent="submit()">
+    <Skeleton v-if="isFetching" class="w-full h-[185px] ring-1 ring-neutral-700 rounded-sm"></Skeleton>
+    <form v-else class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm" @submit.prevent="submit()">
       <h1 class="text-body text-neutral-200 mb-4">Profile information</h1>
 
       <div class="grid grid-cols-3">
@@ -62,7 +64,7 @@
             <Button size="small" label="Cancel" severity="neutral"></Button>
           </RouterLink>
           <Button
-            :disabled="updatingPassword || password1 !== password2"
+            :disabled="updatingPassword || password1 !== password2 || !password1.length"
             :loading="updatingPassword"
             type="submit"
             size="small"
@@ -77,6 +79,7 @@
 
 <script setup lang="ts">
 import Control from '@/components/atoms/Control.vue';
+import Skeleton from '@/components/atoms/Skeleton.vue';
 import { useToaster } from '@/composables/toaster';
 import { useUpdateUser, useUser } from '@/composables/user';
 import { supabase } from '@/plugins/supabase';
@@ -91,7 +94,7 @@ const authStore = useAuthStore();
 const { currentSession } = storeToRefs(authStore);
 const canResetPassword = computed(() => !currentSession.value?.provider_token);
 const { passwordRecovery } = defineProps<{ passwordRecovery: boolean }>();
-const { data: user, isLoading } = useUser();
+const { data: user, isLoading, isFetching } = useUser();
 const { mutateAsync: updateUser, isPending, error: updateError } = useUpdateUser();
 const toast = useToaster();
 
