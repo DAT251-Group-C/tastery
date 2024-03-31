@@ -24,7 +24,7 @@
 
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Name</span>
-        <Control size="large" hideLabel class="col-span-2" hint="What's the name of your company or team?">
+        <Control hideLabel class="col-span-2" hint="What's the name of your company or team?">
           <InputText v-model="name" size="large" placeholder="Organization name"></InputText>
         </Control>
       </div>

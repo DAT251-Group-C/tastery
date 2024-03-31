@@ -27,12 +27,10 @@ interface Props {
   hideDetails?: boolean;
   hint?: string;
   errors?: string | string[];
-  size?: 'small' | null | 'large';
 }
 
 const { errors, hideLabel, hideDetails } = withDefaults(defineProps<Props>(), {
   id: v4(),
-  size: null,
   hideLabel: false,
   hideDetails: false,
   errors: '',

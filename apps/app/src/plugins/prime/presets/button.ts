@@ -15,7 +15,7 @@ const Button: ButtonPassThroughOptions = {
       },
       {
         'px-2 py-0.5': props.size === 'small',
-        'px-2 py-1 min-w-[2rem]': props.size === null,
+        'px-3 py-1 min-w-[2rem]': props.size === null,
         'px-3 py-2': props.size === 'large',
       },
       {
@@ -206,13 +206,13 @@ const Button: ButtonPassThroughOptions = {
       'cursor-pointer overflow-hidden select-none',
     ],
   }),
-  label: ({ props, instance }) => ({
+  label: ({ props }) => ({
     class: [
+      'line-clamp-1 break-all',
       {
         underline: props.link,
       },
       { 'flex-1': props.label !== null, 'invisible w-0': props.label === null || props.label === undefined },
-      { 'line-clamp-1 break-all': instance.$attrs.truncate },
     ],
   }),
   icon: ({ props }) => ({

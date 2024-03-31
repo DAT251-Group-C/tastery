@@ -45,12 +45,23 @@
         </template>
       </template>
       <template v-if="activeTab === 1">
-        <template v-if="isLoading || isPlaceholderData">
-          <Skeleton class="w-full h-[189px] rounded-sm ring-1 ring-neutral-700" />
-          <Skeleton class="w-full h-[236px] rounded-sm ring-1 ring-neutral-700" />
-        </template>
+        <div v-if="isLoading || isPlaceholderData">
+          <h3 class="text-body-large text-neutral-200 mt-12 mb-4">Members</h3>
+          <div class="flex gap-x-3 items-center mb-3">
+            <Skeleton class="max-w-48 w-full h-8 mr-auto rounded-xs border border-neutral-700" />
+            <Skeleton class="w-[87px] h-6 rounded-xs ring-1 ring-neutral-700" />
+          </div>
+          <Skeleton class="w-full h-[158px] rounded-xs ring-1 ring-neutral-700" />
+
+          <h3 class="text-body-large text-neutral-200 mt-12 mb-4">Invites</h3>
+          <div class="flex gap-x-3 items-center mb-3">
+            <Skeleton class="max-w-48 w-full h-8 mr-auto rounded-xs border border-neutral-700" />
+            <Skeleton class="w-12 h-6 rounded-xs ring-1 ring-neutral-700" />
+          </div>
+          <Skeleton class="w-full h-[158px] rounded-xs ring-1 ring-neutral-700" />
+        </div>
         <template v-else-if="organization">
-          <OrganizationMembers :key="organization.id" :organization="organization" />
+          <OrganizationMembers :key="organization.id" :organizationId="organization.id" />
         </template>
       </template>
     </div>

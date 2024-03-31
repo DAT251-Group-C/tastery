@@ -109,7 +109,7 @@ export class InviteController {
     @UserId() userId: string,
   ): Promise<Invite> {
     return lastValueFrom(
-      this.inviteService.createInvite(userId, body.email, organizationId).pipe(
+      this.inviteService.createInvite(userId, body, organizationId).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {

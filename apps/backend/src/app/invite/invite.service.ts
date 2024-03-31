@@ -9,8 +9,10 @@ import { EncryptionService } from '../../common/encrypt/encryption.service';
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
+import { MembershipRole } from '../../common/models/membership.model';
 import { InviteEntity, MembershipEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
+import { CreateInviteDto } from './dto/create-invite.dto';
 
 @Injectable()
 export class InviteService {
@@ -23,34 +25,39 @@ export class InviteService {
     private readonly encryptionService: EncryptionService,
   ) {}
 
-  public createInvite(userId: string, email: string, organizationId: string): Observable<InviteEntity> {
+  public createInvite(userId: string, dto: CreateInviteDto, organizationId: string): Observable<InviteEntity> {
+    if (dto.role === MembershipRole.OWNER) {
+      throw new ResourcePermissionDeniedException('You cannot invite users with owner role');
+    }
+
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
       switchMap(() =>
         this.membershipRepository
           .createQueryBuilder('membership')
           .innerJoin('membership.organization', 'organization')
           .innerJoin('membership.user', 'user')
-          .where('user.email = :email', { email })
+          .where('user.email = :email', { email: dto.email })
           .andWhere('organization.id = :organizationId', { organizationId })
           .getExists(),
       ),
       tap(exists => {
         if (exists) {
-          throw new ResourceExistsException(`User with email ${email} is already a member of the organization`);
+          throw new ResourceExistsException(`User with email ${dto.email} is already a member of the organization`);
         }
       }),
-      map(() => this.encryptionService.hashWithCrypto(email + organizationId)),
+      map(() => this.encryptionService.hashWithCrypto(dto.email + organizationId)),
       switchMap(hash => from(this.inviteRepository.findOne({ where: { hash } })).pipe(map(invite => ({ hash, invite })))),
       tap(({ invite }) => {
         if (invite) {
-          throw new ResourceExistsException(`Invite for user with email ${email} already exists`);
+          throw new ResourceExistsException(`Invite for user with email ${dto.email} already exists`);
         }
       }),
       switchMap(({ hash }) =>
         from(
           this.inviteRepository.save(
             this.inviteRepository.create({
-              email,
+              email: dto.email,
+              role: dto.role,
               organizationId,
               hash,
             }),
@@ -73,6 +80,7 @@ export class InviteService {
           this.membershipRepository.save(
             this.membershipRepository.create({
               userId,
+              role: invite.role,
               organizationId: invite.organizationId,
             }),
           ),

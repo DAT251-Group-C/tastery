@@ -15,7 +15,6 @@ import {
   ApiCreateProjectDto,
   ApiFullMembership,
   ApiFullOrganization,
-  ApiFullOrganizationWithUsers,
   ApiFullProject,
   ApiInvite,
   ApiMembership,
@@ -198,7 +197,7 @@ export class V1<SecurityDataType = unknown> {
   ) =>
     this.http.request<
       ApiPageDto & {
-        data: ApiMembership[];
+        data: ApiFullMembership[];
       },
       any
     >({
@@ -284,7 +283,7 @@ export class V1<SecurityDataType = unknown> {
    * @secure
    */
   organizationControllerGetOrganizationById = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganizationWithUsers, any>({
+    this.http.request<ApiFullOrganization, any>({
       path: `/v1/organizations/${organizationId}`,
       method: 'GET',
       secure: true,

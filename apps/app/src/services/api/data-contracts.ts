@@ -48,9 +48,9 @@ export interface ApiPageDto {
 }
 
 export enum ApiMembershipRole {
-  Owner = 'owner',
-  Admin = 'admin',
-  User = 'user',
+  Owner = 'Owner',
+  Admin = 'Admin',
+  User = 'User',
 }
 
 export interface ApiMembership {
@@ -95,7 +95,7 @@ export interface ApiFullMembership {
 }
 
 export interface ApiUpdateMembershipRoleDto {
-  /** @example "admin" */
+  /** @example "Admin" */
   role: ApiMembershipRole;
   /** @format uuid */
   userId: string;
@@ -123,31 +123,6 @@ export interface ApiFullOrganization {
   /** @format date-time */
   updatedAt: string;
   memberships: ApiMembership[];
-  projects: ApiProject[];
-}
-
-export interface ApiMembershipWithUser {
-  /** @format uuid */
-  organizationId: string;
-  /** @format uuid */
-  userId: string;
-  role: ApiMembershipRole;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  user: ApiUser;
-}
-
-export interface ApiFullOrganizationWithUsers {
-  /** @format uuid */
-  id: string;
-  name: string;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  memberships: ApiMembershipWithUser[];
   projects: ApiProject[];
 }
 
@@ -218,11 +193,14 @@ export interface ApiInvite {
   /** @format date-time */
   expiresAt: string;
   organizationName: string;
+  role: ApiMembershipRole;
 }
 
 export interface ApiCreateInviteDto {
   /** @format email */
   email: string;
+  /** @example "Admin" */
+  role: ApiMembershipRole;
 }
 
 export interface ApiRevokeInviteDto {

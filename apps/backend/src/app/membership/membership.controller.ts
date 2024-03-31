@@ -17,19 +17,19 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, switchMap, take } from 'rxjs';
+import { DeleteResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
 import { UserId } from '../../common/decorators/user-id.decorator';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
 import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
+import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullMembership, Membership } from '../../common/models';
 import { MembershipRole } from '../../common/models/membership.model';
 import { UpdateMembershipRoleDto } from './dto/update-membership-role.dto';
 import { MembershipService } from './membership.service';
-import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
-import { DeleteResult } from 'typeorm';
 
 @ApiTags('Memberships')
 @Controller('')
@@ -74,15 +74,25 @@ export class MembershipController {
   @Get('organizations/:organizationId/memberships')
   @ApiBearerAuth()
   @ApiParam({ name: 'organizationId', format: 'uuid' })
-  @ApiOkResponsePaginated(Membership)
+  @ApiOkResponsePaginated(FullMembership)
   public getMembershipsInOrganization(
     @UserId() userId: string,
     @Param('organizationId') organizationId: string,
     @Query() pageOptionsDto: PageOptionsDto,
-  ): Promise<PageDto<Membership>> {
+  ): Promise<PageDto<FullMembership>> {
     return lastValueFrom(
       this.membershipService.getMembershipsInOrganization(organizationId, userId, pageOptionsDto).pipe(
         take(1),
+        switchMap(async page => ({
+          ...page,
+          data: await Promise.all(
+            page.data.map(async membership => ({
+              ...membership,
+              user: await membership.user,
+              organization: await membership.organization,
+            })),
+          ),
+        })),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);

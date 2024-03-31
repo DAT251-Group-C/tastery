@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Column, CreateDateColumn, Entity, EntitySchema, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { MembershipRole } from '../common/models/membership.model';
 import OrganizationEntity from './organization.entity';
 
 @Entity({
@@ -20,6 +21,9 @@ export class InviteEntity extends EntitySchema {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: string;
+
+  @PrimaryColumn({ type: 'enum', enum: MembershipRole, enumName: 'MembershipRole', default: MembershipRole.USER })
+  role: MembershipRole;
 
   @Exclude()
   @Column({

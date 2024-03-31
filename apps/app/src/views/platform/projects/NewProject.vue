@@ -24,7 +24,7 @@
 
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Organization</span>
-        <Control size="large" hideLabel class="col-span-2">
+        <Control hideLabel class="col-span-2">
           <Dropdown
             v-model="selectedOrganizationId"
             :options="organizations"
@@ -33,6 +33,7 @@
             :invalid="orgInvalid"
             placeholder="Choose organization"
             optionLabel="name"
+            size="large"
             optionValue="id"
             loadingIcon="progress_activity"
           ></Dropdown>
@@ -41,14 +42,14 @@
 
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Name</span>
-        <Control size="large" hideLabel class="col-span-2">
+        <Control hideLabel class="col-span-2">
           <InputText v-model="name" size="large" placeholder="Project name" required></InputText>
         </Control>
       </div>
 
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Description</span>
-        <Control size="large" hideLabel class="col-span-2">
+        <Control hideLabel class="col-span-2">
           <InputText v-model="description" size="large" placeholder="Project description" required></InputText>
         </Control>
       </div>

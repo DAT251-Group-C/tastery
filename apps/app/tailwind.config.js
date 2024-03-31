@@ -133,10 +133,10 @@ const baseConfig = {
         },
       ],
       button: [
-        '1rem',
+        '0.875rem',
         {
           fontWeight: '400',
-          lineHeight: '1.5',
+          lineHeight: 'calc(1.5 / 0.875)',
           letterSpacing: '0.004rem',
         },
       ],

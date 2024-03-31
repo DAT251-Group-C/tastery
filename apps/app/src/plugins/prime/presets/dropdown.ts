@@ -36,7 +36,7 @@ const Dropdown: DropdownPassThroughOptions = {
       { 'opacity-60': props.disabled, 'pointer-events-none': props.disabled },
     ],
   }),
-  input: ({ props, parent }) => ({
+  input: ({ props, instance }) => ({
     class: [
       //Font
       'text-body-small',
@@ -57,9 +57,9 @@ const Dropdown: DropdownPassThroughOptions = {
       // Sizing and Spacing
       'w-[1%]',
       {
-        'py-2.5 px-4': parent.props.size === 'large',
-        'py-1 px-2': parent.props.size === 'small',
-        'py-1.5 px-2': !parent.props.size,
+        'py-2.5 px-4': instance.$attrs.size === 'large',
+        'py-1 px-2': instance.$attrs.size === 'small',
+        'py-1.5 px-2': !instance.$attrs.size,
       },
       { 'pr-7': props.showClear },
 
@@ -94,6 +94,7 @@ const Dropdown: DropdownPassThroughOptions = {
       'w-8',
 
       // Shape
+      'cursor-pointer',
       'rounded-tr-xs',
       'rounded-br-xs',
     ],

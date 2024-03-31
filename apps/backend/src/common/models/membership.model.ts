@@ -3,9 +3,9 @@ import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorat
 import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
 
 export enum MembershipRole {
-  OWNER = 'owner',
-  ADMIN = 'admin',
-  USER = 'user',
+  OWNER = 'Owner',
+  ADMIN = 'Admin',
+  USER = 'User',
 }
 
 export class Membership {

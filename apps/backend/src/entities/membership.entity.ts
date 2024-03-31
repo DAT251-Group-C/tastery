@@ -13,7 +13,7 @@ export default class MembershipEntity extends EntitySchema {
   @PrimaryColumn({ type: 'uuid' })
   userId: string;
 
-  @PrimaryColumn({ type: 'enum', enum: MembershipRole, default: MembershipRole.USER })
+  @PrimaryColumn({ type: 'enum', enum: MembershipRole, enumName: 'MembershipRole', default: MembershipRole.USER })
   role: MembershipRole;
 
   @ManyToOne(() => OrganizationEntity, organization => organization.id, {

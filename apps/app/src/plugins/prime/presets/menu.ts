@@ -67,7 +67,7 @@ const Menu: MenuPassThroughOptions = {
       'items-center',
 
       // Spacing
-      'p-2',
+      'p-2 pr-4',
 
       // Misc
       'no-underline',

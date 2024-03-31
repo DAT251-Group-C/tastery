@@ -2,7 +2,7 @@
   <form class="flex flex-col bg-neutral-800 ring-1 ring-neutral-700 rounded-sm" @submit.prevent="handleUpdateOrganization()">
     <div class="grid grid-cols-3 p-8">
       <span class="text-body-small text-neutral-200">General settings</span>
-      <Control size="large" label="Organization name" class="col-span-2" hideDetails>
+      <Control label="Organization name" class="col-span-2" hideDetails>
         <InputText v-model="name" size="large"></InputText>
       </Control>
     </div>
@@ -58,7 +58,7 @@
     <p class="text-neutral-400 mb-2">
       Please type <span class="text-neutral-200">{{ organization.name }}</span> to confirm
     </p>
-    <Control hideLabel size="large" hideDetails class="mb-1">
+    <Control hideLabel hideDetails class="mb-1">
       <InputText v-model="confirmDelete" placeholder="Enter the string above" size="large" />
     </Control>
 

@@ -17,16 +17,16 @@
       <h1 class="mt-8 mb-2 text-neutral-100">Get started</h1>
       <p class="text-body-small text-neutral-400 mb-10">Create a new account</p>
       <form class="flex flex-col gap-y-5" @submit.prevent="signUp">
-        <Control label="Firstname" size="large">
+        <Control label="Firstname">
           <InputText v-model="firstName" required placeholder="John" size="large" />
         </Control>
-        <Control label="Lastname" size="large" class="mb-1">
+        <Control label="Lastname" class="mb-1">
           <InputText v-model="lastName" required placeholder="Doe" size="large" />
         </Control>
-        <Control label="Email" size="large">
+        <Control label="Email">
           <InputText v-model="email" type="email" required placeholder="you@example.com" size="large" />
         </Control>
-        <Control label="Password" size="large">
+        <Control label="Password">
           <InputText v-model="password" required type="password" placeholder="••••••••" size="large" />
         </Control>
         <Button type="submit" size="large">Sign Up</Button>
