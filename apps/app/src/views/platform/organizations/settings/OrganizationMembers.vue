@@ -7,7 +7,14 @@
         <InputIcon class="font-symbol">search</InputIcon>
         <InputText v-model="memberFilters['global'].value" placeholder="Filter members" />
       </IconField>
-      <Button size="small" label="Leave team" severity="neutral"></Button>
+      <Button
+        size="small"
+        label="Leave team"
+        severity="neutral"
+        :loading="removeMembershipPending && removingMembership?.userId === membership?.userId"
+        :disabled="!membership || membership.role === ApiMembershipRole.Owner"
+        @click="handleLeaveOrganization()"
+      ></Button>
     </div>
 
     <!-- Memberships -->
@@ -34,7 +41,29 @@
       </Column>
       <Column field="role" header="Role">
         <template #body="{ data }">
-          <Dropdown v-model="data.role" :options="roles" size="large"></Dropdown>
+          <Button
+            icon="expand_more"
+            class="w-[6.5rem] !text-left"
+            iconPos="right"
+            :label="data.role"
+            :disabled="!membership || membership.role !== ApiMembershipRole.Owner || membership.userId === data.userId"
+            severity="neutral"
+            @click="onEditRole($event, data)"
+          />
+        </template>
+      </Column>
+      <Column field="context" class="text-right w-48">
+        <template #body="{ data }: { data: ApiMembership }">
+          <Button
+            v-show="canRemoveMembership(data)"
+            :disabled="removeMembershipPending && removingMembership?.userId === data.userId"
+            :loading="removeMembershipPending && removingMembership?.userId === data.userId"
+            loadingIcon="progress_activity"
+            size="small"
+            severity="neutral"
+            label="Remove"
+            @click="handleRemoveMembership(data.userId)"
+          ></Button>
         </template>
       </Column>
       <template #empty>
@@ -47,6 +76,10 @@
         </div>
       </template>
     </DataTable>
+
+    <OverlayPanel ref="editRolePanel">
+      <Menu :model="roleModel"></Menu>
+    </OverlayPanel>
 
     <!-- Invites -->
     <h3 class="text-body-large text-neutral-200 mt-12 mb-4">Invites</h3>
@@ -117,9 +150,9 @@
 
 <script setup lang="ts">
 import { useOrganizationInvites, useRevokeInvite } from '@/composables/invite';
-import { useMembership, useOrganizationMemberships } from '@/composables/membership';
+import { useMembership, useOrganizationMemberships, useRemoveMembership, useUpdateMembershipRole } from '@/composables/membership';
 import { useToaster } from '@/composables/toaster';
-import { ApiInvite, ApiMembershipRole } from '@/services/api/data-contracts';
+import { ApiInvite, ApiMembership, ApiMembershipRole } from '@/services/api/data-contracts';
 import { FilterMatchMode } from 'primevue/api';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -127,9 +160,13 @@ import DataTable from 'primevue/datatable';
 import Dropdown from 'primevue/dropdown';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import { useConfirm } from 'primevue/useconfirm';
 import InputText from 'primevue/inputtext';
+import Menu from 'primevue/menu';
+import { MenuItem } from 'primevue/menuitem';
+import OverlayPanel from 'primevue/overlaypanel';
 import Tag from 'primevue/tag';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import OrgnaizationInvite from './OrganizationInvite.vue';
 
 const roles = Object.values(ApiMembershipRole);
@@ -175,5 +212,146 @@ const onRevokeInvite = async (invite: ApiInvite) => {
     });
   }
   inviteBeingRevoked.value = null;
+};
+
+const {
+  mutateAsync: removeMembership,
+  isPending: removeMembershipPending,
+  error: removeMembershipError,
+  variables: removingMembership,
+} = useRemoveMembership();
+
+const handleRemoveMembership = async (userId: string) => {
+  try {
+    await removeMembership({ organizationId, userId });
+    toaster.add({ summary: 'Member removed', detail: 'The member has been removed', severity: 'success' });
+  } catch (error) {
+    toaster.add({
+      summary: 'Error removing member',
+      detail: removeMembershipError.value?.response?.data.message ?? 'An unknown error occurred',
+      severity: 'error',
+    });
+  }
+};
+
+const canRemoveMembership = (removeMember: ApiMembership) => {
+  const self = membership.value;
+
+  if (!self) {
+    return false;
+  }
+
+  if (self.userId === removeMember.userId) {
+    return false;
+  }
+
+  if (self.role === ApiMembershipRole.User) {
+    return false;
+  }
+
+  if (self.role === ApiMembershipRole.Admin && removeMember.role === ApiMembershipRole.Owner) {
+    return false;
+  }
+
+  return true;
+};
+
+const handleLeaveOrganization = async () => {
+  if (!membership.value) {
+    return;
+  }
+
+  try {
+    await removeMembership({ organizationId, userId: membership.value?.userId });
+    toaster.add({ summary: 'Left organization', detail: 'You have left the organization', severity: 'success' });
+  } catch {
+    toaster.add({
+      summary: 'Error leaving organization',
+      detail: removeMembershipError.value?.response?.data.message ?? 'An unknown error occurred',
+      severity: 'error',
+    });
+  }
+};
+
+const editRolePanel = ref<OverlayPanel>();
+const editingRole = ref<ApiMembership | null>(null);
+const roleModel = computed<MenuItem[]>(() => {
+  const role = membership.value?.role;
+  const editRole = editingRole.value?.role;
+
+  if (!role || !editRole) {
+    return [];
+  }
+
+  const options: ApiMembershipRole[] = [ApiMembershipRole.Owner];
+
+  if (editRole !== ApiMembershipRole.Admin) {
+    options.push(ApiMembershipRole.Admin);
+  }
+
+  if (editRole !== ApiMembershipRole.User) {
+    options.push(ApiMembershipRole.User);
+  }
+
+  return options.map(role => ({
+    label: role,
+    command: () => handleUpdateRole(role),
+  }));
+});
+
+const onEditRole = (event: Event, membership: ApiMembership) => {
+  const panel = editRolePanel.value;
+  if (!panel) {
+    return;
+  }
+
+  panel.show(event);
+  editingRole.value = membership;
+
+  nextTick(() => {
+    panel.alignOverlay();
+  });
+};
+
+const confirm = useConfirm();
+const { mutateAsync: updateMembershipRole, error: updateMemebershipRoleError } = useUpdateMembershipRole();
+const handleUpdateRole = async (role: ApiMembershipRole) => {
+  const editingMembership = editingRole.value;
+
+  if (!editingMembership) {
+    return;
+  }
+
+  if (role === ApiMembershipRole.Owner) {
+    confirm.require({
+      header: 'Transfer ownership of the organization',
+      acceptLabel: 'Transfer ownership',
+      rejectLabel: 'Cancel',
+      message: 'Are you sure you want to transfer ownership?',
+      accept: async () => {
+        try {
+          await updateMembershipRole({ organizationId, userId: editingMembership.userId, role });
+          toaster.add({ summary: 'Ownership transfered', detail: 'Your role has been updated to admin', severity: 'success' });
+        } catch {
+          toaster.add({
+            summary: 'Error transfering ownership',
+            detail: updateMemebershipRoleError.value?.response?.data.message ?? 'An unknown error occurred',
+            severity: 'error',
+          });
+        }
+      },
+    });
+  } else {
+    try {
+      await updateMembershipRole({ organizationId, userId: editingMembership.userId, role });
+      toaster.add({ summary: 'Role updated', detail: 'The role has been updated', severity: 'success' });
+    } catch {
+      toaster.add({
+        summary: 'Error updating role',
+        detail: updateMemebershipRoleError.value?.response?.data.message ?? 'An unknown error occurred',
+        severity: 'error',
+      });
+    }
+  }
 };
 </script>

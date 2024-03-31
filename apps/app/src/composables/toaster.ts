@@ -5,8 +5,18 @@ type ToasterAdd = Omit<ToastMessageOptions, 'severity'> & {
   severity?: 'success' | 'info' | 'warn' | 'error';
 };
 
+let _toaster: ReturnType<typeof useToast> | null = null;
+
+const getToaster = () => {
+  if (!_toaster) {
+    _toaster = useToast();
+  }
+
+  return _toaster;
+};
+
 const useToaster = () => {
-  const toast = useToast();
+  const toast = getToaster();
 
   const add = (message: ToasterAdd) => {
     toast.add({

@@ -473,10 +473,32 @@ export class V1<SecurityDataType = unknown> {
    * @request GET:/v1/invites
    * @secure
    */
-  inviteControllerGetInvites = (params: RequestParams = {}) =>
-    this.http.request<ApiInvite, any>({
+  inviteControllerGetInvites = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiInvite[];
+      },
+      any
+    >({
       path: `/v1/invites`,
       method: 'GET',
+      query: query,
       secure: true,
       format: 'json',
       ...params,
@@ -557,12 +579,12 @@ export class V1<SecurityDataType = unknown> {
    *
    * @tags Invites
    * @name InviteControllerAcceptInvite
-   * @request POST:/v1/invites/{hash}/accept
+   * @request POST:/v1/invites/organization/{organizationId}/accept
    * @secure
    */
-  inviteControllerAcceptInvite = (hash: string, params: RequestParams = {}) =>
+  inviteControllerAcceptInvite = (organizationId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/invites/${hash}/accept`,
+      path: `/v1/invites/organization/${organizationId}/accept`,
       method: 'POST',
       secure: true,
       ...params,
@@ -572,12 +594,12 @@ export class V1<SecurityDataType = unknown> {
    *
    * @tags Invites
    * @name InviteControllerDeclineInvite
-   * @request DELETE:/v1/invites/{hash}/decline
+   * @request DELETE:/v1/invites/organization/{organizationId}/decline
    * @secure
    */
-  inviteControllerDeclineInvite = (hash: string, params: RequestParams = {}) =>
+  inviteControllerDeclineInvite = (organizationId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/invites/${hash}/decline`,
+      path: `/v1/invites/organization/${organizationId}/decline`,
       method: 'DELETE',
       secure: true,
       ...params,

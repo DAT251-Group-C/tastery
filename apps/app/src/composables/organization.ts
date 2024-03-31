@@ -15,10 +15,7 @@ const useOrganizations = () => {
 
   const query = useQuery({
     queryKey: ['organizations'],
-    queryFn: async () => {
-      console.log('query!');
-      return (await client.organizationControllerGetOrganizations()).data;
-    },
+    queryFn: async () => (await client.organizationControllerGetOrganizations()).data,
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5,
   });

@@ -104,15 +104,15 @@ const Button: ButtonPassThroughOptions = {
       // Warning Outlined Button
       { 'text-warning ring-1 ring-warning hover:bg-warning/25': props.outlined && props.severity === 'warning' && !props.plain },
 
-      // Contrast Button
+      // Neutral Button
       {
         'text-neutral-300': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
         'bg-neutral-800': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
         'ring-1 ring-neutral-700': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
       },
-      // Contrast Text Button
+      // Neutral Text Button
       { 'text-neutral-300 hover:bg-neutral-700/25': props.text && props.severity === 'neutral' && !props.plain },
-      // Contrast Outlined Button
+      // Neutral Outlined Button
       {
         'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'neutral' && !props.plain,
       },
@@ -179,7 +179,7 @@ const Button: ButtonPassThroughOptions = {
       // Text & Outlined Button
       { 'hover:bg-warning/25 focus:bg-warning/25': (props.text || props.outlined) && props.severity === 'warning' && !props.plain },
 
-      // Contrast
+      // Neutral
       {
         'hover:bg-neutral-700 hover:ring-neutral-600':
           !props.link && props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,

@@ -82,11 +82,6 @@ class ApiHttpClient extends HttpClient {
           }
         }
 
-        if (error.response.status === 403) {
-          notify('Authorization error', error);
-          await Router.push({ name: 'Authorization error' });
-        }
-
         if (error.response.status >= 500) {
           notify('Internal server error', 'An error occurred on the server. We have been notified and will look into it!');
           await Router.push({ name: 'Server error' });

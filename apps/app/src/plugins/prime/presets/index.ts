@@ -10,6 +10,7 @@ import IconField from './iconfield';
 import InputIcon from './inputicon';
 import InputText from './inputtext';
 import Menu from './menu';
+import OverlayPanel from './overlaypanel';
 import TabView from './tabview';
 import Tag from './tag';
 import Toast from './toast';
@@ -27,6 +28,7 @@ const preset: PrimeVuePTOptions = {
   inputicon: InputIcon,
   inputtext: InputText,
   menu: Menu,
+  overlaypanel: OverlayPanel,
   tabview: TabView,
   tag: Tag,
   toast: Toast,

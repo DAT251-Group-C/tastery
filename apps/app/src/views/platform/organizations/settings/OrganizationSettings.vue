@@ -6,8 +6,8 @@
       <p class="text-body-small text-neutral-400 mt-6">It looks like the organization you are looking for doesn't exist.</p>
       <p class="text-body-small text-neutral-400 mb-6">Are you sure the link is correct?</p>
 
-      <RouterLink to="/platform/organizations" class="mt-6">
-        <Button size="small">Back to organizations</Button>
+      <RouterLink to="/platform/project" class="mt-6">
+        <Button size="small">Back to dashboard</Button>
       </RouterLink>
     </div>
   </template>
@@ -17,8 +17,8 @@
 
       <p class="text-body-small text-neutral-400 mt-6">We have been notified of this issue and will look into it.</p>
 
-      <RouterLink to="/platform/organizations" class="mt-6">
-        <Button size="small">Back to organizations</Button>
+      <RouterLink to="/platform/project" class="mt-6">
+        <Button size="small">Back to dashboard</Button>
       </RouterLink>
     </div>
   </template>

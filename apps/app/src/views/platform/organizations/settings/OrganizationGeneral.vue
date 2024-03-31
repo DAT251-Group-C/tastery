@@ -24,7 +24,10 @@
     </div>
   </form>
 
-  <div class="flex flex-col bg-neutral-800 ring-1 ring-neutral-700 rounded-sm">
+  <div
+    v-if="membership && membership.role === ApiMembershipRole.Owner"
+    class="flex flex-col bg-neutral-800 ring-1 ring-neutral-700 rounded-sm"
+  >
     <div class="p-8">
       <span class="text-body text-neutral-200">DANGER ZONE</span>
 
@@ -79,9 +82,10 @@
 
 <script setup lang="ts">
 import Control from '@/components/atoms/Control.vue';
+import { useMembership } from '@/composables/membership';
 import { useDeleteOrganization, useUpdateOrganization } from '@/composables/organization';
 import { useToaster } from '@/composables/toaster';
-import { ApiFullOrganization } from '@/services/api/data-contracts';
+import { ApiFullOrganization, ApiMembershipRole } from '@/services/api/data-contracts';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
@@ -92,12 +96,9 @@ const { organization } = defineProps<{ organization: ApiFullOrganization }>();
 const toaster = useToaster();
 const router = useRouter();
 const name = ref(organization.name);
-const deleteDialogVisible = ref(false);
+const { data: membership } = useMembership(organization.id);
+
 const { mutateAsync: updateOrganization, isPending: updatePending, error: updateError } = useUpdateOrganization();
-const { mutateAsync: deleteOrganization, isPending: deletePending } = useDeleteOrganization();
-
-const confirmDelete = ref('');
-
 const handleUpdateOrganization = async () => {
   try {
     await updateOrganization({ name: name.value, organizationId: organization.id });
@@ -111,6 +112,9 @@ const handleUpdateOrganization = async () => {
   }
 };
 
+const deleteDialogVisible = ref(false);
+const confirmDelete = ref('');
+const { mutateAsync: deleteOrganization, isPending: deletePending, error: deleteError } = useDeleteOrganization();
 const handleDeleteOrganization = async () => {
   try {
     await deleteOrganization(organization.id);
@@ -121,7 +125,7 @@ const handleDeleteOrganization = async () => {
     deleteDialogVisible.value = false;
     toaster.add({
       summary: 'Error deleting organization',
-      detail: updateError.value?.response?.data.message ?? 'An unknown error occurred',
+      detail: deleteError.value?.response?.data.message ?? 'An unknown error occurred',
       severity: 'error',
     });
   }

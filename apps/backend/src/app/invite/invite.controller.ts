@@ -43,12 +43,13 @@ export class InviteController {
 
   @Get()
   @ApiBearerAuth()
-  @ApiOkResponse({ type: Invite })
-  public getInvites(@UserEmail() email: string): Promise<Invite[]> {
+  @ApiOkResponsePaginated(Invite)
+  public getInvites(@UserEmail() email: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Invite>> {
     return lastValueFrom(
-      this.inviteService.getInvites(email).pipe(
+      this.inviteService.getInvites(email, pageOptionsDto).pipe(
         take(1),
         catchError(err => {
+          console.log(err);
           throw new BadRequestException(err.message || err);
         }),
       ),
@@ -126,13 +127,17 @@ export class InviteController {
     );
   }
 
-  @Post(':hash/accept')
+  @Post('/organization/:organizationId/accept')
   @ApiBearerAuth()
-  @ApiParam({ name: 'hash' })
+  @ApiParam({ name: 'organizationId' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public acceptInvite(@Param('hash') hash: string, @UserId() userId: string, @UserEmail() email: string): Promise<void> {
+  public acceptInvite(
+    @Param('organizationId') organizationId: string,
+    @UserId() userId: string,
+    @UserEmail() email: string,
+  ): Promise<void> {
     return lastValueFrom(
-      this.inviteService.acceptInvite(userId, email, hash).pipe(
+      this.inviteService.acceptInvite(userId, email, organizationId).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {
@@ -145,13 +150,13 @@ export class InviteController {
     );
   }
 
-  @Delete(':hash/decline')
+  @Delete('/organization/:organizationId/decline')
   @ApiBearerAuth()
-  @ApiParam({ name: 'hash' })
+  @ApiParam({ name: 'organizationId' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public declineInvite(@Param('hash') hash: string, @UserEmail() email: string): Promise<DeleteResult> {
+  public declineInvite(@Param('organizationId') organizationId: string, @UserEmail() email: string): Promise<DeleteResult> {
     return lastValueFrom(
-      this.inviteService.declineInvite(email, hash).pipe(
+      this.inviteService.declineInvite(email, organizationId).pipe(
         take(1),
         catchError(err => {
           if (err instanceof ResourceNotFoundException) {

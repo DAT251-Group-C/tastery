@@ -6,9 +6,9 @@ import { PageMetaDto } from '../../common/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
 import { PageDto } from '../../common/dto/page.dto';
 import { EncryptionService } from '../../common/encrypt/encryption.service';
+import InvalidRequestException from '../../common/exceptions/invalid-request.exception';
 import ResourceExistsException from '../../common/exceptions/resource-exists.exception';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipRole } from '../../common/models/membership.model';
 import { InviteEntity, MembershipEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
@@ -27,7 +27,7 @@ export class InviteService {
 
   public createInvite(userId: string, dto: CreateInviteDto, organizationId: string): Observable<InviteEntity> {
     if (dto.role === MembershipRole.OWNER) {
-      throw new ResourcePermissionDeniedException('You cannot invite users with owner role');
+      throw new InvalidRequestException('You cannot invite users with owner role');
     }
 
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
@@ -68,13 +68,8 @@ export class InviteService {
     );
   }
 
-  public acceptInvite(userId: string, userEmail: string, hash: string): Observable<void> {
-    return this.getInviteByHash(hash).pipe(
-      tap(invite => {
-        if (invite.email !== userEmail) {
-          throw new ResourcePermissionDeniedException('Email does not match invite');
-        }
-      }),
+  public acceptInvite(userId: string, userEmail: string, organizationId: string): Observable<void> {
+    return this.getInvite(userEmail, organizationId).pipe(
       switchMap(invite =>
         from(
           this.membershipRepository.save(
@@ -86,7 +81,7 @@ export class InviteService {
           ),
         ),
       ),
-      switchMap(() => from(this.inviteRepository.delete({ hash }))),
+      switchMap(() => from(this.inviteRepository.delete({ email: userEmail, organizationId }))),
       map(() => undefined),
     );
   }
@@ -110,8 +105,34 @@ export class InviteService {
     );
   }
 
-  public getInvites(email: string): Observable<InviteEntity[]> {
-    return from(this.inviteRepository.find({ where: { email } }));
+  public getInvite(email: string, organizationId: string): Observable<InviteEntity> {
+    return from(this.inviteRepository.findOne({ where: { email, organizationId } })).pipe(
+      map(invite => {
+        if (!invite) {
+          throw new ResourceNotFoundException('Invite not found');
+        }
+
+        return invite;
+      }),
+    );
+  }
+
+  public getInvites(email: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<InviteEntity>> {
+    const query = this.inviteRepository
+      .createQueryBuilder('invite')
+      .leftJoinAndSelect('invite.organization', 'organization')
+      .where('invite.email = :email', { email })
+      .orderBy('invite.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+
+    return combineLatest([query.getCount(), query.getMany()]).pipe(
+      map(([itemCount, invites]) => {
+        const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+
+        return new PageDto(invites, pageMetaDto);
+      }),
+    );
   }
 
   public getOrganizationInvites(organizationId: string, userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<InviteEntity>> {
@@ -152,8 +173,8 @@ export class InviteService {
     );
   }
 
-  public declineInvite(email: string, hash: string): Observable<DeleteResult> {
-    return from(this.inviteRepository.delete({ email, hash })).pipe(
+  public declineInvite(email: string, organizationId: string): Observable<DeleteResult> {
+    return from(this.inviteRepository.delete({ email, organizationId })).pipe(
       tap(({ affected }) => {
         if (!affected) {
           throw new ResourceNotFoundException('Invite not found');

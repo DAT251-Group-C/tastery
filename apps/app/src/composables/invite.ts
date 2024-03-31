@@ -7,6 +7,19 @@ import { Ref } from 'vue';
 import { ApiError, client } from '../services/api-client';
 import { ApiCreateInviteDto, ApiInvite, ApiSortOrder } from '../services/api/data-contracts';
 
+const useInvites = () => {
+  const authStore = useAuthStore();
+  const { isAuthenticated } = storeToRefs(authStore);
+
+  return useInfiniteQuery({
+    queryKey: ['invites'],
+    queryFn: async ({ pageParam: page }) => (await client.inviteControllerGetInvites({ page })).data,
+    enabled: isAuthenticated,
+    initialPageParam: 1,
+    getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
+  });
+};
+
 const useOrganizationInvites = (id: string | Ref<string>, order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
   const authStore = useAuthStore();
   const { isAuthenticated } = storeToRefs(authStore);
@@ -35,6 +48,36 @@ const useCreateInvite = () => {
   });
 };
 
+const useAcceptInvite = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError<ApiError>, string>({
+    mutationKey: ['acceptInvite'],
+    mutationFn: async organizationId => {
+      return (await client.inviteControllerAcceptInvite(organizationId)).data;
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ['invites'] });
+      queryClient.invalidateQueries({ queryKey: ['organizationInvites', { id }] });
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    },
+  });
+};
+
+const useDeclineInvite = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError<ApiError>, string>({
+    mutationKey: ['declineInvite'],
+    mutationFn: async organizationId => {
+      return (await client.inviteControllerDeclineInvite(organizationId)).data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invites'] });
+    },
+  });
+};
+
 const useRevokeInvite = () => {
   const queryClient = useQueryClient();
 
@@ -49,4 +92,4 @@ const useRevokeInvite = () => {
   });
 };
 
-export { useCreateInvite, useOrganizationInvites, useRevokeInvite };
+export { useAcceptInvite, useCreateInvite, useDeclineInvite, useInvites, useOrganizationInvites, useRevokeInvite };

@@ -4,7 +4,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -23,7 +22,6 @@ import { UserId } from '../../common/decorators/user-id.decorator';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
 import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
-import ResourcePermissionDeniedException from '../../common/exceptions/resource-permission-denied.exception';
 import { MembershipRoleGuard } from '../../common/guards/membership-role/membership-role.guard';
 import { MembershipRoles } from '../../common/guards/membership-role/membership-roles.decorator';
 import { FullMembership, Membership } from '../../common/models';
@@ -144,10 +142,6 @@ export class MembershipController {
       this.membershipService.removeMembership(organizationId, userId, userIdToRemove).pipe(
         take(1),
         catchError(err => {
-          if (err instanceof ResourcePermissionDeniedException) {
-            throw new ForbiddenException(err.message);
-          }
-
           if (err instanceof ResourceNotFoundException) {
             throw new NotFoundException(err.message);
           }

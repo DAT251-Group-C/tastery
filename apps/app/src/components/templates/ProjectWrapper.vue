@@ -61,7 +61,7 @@
           id="organization_menu"
           ref="organizationMenu"
           :model="organizationItems"
-          :popup="true"
+          popup
           class="bg-neutral-800 ring-1 ring-neutral-700"
         />
 

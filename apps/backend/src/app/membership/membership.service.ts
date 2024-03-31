@@ -12,6 +12,7 @@ import { MembershipRole } from '../../common/models/membership.model';
 import { MembershipEntity } from '../../entities';
 import { OrganizationService } from '../organization/organization.service';
 import { UpdateMembershipRoleDto } from './dto/update-membership-role.dto';
+import InvalidRequestException from '../../common/exceptions/invalid-request.exception';
 
 @Injectable()
 export class MembershipService {
@@ -73,7 +74,7 @@ export class MembershipService {
 
   public updateMembershipRole(organizationId: string, userId: string, data: UpdateMembershipRoleDto): Observable<void> {
     if (userId === data.userId) {
-      throw new ResourcePermissionDeniedException('You cannot update your own role');
+      throw new InvalidRequestException('You cannot update your own role');
     }
 
     return combineLatest([this.getMembership(organizationId, userId), this.getMembership(organizationId, data.userId)]).pipe(
@@ -104,12 +105,12 @@ export class MembershipService {
     );
   }
 
-  public removeMembership(userId: string, userIdToRemove: string, organizationId: string): Observable<DeleteResult> {
+  public removeMembership(organizationId: string, userId: string, userIdToRemove: string): Observable<DeleteResult> {
     return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
       switchMap(organization => from(organization.memberships)),
       tap(memberships => {
         const userMembership = memberships.find(membership => membership.userId === userId);
-        const userToRemoveMembership = memberships.find(membership => membership.userId === userId);
+        const userToRemoveMembership = memberships.find(membership => membership.userId === userIdToRemove);
 
         if (!userMembership || !userToRemoveMembership) {
           throw new ResourceNotFoundException('Membership not found');
@@ -120,9 +121,7 @@ export class MembershipService {
         }
 
         if (userMembership.role === MembershipRole.OWNER && userId === userIdToRemove) {
-          throw new ResourcePermissionDeniedException(
-            'Your organization needs an owner! Transfer the ownership or delete the organization',
-          );
+          throw new InvalidRequestException('Your organization needs an owner! Transfer the ownership or delete the organization');
         }
 
         if (userToRemoveMembership.role === MembershipRole.OWNER) {

@@ -1,11 +1,14 @@
-import { ApiFullMembership, ApiSortOrder } from '@/services/api/data-contracts';
+import { ApiFullMembership, ApiSortOrder, ApiUpdateMembershipRoleDto } from '@/services/api/data-contracts';
 import { useAuthStore } from '@/stores/auth';
 import { getValue } from '@/utils/vue';
-import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { ApiError, client } from '../services/api-client';
+import { useOrganizationId } from './tokens';
+import { useUser } from './user';
 
 const useOrganizationMemberships = (id: string | Ref<string>, order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
   const authStore = useAuthStore();
@@ -32,4 +35,49 @@ const useMembership = (id: string | Ref<string>) => {
   });
 };
 
-export { useMembership, useOrganizationMemberships };
+const useUpdateMembershipRole = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError<ApiError>, ApiUpdateMembershipRoleDto & { organizationId: string }>({
+    mutationKey: ['updateMembershipRole'],
+    mutationFn: async ({ organizationId: id, ...data }) => {
+      return (await client.membershipControllerUpdateMembershipRole(id, data)).data;
+    },
+    onSuccess: async (_, { organizationId: id }) => {
+      await queryClient.invalidateQueries({ queryKey: ['membership', { id }] });
+      await queryClient.invalidateQueries({ queryKey: ['organizationMemberships', { id }] });
+    },
+  });
+};
+
+const useRemoveMembership = () => {
+  const queryClient = useQueryClient();
+  const { data: user } = useUser();
+  const router = useRouter();
+  const { organizationId, setOrganizationId } = useOrganizationId();
+
+  return useMutation<void, AxiosError<ApiError>, { organizationId: string; userId: string }>({
+    mutationKey: ['removeMembership'],
+    mutationFn: async ({ organizationId, userId }) => {
+      return (await client.membershipControllerRemoveMembership(organizationId, userId)).data;
+    },
+    onSuccess: async (_, { organizationId: id, userId }) => {
+      if (organizationId.value === id && userId === user.value?.id) {
+        if (router.currentRoute.value.meta.organizationRequired) {
+          await router.push({ name: 'Projects' });
+        }
+        setOrganizationId(null);
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['organization', { id }] });
+      await queryClient.invalidateQueries({ queryKey: ['organizationMemberships', { id }] });
+
+      if (user.value?.id === userId) {
+        await queryClient.invalidateQueries({ queryKey: ['memberships', { id }] });
+        await queryClient.invalidateQueries({ queryKey: ['organizations'] });
+      }
+    },
+  });
+};
+
+export { useMembership, useOrganizationMemberships, useRemoveMembership, useUpdateMembershipRole };

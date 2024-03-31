@@ -13,15 +13,17 @@
       <span class="font-symbol text-[1.25rem] w-5 h-5 shrink-0">{{ className }}</span>
     </template>
   </Toast>
+  <ConfirmDialog />
 </template>
 
 <script setup lang="ts">
 import { supabase } from '@/plugins/supabase';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import Toast from 'primevue/toast';
+import ConfirmDialog from '@/components/templates/ConfirmDialog.vue';
 import { RouterView, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useOrganizationId } from './composables/tokens';
-import Toast from 'primevue/toast';
 
 const router = useRouter();
 const authStore = useAuthStore();
