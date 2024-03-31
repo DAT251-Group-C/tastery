@@ -13,6 +13,9 @@ const appConfig = registerAs('appConfig', () => ({
   jwt: {
     secret: process.env.NX_JWT_SECRET,
   },
+  frontend: {
+    url: process.env.NX_FRONTEND_URL,
+  },
   database: {
     host: process.env.NX_POSTGRES_HOST,
     port: Number(process.env.NX_POSTGRES_PORT) || 5432,

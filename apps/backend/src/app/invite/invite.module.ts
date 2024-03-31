@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../../common/config/app-conf';
+import { EmailModule } from '../../common/email/email.module';
 import { EncryptionModule } from '../../common/encrypt/encryption.module';
 import { GuardModule } from '../../common/guards/guard.module';
 import { InviteEntity, MembershipEntity } from '../../entities';
@@ -16,6 +17,7 @@ import { InviteService } from './invite.service';
     GuardModule,
     OrganizationModule,
     MembershipModule,
+    EmailModule,
     EncryptionModule,
     ConfigModule.forFeature(appConfig),
   ],
