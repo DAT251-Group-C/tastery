@@ -18,7 +18,7 @@
               <RouterLink v-if="link.to" v-slot="{ isExactActive }" :to="link.to">
                 <p
                   :class="[
-                    'flex text-body-small-bold transition-colors hover:text-neutral-300',
+                    'flex text-body-small transition-colors hover:text-neutral-300',
                     isExactActive ? 'text-neutral-300' : 'text-neutral-400',
                   ]"
                 >
@@ -27,7 +27,7 @@
               </RouterLink>
               <button
                 v-else-if="link.click"
-                class="text-left text-body-small-bold text-neutral-400 hover:text-neutral-300"
+                class="text-left text-body-small text-neutral-400 hover:text-neutral-300"
                 @click="link.click()"
               >
                 <span class="truncate">{{ link.label }}</span>
@@ -41,7 +41,7 @@
         </template>
 
         <div class="flex flex-col gap-y-2 py-5">
-          <button class="flex items-center text-left text-body-small-bold text-neutral-400 hover:text-neutral-300" @click="signOut()">
+          <button class="flex items-center text-left text-body-small text-neutral-400 hover:text-neutral-300" @click="signOut()">
             <i class="font-symbol text-body">logout</i>
             <span class="ml-2">Log out</span>
           </button>

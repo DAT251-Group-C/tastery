@@ -67,7 +67,9 @@
         </template>
       </Column>
       <template #empty>
-        <div class="py-2.5">No members found</div>
+        <div class="py-2.5">
+          {{ membershipsFetching ? 'Fetching members...' : 'No members found by ' + memberFilters['global'].value }}
+        </div>
       </template>
       <template v-if="!membershipsFetching" #footer>
         <div class="flex justify-between h-6 items-center">
@@ -136,7 +138,15 @@
         </template>
       </Column>
       <template #empty>
-        <div class="py-2.5">{{ invitesFetching ? 'Fetching invites...' : 'No invites pending' }}</div>
+        <div class="py-2.5">
+          {{
+            invitesFetching
+              ? 'Fetching invites...'
+              : inviteFilters['global'].value
+                ? 'No invites found by ' + inviteFilters['global'].value
+                : 'No invites pending'
+          }}
+        </div>
       </template>
       <template v-if="!invitesFetching" #footer>
         <div class="flex justify-between h-6 items-center">

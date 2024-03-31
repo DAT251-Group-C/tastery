@@ -35,7 +35,7 @@
         <div
           class="ml-1 opacity-0 group-hover:opacity-100 group-[:not(:hover)]:-translate-x-3 translate-x-0 group-[.menu-open]:opacity-100 transition-[opacity,transform] min-w-0"
         >
-          <p class="text-body-small-bold text-neutral-300 truncate">{{ user?.name || 'Loading...' }}</p>
+          <p class="text-body-small text-neutral-300 truncate">{{ user?.name || 'Loading...' }}</p>
           <p class="text-caption text-neutral-500 truncate">{{ user?.email || 'Loading...' }}</p>
         </div>
       </div>

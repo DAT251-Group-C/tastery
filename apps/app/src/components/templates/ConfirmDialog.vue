@@ -3,7 +3,7 @@
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="rounded-xs ring-1 ring-neutral-900 bg-neutral-800">
         <div class="flex items-center justify-between rounded-t-xs bg-neutral-700/25 text-neutral-200 px-5 py-3">
-          <p class="text-body-small-bold">{{ message.header }}</p>
+          <p class="text-body-small">{{ message.header }}</p>
           <Button severity="neutral" text rounded icon="close" @click="rejectCallback()"></Button>
         </div>
         <div class="border-y border-neutral-700 px-5 pt-6 pb-8 text-body-small">

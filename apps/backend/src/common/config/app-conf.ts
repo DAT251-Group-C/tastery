@@ -20,6 +20,9 @@ const appConfig = registerAs('appConfig', () => ({
     password: process.env.NX_POSTGRES_PASSWORD,
     database: process.env.NX_POSTGRES_DATABASE,
   },
+  resend: {
+    key: process.env.NX_RESEND_KEY,
+  },
   encryption: {
     hashIterations: process.env.NX_ENCRYPTION_HASH_ITERATIONS,
     hashKeyLength: process.env.NX_ENCRYPTION_HASH_KEY_LENGTH,
