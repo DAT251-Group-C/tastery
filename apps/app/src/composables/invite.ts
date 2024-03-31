@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/auth';
 import { getValue } from '@/utils/vue';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
@@ -17,6 +17,13 @@ const useInvites = () => {
     enabled: isAuthenticated,
     initialPageParam: 1,
     getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
+  });
+};
+
+const useInviteByHash = (hash: string | Ref<string>) => {
+  return useQuery<ApiInvite, AxiosError<ApiError>>({
+    queryKey: ['inviteByHash', { hash }],
+    queryFn: async () => (await client.inviteControllerGetInviteByHash(getValue(hash))).data,
   });
 };
 
@@ -92,4 +99,4 @@ const useRevokeInvite = () => {
   });
 };
 
-export { useAcceptInvite, useCreateInvite, useDeclineInvite, useInvites, useOrganizationInvites, useRevokeInvite };
+export { useAcceptInvite, useCreateInvite, useDeclineInvite, useInvites, useOrganizationInvites, useRevokeInvite, useInviteByHash };

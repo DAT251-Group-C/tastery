@@ -6,13 +6,16 @@
       <Button severity="neutral" :label="'Continue with Github'" size="large" @click="signInWithGithub()"></Button>
       <Button severity="neutral" :label="'Continue with Google'" size="large"></Button>
       <Divider><span class="bg-neutral-800 text-neutral-300 px-2">or</span></Divider>
-      <Control label="Email">
-        <InputText v-model="email" type="email" required placeholder="you@example.com" size="large" />
+      <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
+        {{ error }}
+      </div>
+      <Control label="Email" hideDetails>
+        <InputText v-model="emailModel" type="email" required placeholder="you@example.com" size="large" />
       </Control>
       <div class="relative">
         <Button link class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0" label="Forgot password?"></Button>
-        <Control label="Password">
-          <InputText v-model="password" required type="password" placeholder="••••••••" size="large" />
+        <Control label="Password" hideDetails>
+          <InputText v-model="passwordModel" required type="password" placeholder="••••••••" size="large" />
         </Control>
       </div>
       <Button type="submit" size="large">Sign In</Button>
@@ -21,7 +24,7 @@
       <p class="flex justify-center items-center">
         Don't have an account?
         <RouterLink to="/signup" tabindex="-1">
-          <Button link class="!text-caption" label="Sign up now"></Button>
+          <Button link class="!text-caption !px-1" label="Sign up now"></Button>
         </RouterLink>
       </p>
     </div>
@@ -38,21 +41,28 @@ import { useRouter } from 'vue-router';
 import { supabase } from '../../plugins/supabase';
 import Auth from './Auth.vue';
 
+const props = defineProps<{ email?: string; hash?: string }>();
 const router = useRouter();
-const email = ref('eirik.maaseidvaag@gmail.com');
-const password = ref('password123');
+const emailModel = ref(props.email ?? '');
+const passwordModel = ref('');
+const error = ref('');
 
 const signIn = async () => {
+  error.value = '';
+
   const response = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
+    email: emailModel.value,
+    password: passwordModel.value,
   });
 
   if (response.error) {
-    console.error('Error signing in:', response.error.message);
+    error.value = response.error.message;
   } else {
-    console.log('User signed in:', response.data);
-    router.push({ name: 'Projects' });
+    if (props.hash) {
+      router.push({ name: 'Invite', params: { hash: props.hash } });
+    } else {
+      router.push({ name: 'Projects' });
+    }
   }
 };
 

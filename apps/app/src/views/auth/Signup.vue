@@ -3,7 +3,7 @@
     <template v-if="emailSent">
       <h1 class="mt-8 mb-2 text-neutral-100">Confirm your email</h1>
       <p class="text-body-small text-neutral-400 mb-4">
-        We've sent an email to <span class="text-neutral-200">{{ email }}</span
+        We've sent an email to <span class="text-neutral-200">{{ emailModel }}</span
         >. Please click the link in the email to confirm your email address.
       </p>
       <Button
@@ -17,17 +17,20 @@
       <h1 class="mt-8 mb-2 text-neutral-100">Get started</h1>
       <p class="text-body-small text-neutral-400 mb-10">Create a new account</p>
       <form class="flex flex-col gap-y-5" @submit.prevent="signUp">
-        <Control label="Firstname">
+        <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
+          {{ error }}
+        </div>
+        <Control label="Firstname" hideDetails required>
           <InputText v-model="firstName" required placeholder="John" size="large" />
         </Control>
-        <Control label="Lastname" class="mb-1">
+        <Control label="Lastname" class="mb-1" hideDetails required>
           <InputText v-model="lastName" required placeholder="Doe" size="large" />
         </Control>
-        <Control label="Email">
-          <InputText v-model="email" type="email" required placeholder="you@example.com" size="large" />
+        <Control label="Email" hideDetails>
+          <InputText v-model="emailModel" type="email" required placeholder="you@example.com" size="large" />
         </Control>
-        <Control label="Password">
-          <InputText v-model="password" required type="password" placeholder="••••••••" size="large" />
+        <Control label="Password" hideDetails>
+          <InputText v-model="password" required type="password" minLength="8" placeholder="••••••••" size="large" />
         </Control>
         <Button type="submit" size="large">Sign Up</Button>
       </form>
@@ -35,7 +38,7 @@
         <p class="flex justify-center items-center">
           Already have an account?
           <RouterLink to="/signin" tabindex="-1">
-            <Button link class="!text-caption" label="Sign in now"></Button>
+            <Button link class="!text-caption !px-1" label="Sign in now"></Button>
           </RouterLink>
         </p>
       </div>
@@ -52,11 +55,13 @@ import { ref } from 'vue';
 import { supabase } from '../../plugins/supabase';
 import Auth from './Auth.vue';
 
+const props = defineProps<{ email?: string; hash?: string }>();
 const toaster = useToaster();
+const error = ref('');
 const firstName = ref('');
 const lastName = ref('');
-const email = ref('eirik.maaseidvaag@gmail.com');
-const password = ref('password123');
+const emailModel = ref(props.email ?? '');
+const password = ref('');
 const emailSent = ref(false);
 
 const resendEmailCountdown = ref(0);
@@ -76,11 +81,12 @@ const startResendCountdown = () => {
   }, 1000);
 };
 
-const emailRedirectTo = `${window.location.origin}/platform`;
+const emailRedirectTo = props.hash ? `${window.location.origin}/invite/?hash=${props.hash}` : `${window.location.origin}/platform`;
 
 const signUp = async () => {
+  error.value = '';
   const response = await supabase.auth.signUp({
-    email: email.value,
+    email: emailModel.value,
     password: password.value,
     options: {
       emailRedirectTo,
@@ -92,7 +98,7 @@ const signUp = async () => {
   });
 
   if (response.error) {
-    console.error('Error signing up:', response.error.message);
+    error.value = response.error.message;
   } else {
     emailSent.value = true;
     startResendCountdown();
@@ -102,7 +108,7 @@ const signUp = async () => {
 const resendEmail = async () => {
   const response = await supabase.auth.resend({
     type: 'signup',
-    email: email.value,
+    email: emailModel.value,
     options: {
       emailRedirectTo,
     },

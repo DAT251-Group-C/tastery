@@ -56,10 +56,7 @@ export class EmailService {
       )
       .pipe(
         map(() => invite),
-        catchError(err => {
-          console.log(err);
-          return throwError(() => new Error('Failed to send email'));
-        }),
+        catchError(() => throwError(() => new Error('Failed to send email'))),
       );
   }
 }

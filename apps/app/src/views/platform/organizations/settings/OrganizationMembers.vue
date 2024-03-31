@@ -115,13 +115,15 @@
       </Column>
       <Column field="status">
         <template #body="{ data }">
-          <Tag v-if="data.expiresAt < new Date().toISOString()" severity="info" value="Pending" rounded />
+          <Tag v-if="data.expiresAt > new Date().toISOString()" severity="info" value="Pending" rounded />
           <Tag v-else severity="warning" value="Expired" rounded />
         </template>
       </Column>
       <Column field="role" header="Role">
         <template #body="{ data }">
-          <Dropdown v-model="data.role" :options="roles" disabled size="large"></Dropdown>
+          <div>
+            <Button icon="expand_more" class="w-[6.5rem] !text-left" iconPos="right" :label="data.role" disabled severity="neutral" />
+          </div>
         </template>
       </Column>
       <Column field="context" class="text-right w-48">
@@ -167,19 +169,17 @@ import { FilterMatchMode } from 'primevue/api';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import Dropdown from 'primevue/dropdown';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import { useConfirm } from 'primevue/useconfirm';
 import InputText from 'primevue/inputtext';
 import Menu from 'primevue/menu';
 import { MenuItem } from 'primevue/menuitem';
 import OverlayPanel from 'primevue/overlaypanel';
 import Tag from 'primevue/tag';
+import { useConfirm } from 'primevue/useconfirm';
 import { computed, nextTick, ref } from 'vue';
 import OrgnaizationInvite from './OrganizationInvite.vue';
 
-const roles = Object.values(ApiMembershipRole);
 const { organizationId } = defineProps<{ organizationId: string }>();
 const { data: membership } = useMembership(organizationId);
 const toaster = useToaster();

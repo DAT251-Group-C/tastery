@@ -15,17 +15,23 @@ const router = createRouter({
       path: '/signup',
       name: 'Sign up',
       component: () => import('@/views/auth/Signup.vue'),
-      props: {
-        mode: 'signup',
-      },
+      props: route => ({
+        email: route.query.email,
+      }),
+    },
+    {
+      path: '/invite',
+      name: 'Invite',
+      component: () => import('@/views/auth/Invite.vue'),
+      props: route => ({ hash: route.query.hash }),
     },
     {
       path: '/signin',
       name: 'Sign in',
       component: () => import('@/views/auth/Signin.vue'),
-      props: {
-        mode: 'signin',
-      },
+      props: route => ({
+        email: route.query.email,
+      }),
     },
     {
       path: '/platform',
