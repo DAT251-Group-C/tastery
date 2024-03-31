@@ -49,7 +49,6 @@ export class InviteController {
       this.inviteService.getInvites(email, pageOptionsDto).pipe(
         take(1),
         catchError(err => {
-          console.log(err);
           throw new BadRequestException(err.message || err);
         }),
       ),
@@ -59,7 +58,7 @@ export class InviteController {
   @Get(':hash')
   @Public()
   @ApiOkResponse({ type: Invite })
-  public getInviteByHash(hash: string): Promise<Invite> {
+  public getInviteByHash(@Param('hash') hash: string): Promise<Invite> {
     return lastValueFrom(
       this.inviteService.getInviteByHash(hash).pipe(
         take(1),

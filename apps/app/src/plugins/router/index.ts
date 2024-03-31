@@ -20,6 +20,14 @@ const router = createRouter({
       }),
     },
     {
+      path: '/forgot-password',
+      name: 'Forgot password',
+      component: () => import('@/views/auth/ForgotPassword.vue'),
+      props: route => ({
+        email: route.query.email,
+      }),
+    },
+    {
       path: '/invite',
       name: 'Invite',
       component: () => import('@/views/auth/Invite.vue'),
@@ -42,6 +50,7 @@ const router = createRouter({
           path: '/platform/profile',
           name: 'Profile',
           component: () => import('@/views/platform/account/Profile.vue'),
+          props: route => ({ passwordRecovery: route.query.passwordRecovery }),
           meta: {
             platformTitle: 'Account',
             platformSubtitle: 'Profile',

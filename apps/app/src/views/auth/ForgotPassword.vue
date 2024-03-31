@@ -1,45 +1,36 @@
 <template>
   <Auth>
     <template v-if="emailSent">
-      <h1 class="mt-8 mb-2 text-neutral-100">Confirm your email</h1>
+      <h1 class="mt-8 mb-2 text-neutral-100">Check your email</h1>
       <p class="text-body-small text-neutral-400 mb-4">
         We've sent an email to <span class="text-neutral-200">{{ emailModel }}</span
-        >. Please click the link in the email to confirm your email address.
+        >. Please click the link in the email to continue resetting your password.
       </p>
       <Button
         :label="`Resend confirmation email ${resendEmailCountdown > 0 ? `(${resendEmailCountdown})` : ''}`"
-        :disabled="isPending || resendEmailCountdown > 0"
-        :loading="isPending"
-        loadingIcon="progress_activity"
+        :disabled="resendEmailCountdown > 0 || pending"
         size="large"
+        :loading="pending"
+        loadingIcon="progress_activity"
         @click="resendEmail"
       />
     </template>
     <template v-else>
-      <h1 class="mt-8 mb-2 text-neutral-100">Get started</h1>
-      <p class="text-body-small text-neutral-400 mb-10">Create a new account</p>
-      <form class="flex flex-col gap-y-5" @submit.prevent="signUp">
+      <h1 class="mt-8 mb-2 text-neutral-100">Reset your password</h1>
+      <p class="text-body-small text-neutral-400 mb-6">Type in your email and we'll send you a link to reset your password</p>
+      <form class="flex flex-col gap-y-5" @submit.prevent="resetPassword">
         <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
           {{ error }}
         </div>
-        <Control label="Firstname" hideDetails required>
-          <InputText v-model="firstName" required placeholder="John" size="large" />
-        </Control>
-        <Control label="Lastname" class="mb-1" hideDetails required>
-          <InputText v-model="lastName" required placeholder="Doe" size="large" />
-        </Control>
-        <Control label="Email" hideDetails>
+        <Control label="Email" hideDetails class="my-4">
           <InputText v-model="emailModel" type="email" required placeholder="you@example.com" size="large" />
         </Control>
-        <Control label="Password" hideDetails>
-          <InputText v-model="password" required type="password" minLength="8" placeholder="••••••••" size="large" />
-        </Control>
-        <Button type="submit" size="large" :disabled="isPending" :loading="isPending" loadingIcon="progress_activity">Sign Up</Button>
+        <Button type="submit" size="large" :disabled="pending" :loading="pending" loadingIcon="progress_activity">Send reset email</Button>
       </form>
       <div class="text-caption text-neutral-400 mt-6">
         <p class="flex justify-center items-center">
           Already have an account?
-          <RouterLink :to="{ name: 'Sign in', query: { hash } }" tabindex="-1">
+          <RouterLink to="/signin" tabindex="-1">
             <Button link class="!text-caption !px-1" label="Sign in now"></Button>
           </RouterLink>
         </p>
@@ -57,15 +48,12 @@ import { ref } from 'vue';
 import { supabase } from '../../plugins/supabase';
 import Auth from './Auth.vue';
 
-const props = defineProps<{ email?: string; hash?: string }>();
+const props = defineProps<{ email?: string }>();
 const toaster = useToaster();
 const error = ref('');
-const firstName = ref('');
-const lastName = ref('');
 const emailModel = ref(props.email ?? '');
-const password = ref('');
 const emailSent = ref(false);
-const isPending = ref(false);
+const pending = ref(false);
 
 const resendEmailCountdown = ref(0);
 const interval = ref<NodeJS.Timeout | null>(null);
@@ -84,21 +72,13 @@ const startResendCountdown = () => {
   }, 1000);
 };
 
-const emailRedirectTo = props.hash ? `${window.location.origin}/invite/?hash=${props.hash}` : `${window.location.origin}/platform`;
+const redirectTo = `${window.location.origin}/platform/profile?passwordRecovery=true`;
 
-const signUp = async () => {
+const resetPassword = async () => {
+  pending.value = true;
   error.value = '';
-  isPending.value = true;
-  const response = await supabase.auth.signUp({
-    email: emailModel.value,
-    password: password.value,
-    options: {
-      emailRedirectTo,
-      data: {
-        firstName: firstName.value,
-        lastName: lastName.value,
-      },
-    },
+  const response = await supabase.auth.resetPasswordForEmail(emailModel.value, {
+    redirectTo,
   });
 
   if (response.error) {
@@ -107,17 +87,14 @@ const signUp = async () => {
     emailSent.value = true;
     startResendCountdown();
   }
-  isPending.value = false;
+
+  pending.value = false;
 };
 
 const resendEmail = async () => {
-  isPending.value = true;
-  const response = await supabase.auth.resend({
-    type: 'signup',
-    email: emailModel.value,
-    options: {
-      emailRedirectTo,
-    },
+  pending.value = true;
+  const response = await supabase.auth.resetPasswordForEmail(emailModel.value, {
+    redirectTo,
   });
 
   if (response.error) {
@@ -134,6 +111,7 @@ const resendEmail = async () => {
     });
     startResendCountdown();
   }
-  isPending.value = false;
+
+  pending.value = false;
 };
 </script>

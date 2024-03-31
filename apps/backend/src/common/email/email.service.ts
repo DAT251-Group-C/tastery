@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { Resend } from 'resend';
-import { Observable, catchError, from, map, switchMap, tap, throwError } from 'rxjs';
+import { Observable, catchError, from, map, switchMap, throwError } from 'rxjs';
 import { InviteEntity } from '../../entities';
 import appConfig from '../config/app-conf';
 import { MembershipRole } from '../models/membership.model';
@@ -32,7 +32,6 @@ export class EmailService {
   public sendInvite(invite: InviteEntity, hash: string): Observable<InviteEntity> {
     return from(Promise.resolve(invite.organization))
       .pipe(
-        tap(org => console.log(org)),
         switchMap(() =>
           from(
             this.resend.emails.send({

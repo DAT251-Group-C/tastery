@@ -2,6 +2,20 @@
 const baseConfig = {
   content: ['apps/app/src/**/*.{vue,js,ts,scss,css}', 'apps/app/index.html'],
   theme: {
+    extend: {
+      keyframes: {
+        highlight: {
+          '0%': { boxShadow: '0 0 0 0 theme(colors.primary.DEFAULT)' },
+          '10%': { boxShadow: '0 0 0 0.5rem theme(colors.primary.DEFAULT)' },
+          '20%': { boxShadow: '0 0 0 0.25rem theme(colors.primary.DEFAULT)' },
+          '90%': { boxShadow: '0 0 0 0.25rem theme(colors.primary.DEFAULT)' },
+          '100%': { boxShadow: '0 0 0 0 theme(colors.primary.DEFAULT)' },
+        },
+      },
+      animation: {
+        highlight: 'highlight 1.5s ease-in-out 1',
+      },
+    },
     borderRadius: {
       none: '0',
       xs: '0.25rem',

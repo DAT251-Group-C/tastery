@@ -7,6 +7,14 @@
         The invitation has expired. Please ask an organization administrator to send you a new one.
       </p>
     </template>
+
+    <template v-else-if="isNotFound">
+      <h1 class="mt-8 text-neutral-100 mb-4">Invite not found</h1>
+      <p class="text-body-small text-neutral-400 mb-10">
+        The invitation could not be found. Please ask an organization administrator to send you a new one.
+      </p>
+    </template>
+
     <template v-else>
       <h1 class="mt-8 text-neutral-100 mb-4">An error occurred</h1>
       <p class="text-body-small text-neutral-400 mb-10">An error occurred when trying to find the invite. Please try again later.</p>
@@ -118,6 +126,14 @@ const isExpired = computed(() => {
   }
 
   return error.value?.response?.data.message === 'Invite has expired';
+});
+
+const isNotFound = computed(() => {
+  if (!error) {
+    return false;
+  }
+
+  return error.value?.response?.status === 404;
 });
 
 const init = () => {

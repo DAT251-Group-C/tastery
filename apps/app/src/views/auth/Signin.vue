@@ -13,17 +13,19 @@
         <InputText v-model="emailModel" type="email" required placeholder="you@example.com" size="large" />
       </Control>
       <div class="relative">
-        <Button link class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0" label="Forgot password?"></Button>
+        <RouterLink :to="{ name: 'Forgot password', query: { email: emailModel || undefined } }" tabindex="-1">
+          <Button link class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0" label="Forgot password?"></Button>
+        </RouterLink>
         <Control label="Password" hideDetails>
           <InputText v-model="passwordModel" required type="password" placeholder="••••••••" size="large" />
         </Control>
       </div>
-      <Button type="submit" size="large">Sign In</Button>
+      <Button type="submit" size="large" :disabled="isPending" :loading="isPending" loadingIcon="progress_activity">Sign In</Button>
     </form>
     <div class="text-caption text-neutral-400 mt-6">
       <p class="flex justify-center items-center">
         Don't have an account?
-        <RouterLink to="/signup" tabindex="-1">
+        <RouterLink :to="{ name: 'Sign up', query: { hash } }" tabindex="-1">
           <Button link class="!text-caption !px-1" label="Sign up now"></Button>
         </RouterLink>
       </p>
@@ -46,9 +48,11 @@ const router = useRouter();
 const emailModel = ref(props.email ?? '');
 const passwordModel = ref('');
 const error = ref('');
+const isPending = ref(false);
 
 const signIn = async () => {
   error.value = '';
+  isPending.value = true;
 
   const response = await supabase.auth.signInWithPassword({
     email: emailModel.value,
@@ -64,6 +68,8 @@ const signIn = async () => {
       router.push({ name: 'Projects' });
     }
   }
+
+  isPending.value = false;
 };
 
 const signInWithGithub = async () => {

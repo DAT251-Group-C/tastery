@@ -32,7 +32,6 @@ const { setOrganizationId } = useOrganizationId();
 
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {
-    console.log('User signed in');
     authStore.loadSession().then(() => {
       if (authStore.isAuthenticated) {
         authStore.loadRedirectRoute();
@@ -45,8 +44,6 @@ supabase.auth.onAuthStateChange(event => {
     if (router.currentRoute.value.meta.authRequired) {
       router.push({ name: 'Index' });
     }
-  } else {
-    console.log(event);
   }
 });
 
