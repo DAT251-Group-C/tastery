@@ -1,9 +1,9 @@
-import { ApiCreateProjectDto, ApiProject } from '@/services/api/data-contracts';
+import { ApiCreateProjectDto, ApiFullProject, ApiProject } from '@/services/api/data-contracts';
 import { useAuthStore } from '@/stores/auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
-import { Ref } from 'vue';
+import { Ref, computed } from 'vue';
 import { ApiError, client } from '../services/api-client';
 
 const useProjects = () => {
@@ -21,11 +21,12 @@ const useProject = (id: Ref<string>) => {
   const queryClient = useQueryClient();
   const authStore = useAuthStore();
   const { isAuthenticated } = storeToRefs(authStore);
+  const enabled = computed(() => isAuthenticated.value && !!id.value);
 
-  return useQuery({
+  return useQuery<ApiFullProject, AxiosError<ApiError>>({
     queryKey: ['project', { id }],
     queryFn: async () => (await client.projectControllerGetProjectById(id.value)).data,
-    enabled: isAuthenticated,
+    enabled,
     placeholderData: () => {
       const foundProject = queryClient.getQueryData<ApiProject[]>(['projects'])?.find(x => x.id === id.value);
 

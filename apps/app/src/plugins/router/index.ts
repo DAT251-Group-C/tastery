@@ -45,7 +45,7 @@ const router = createRouter({
       component: () => import('@/components/templates/PlatformWrapper.vue'),
       children: [
         {
-          path: '/platform/profile',
+          path: 'profile',
           name: 'Profile',
           component: () => import('@/views/platform/account/Profile.vue'),
           props: route => ({ passwordRecovery: route.query.passwordRecovery }),
@@ -55,7 +55,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/platform/projects',
+          path: 'projects',
           name: 'Projects',
           component: () => import('@/views/platform/projects/Projects.vue'),
           meta: {
@@ -64,7 +64,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/platform/organizations/:organizationId',
+          path: 'organizations/:organizationId',
           name: 'Organization',
           component: () => import('@/views/platform/organizations/Organization.vue'),
           meta: {
@@ -72,6 +72,14 @@ const router = createRouter({
             platformSubtitle: 'Settings',
           },
           props: true,
+        },
+        {
+          path: ':pathMatch(.*)*',
+          name: 'Platform page not found',
+          component: () => import('@/views/error/NotFound.vue'),
+          meta: {
+            title: 'Page not found',
+          },
         },
       ],
       meta: {
@@ -100,8 +108,31 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'Project',
-          component: () => import('@/views/platform/projects/Project.vue'),
+          name: 'Overview',
+          component: () => import('@/views/platform/project/Overview.vue'),
+        },
+        {
+          path: 'credentials',
+          name: 'Credentials',
+          component: () => import('@/views/platform/project/Credentials.vue'),
+        },
+        {
+          path: 'tools',
+          name: 'Tools',
+          component: () => import('@/views/platform/project/Tools.vue'),
+        },
+        {
+          path: 'settings',
+          name: 'Project settings',
+          component: () => import('@/views/platform/project/Settings.vue'),
+        },
+        {
+          path: ':pathMatch(.*)*',
+          name: 'Project page not found',
+          component: () => import('@/views/error/NotFound.vue'),
+          meta: {
+            title: 'Page not found',
+          },
         },
       ],
       props: true,

@@ -17,8 +17,9 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button';
-import { toRefs } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{ isAuthenticated: boolean }>();
-const { isAuthenticated } = toRefs(props);
+const authStore = useAuthStore();
+const { isAuthenticated } = storeToRefs(authStore);
 </script>

@@ -9,11 +9,11 @@
       <Logo class="mb-1 mx-2" />
       <Menu :model="items" :fillHeight="true" class="!py-0 overflow-y-auto overflow-x-hidden">
         <template #item="{ item, props: itemProps }">
-          <router-link v-slot="{ href, navigate, isActive, isExactActive }" :to="item.route" custom>
+          <router-link v-slot="{ href, navigate, isExactActive }" :to="item.route" custom>
             <a
               :href="href"
               v-bind="itemProps.action"
-              :class="(item.exact ? isExactActive : isActive) && 'rounded-xs bg-neutral-600 !text-neutral-200'"
+              :class="isExactActive && 'rounded-xs bg-neutral-600 !text-neutral-200'"
               @click="navigate"
             >
               <i class="font-symbol">{{ item.icon }}</i>
@@ -48,8 +48,18 @@
       </Navbar>
       <main>
         <slot>
-          <span v-if="isPending">Loading</span>
-          <RouterView v-else :project="project"></RouterView>
+          <div v-if="isNotFound" class="flex items-center justify-center min-h-[calc(100vh-3rem)]">
+            <div class="m-8 flex gap-x-6">
+              <div class="flex flex-col gap-y-2 mb-8">
+                <h1 class="font-bold text-neutral-200">404</h1>
+                <p class="text-neutral-300 mb-4">The project you are looking for does not exist</p>
+                <RouterLink :to="{ name: 'Projects' }">
+                  <Button label="Go to dashboard"></Button>
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+          <RouterView v-else :projectId="projectId"></RouterView>
         </slot>
       </main>
     </div>
@@ -61,8 +71,9 @@ import { useUser } from '@/composables/user';
 import { signOut } from '@/plugins/supabase';
 import Avatar from 'primevue/avatar';
 import Menu, { MenuState } from 'primevue/menu';
+import Button from 'primevue/button';
 import type { MenuItem } from 'primevue/menuitem';
-import { ref, toRefs } from 'vue';
+import { computed, ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import Logo from '../atoms/Logo.vue';
 import Navbar from './Navbar.vue';
@@ -73,9 +84,13 @@ const { data: user } = useUser();
 const props = defineProps<{ projectId: string }>();
 const { projectId } = toRefs(props);
 
-const { data: project, isPending } = useProject(projectId);
+const uuidRegex = new RegExp(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i);
+
+const { error } = useProject(projectId);
 const userMenu = ref<Menu & MenuState>();
 const router = useRouter();
+
+const isNotFound = computed(() => !uuidRegex.test(projectId.value) || error?.value?.response?.data.statusCode === 404);
 
 const userMenuItems: MenuItem[] = [
   {
@@ -101,21 +116,25 @@ const items: MenuItem[] = [
     label: 'Dashboard',
     icon: 'home',
     route: '/platform',
-    exact: true,
   },
   {
     separator: true,
     class: '-mx-2',
   },
   {
+    label: 'Overview',
+    icon: 'view_list',
+    route: `/platform/projects/${projectId.value}`,
+  },
+  {
     label: 'Credentials',
     icon: 'key',
-    route: '/platform/credentials',
+    route: `/platform/projects/${projectId.value}/credentials`,
   },
   {
     label: 'Tools',
     icon: 'build',
-    route: '/platform/credentials',
+    route: `/platform/projects/${projectId.value}/tools`,
   },
   {
     label: 'Documentation',
@@ -126,7 +145,7 @@ const items: MenuItem[] = [
   {
     label: 'Project settings',
     icon: 'settings',
-    route: projectId.value ? `/platform/projects/${projectId.value}/settings` : '',
+    route: `/platform/projects/${projectId.value}/settings`,
   },
 ];
 </script>
