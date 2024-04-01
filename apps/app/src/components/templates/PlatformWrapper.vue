@@ -73,7 +73,7 @@ const router = useRouter();
 
 const handleSignOut = async () => {
   await signOut();
-  await router.push({ name: 'Index ' });
+  await router.push({ name: 'Index' });
 };
 
 const organizationItems = computed(() => {

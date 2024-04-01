@@ -12,6 +12,8 @@ export class OpenAIService {
       apiKey: config.openai.apiKey,
       organization: config.openai.organization,
     });
+
+    this.openai.files.create;
   }
 
   public get(): OpenAI {

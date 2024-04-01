@@ -5,9 +5,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { ApiError, client } from '../services/api-client';
-import { useOrganizationId } from './tokens';
 import { useUser } from './user';
 
 const useOrganizationMemberships = (id: string | Ref<string>, order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
@@ -53,8 +51,6 @@ const useUpdateMembershipRole = () => {
 const useRemoveMembership = () => {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const router = useRouter();
-  const { organizationId, setOrganizationId } = useOrganizationId();
 
   return useMutation<void, AxiosError<ApiError>, { organizationId: string; userId: string }>({
     mutationKey: ['removeMembership'],
@@ -62,13 +58,6 @@ const useRemoveMembership = () => {
       return (await client.membershipControllerRemoveMembership(organizationId, userId)).data;
     },
     onSuccess: async (_, { organizationId: id, userId }) => {
-      if (organizationId.value === id && userId === user.value?.id) {
-        if (router.currentRoute.value.meta.organizationRequired) {
-          await router.push({ name: 'Projects' });
-        }
-        setOrganizationId(null);
-      }
-
       await queryClient.invalidateQueries({ queryKey: ['organization', { id }] });
       await queryClient.invalidateQueries({ queryKey: ['organizationMemberships', { id }] });
 

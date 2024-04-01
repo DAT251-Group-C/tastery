@@ -4,10 +4,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
 import { Ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { ApiError, client } from '../services/api-client';
 import { ApiCreateOrganizationDto, ApiFullOrganization, ApiOrganization, ApiUpdateOrganizationDto } from '../services/api/data-contracts';
-import { useOrganizationId } from './tokens';
 
 const useOrganizations = () => {
   const authStore = useAuthStore();
@@ -74,23 +72,14 @@ const useUpdateOrganization = () => {
 
 const useDeleteOrganization = () => {
   const queryClient = useQueryClient();
-  const { organizationId, setOrganizationId } = useOrganizationId();
-  const router = useRouter();
 
   return useMutation<void, AxiosError<ApiError>, string>({
     mutationKey: ['deleteOrganization'],
     mutationFn: async id => {
       return (await client.organizationControllerDeleteOrganization(id)).data;
     },
-    onSuccess: async (_, id) => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['organizations'] });
-
-      if (organizationId.value === id) {
-        if (router.currentRoute.value.meta.organizationRequired) {
-          await router.push({ name: 'Projects' });
-        }
-        setOrganizationId(null);
-      }
     },
   });
 };

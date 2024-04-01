@@ -46,14 +46,12 @@ import Control from '@/components/atoms/Control.vue';
 import Logo from '@/components/atoms/Logo.vue';
 import Navbar from '@/components/templates/Navbar.vue';
 import { useCreateOrganization } from '@/composables/organization';
-import { useOrganizationId } from '@/composables/tokens';
 import { useQueryClient } from '@tanstack/vue-query';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { setOrganizationId } = useOrganizationId();
 const router = useRouter();
 const { isPending, error, mutate } = useCreateOrganization();
 const queryClient = useQueryClient();
@@ -65,7 +63,6 @@ const submit = () => {
     { name: name.value },
     {
       onSuccess: data => {
-        setOrganizationId(data.id);
         queryClient.invalidateQueries({ predicate: query => query.queryKey.includes('organizations') });
         router.push({ name: 'Create project', query: { organizationId: data.id } });
       },

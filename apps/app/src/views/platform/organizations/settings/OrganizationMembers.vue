@@ -179,10 +179,12 @@ import Tag from 'primevue/tag';
 import { useConfirm } from 'primevue/useconfirm';
 import { computed, nextTick, ref } from 'vue';
 import OrgnaizationInvite from './OrganizationInvite.vue';
+import { useRouter } from 'vue-router';
 
 const { organizationId } = defineProps<{ organizationId: string }>();
 const { data: membership } = useMembership(organizationId);
 const toaster = useToaster();
+const router = useRouter();
 
 const {
   data: _memberships,
@@ -273,6 +275,7 @@ const handleLeaveOrganization = async () => {
 
   try {
     await removeMembership({ organizationId, userId: membership.value?.userId });
+    await router.push({ name: 'Projects' });
     toaster.add({ summary: 'Left organization', detail: 'You have left the organization', severity: 'success' });
   } catch {
     toaster.add({

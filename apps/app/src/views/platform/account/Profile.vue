@@ -39,7 +39,7 @@
       </div>
     </form>
 
-    <div :class="[{ 'animate-highlight': passwordRecovery }, 'rounded-sm']">
+    <div :class="[{ 'animate-highlight': passwordRecovery === 'true' }, 'rounded-sm']">
       <form
         v-if="canResetPassword"
         class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm"
@@ -93,7 +93,7 @@ import { computed, ref, watch } from 'vue';
 const authStore = useAuthStore();
 const { currentSession } = storeToRefs(authStore);
 const canResetPassword = computed(() => !currentSession.value?.provider_token);
-const { passwordRecovery } = defineProps<{ passwordRecovery: boolean }>();
+const { passwordRecovery } = defineProps<{ passwordRecovery?: string }>();
 const { data: user, isLoading, isFetching } = useUser();
 const { mutateAsync: updateUser, isPending, error: updateError } = useUpdateUser();
 const toast = useToaster();

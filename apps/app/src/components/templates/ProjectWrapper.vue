@@ -8,11 +8,11 @@
     >
       <Logo class="mb-1 mx-2" />
       <Menu :model="items" :fillHeight="true" class="!py-0 overflow-y-auto overflow-x-hidden">
-        <template #item="{ item, props }">
+        <template #item="{ item, props: itemProps }">
           <router-link v-slot="{ href, navigate, isActive, isExactActive }" :to="item.route" custom>
             <a
               :href="href"
-              v-bind="props.action"
+              v-bind="itemProps.action"
               :class="(item.exact ? isExactActive : isActive) && 'rounded-xs bg-neutral-600 !text-neutral-200'"
               @click="navigate"
             >
@@ -45,111 +45,37 @@
     <div class="ml-14">
       <Navbar>
         <p class="text-body">Agient</p>
-
-        <Button
-          v-if="organizationsFetched"
-          size="small"
-          severity="neutral"
-          :label="organizations.find(p => p.id === organizationId)?.name ?? 'Select organization'"
-          aria-haspopup="true"
-          iconPos="right"
-          icon="expand_more"
-          aria-controls="organization_menu"
-          @click="organizationMenu?.toggle($event)"
-        />
-        <Menu
-          id="organization_menu"
-          ref="organizationMenu"
-          :model="organizationItems"
-          popup
-          class="bg-neutral-800 ring-1 ring-neutral-700"
-        />
-
-        <Button
-          v-if="organizationId && organizationsFetched"
-          :label="projects.find(p => p.id === projectId)?.name ?? 'Select project'"
-          size="small"
-          severity="neutral"
-          iconPos="right"
-          icon="expand_more"
-          aria-haspopup="true"
-          aria-controls="projects_menu"
-          @click="projectMenu?.toggle($event)"
-        />
-        <Menu id="projects_menu" ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
       </Navbar>
       <main>
-        <slot><RouterView></RouterView></slot>
+        <slot>
+          <span v-if="isPending">Loading</span>
+          <RouterView v-else :project="project"></RouterView>
+        </slot>
       </main>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useOrganizations } from '@/composables/organization';
-import { useOrganizationId, useProjectId } from '@/composables/tokens';
 import { useUser } from '@/composables/user';
 import { signOut } from '@/plugins/supabase';
-import { ApiOrganization, ApiProject } from '@/services/api/data-contracts';
 import Avatar from 'primevue/avatar';
-import Button from 'primevue/button';
 import Menu, { MenuState } from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
-import { computed, ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import Logo from '../atoms/Logo.vue';
 import Navbar from './Navbar.vue';
+import { useProject } from '@/composables/project';
 
 const { data: user } = useUser();
-const { organizations, isFetched: organizationsFetched } = useOrganizations();
-const projects = computed(() => organizations.value?.flatMap(org => org.projects));
 
-const projectMenu = ref<Menu>();
-const organizationMenu = ref<Menu>();
+const props = defineProps<{ projectId: string }>();
+const { projectId } = toRefs(props);
+
+const { data: project, isPending } = useProject(projectId);
 const userMenu = ref<Menu & MenuState>();
 const router = useRouter();
-const { projectId, setProjectId } = useProjectId();
-const { organizationId, setOrganizationId } = useOrganizationId();
-
-const organizationItems = computed<MenuItem[]>(() => [
-  ...(organizations.value.length > 0
-    ? organizations.value.map(
-        (organization: ApiOrganization): MenuItem => ({
-          label: organization.name,
-          command: () => setOrganizationId(organization.id),
-        }),
-      )
-    : [{ label: 'You have no organizations', disabled: true }]),
-  {
-    separator: true,
-  },
-  {
-    label: 'New organization',
-    icon: 'add',
-    command: () => router.push('/platform/organizations/new'),
-  },
-]);
-
-const projectItems = computed<MenuItem[]>(() => [
-  ...(projects.value && projects.value.length > 0
-    ? projects.value.map(
-        (project: ApiProject): MenuItem => ({
-          label: project.name,
-          command: () => setProjectId(project.id),
-        }),
-      )
-    : [{ label: 'You have no projects', disabled: true }]),
-  {
-    separator: true,
-  },
-  {
-    label: 'New project',
-    icon: 'add',
-    command: () => {
-      router.push('/platform/projects/new');
-    },
-  },
-]);
 
 const userMenuItems: MenuItem[] = [
   {
@@ -165,52 +91,42 @@ const userMenuItems: MenuItem[] = [
     icon: 'logout',
     command: async () => {
       await signOut();
-      await router.push({ name: 'Index ' });
+      await router.push({ name: 'Index' });
     },
   },
 ];
 
-const items = computed<MenuItem[]>(() => {
-  let extraItems = [
-    {
-      label: 'Credentials',
-      icon: 'key',
-      route: '/platform/credentials',
-    },
-    {
-      label: 'Tools',
-      icon: 'build',
-      route: '/platform/credentials',
-    },
-  ];
-
-  if (!organizationId.value || !projectId.value) {
-    extraItems = [];
-  }
-
-  return [
-    {
-      label: 'Dashboard',
-      icon: 'home',
-      route: '/platform',
-      exact: true,
-    },
-    {
-      separator: true,
-      class: '-mx-2',
-    },
-    ...extraItems,
-    {
-      label: 'Documentation',
-      icon: 'description',
-      route: '/docs',
-      class: 'mt-auto',
-    },
-    {
-      label: 'Project settings',
-      icon: 'settings',
-      route: projectId.value ? `/platform/projects/${projectId.value}/settings` : '',
-    },
-  ];
-});
+const items: MenuItem[] = [
+  {
+    label: 'Dashboard',
+    icon: 'home',
+    route: '/platform',
+    exact: true,
+  },
+  {
+    separator: true,
+    class: '-mx-2',
+  },
+  {
+    label: 'Credentials',
+    icon: 'key',
+    route: '/platform/credentials',
+  },
+  {
+    label: 'Tools',
+    icon: 'build',
+    route: '/platform/credentials',
+  },
+  {
+    label: 'Documentation',
+    icon: 'description',
+    route: '/docs',
+    class: 'mt-auto',
+  },
+  {
+    label: 'Project settings',
+    icon: 'settings',
+    route: projectId.value ? `/platform/projects/${projectId.value}/settings` : '',
+  },
+];
 </script>

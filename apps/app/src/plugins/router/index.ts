@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { authGuard } from './guards/auth.guard';
-import { organizationGuard } from './guards/organization.guard';
-import { projectGuard } from './guards/project.guard';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,7 +68,6 @@ const router = createRouter({
           name: 'Organization',
           component: () => import('@/views/platform/organizations/Organization.vue'),
           meta: {
-            organizationRequired: true,
             platformTitle: 'Organization',
             platformSubtitle: 'Settings',
           },
@@ -95,7 +92,6 @@ const router = createRouter({
       component: () => import('@/views/platform/projects/NewProject.vue'),
       meta: {
         authRequired: true,
-        organizationRequired: true,
       },
     },
     {
@@ -108,10 +104,9 @@ const router = createRouter({
           component: () => import('@/views/platform/projects/Project.vue'),
         },
       ],
+      props: true,
       meta: {
         authRequired: true,
-        organizationRequired: true,
-        projectRequired: true,
       },
     },
     {
@@ -123,8 +118,6 @@ const router = createRouter({
 });
 
 router.beforeEach(authGuard);
-router.beforeEach(organizationGuard);
-router.beforeEach(projectGuard);
 router.beforeEach(to => {
   const title = String(to.meta?.title ?? to.name);
   document.title = title ? `${title} | Agient` : 'Agient';

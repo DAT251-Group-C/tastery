@@ -58,7 +58,6 @@
 <script setup lang="ts">
 import { useAcceptInvite, useDeclineInvite, useInvites } from '@/composables/invite';
 import { useToaster } from '@/composables/toaster';
-import { useOrganizationId } from '@/composables/tokens';
 import { ApiInvite } from '@/services/api/data-contracts';
 import Button from 'primevue/button';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -67,7 +66,6 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const toaster = useToaster();
-const { setOrganizationId } = useOrganizationId();
 const notificationMenu = ref<OverlayPanel>();
 
 const { data } = useInvites();
@@ -85,7 +83,6 @@ const handleAcceptInvite = async (invite: ApiInvite) => {
       detail: `You have joined ${invite.organizationName}`,
       severity: 'success',
     });
-    setOrganizationId(invite.organizationId);
     notificationMenu.value?.hide();
     await router.push('/platform/projects');
   } catch {
@@ -110,7 +107,6 @@ const handleDeclineInvite = async (invite: ApiInvite) => {
       detail: `You have declined the invitation from ${invite.organizationName}`,
       severity: 'success',
     });
-    setOrganizationId(invite.organizationId);
     notificationMenu.value?.hide();
     await router.push('/platform/projects');
   } catch {

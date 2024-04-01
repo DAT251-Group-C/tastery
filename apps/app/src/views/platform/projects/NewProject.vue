@@ -72,7 +72,6 @@ import Logo from '@/components/atoms/Logo.vue';
 import Navbar from '@/components/templates/Navbar.vue';
 import { useOrganizations } from '@/composables/organization';
 import { useCreateProject } from '@/composables/project';
-import { useOrganizationId, useProjectId } from '@/composables/tokens';
 import { useQueryClient } from '@tanstack/vue-query';
 import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
@@ -80,8 +79,6 @@ import InputText from 'primevue/inputtext';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { organizationId, setOrganizationId } = useOrganizationId();
-const { setProjectId } = useProjectId();
 const router = useRouter();
 const { isPending, error, mutate } = useCreateProject();
 const { organizations, isFetching } = useOrganizations();
@@ -97,8 +94,6 @@ onMounted(() => {
   const orgFromQuery = router.currentRoute.value.query.organizationId;
   if (orgFromQuery && typeof orgFromQuery === 'string' && orgFromQuery !== 'null') {
     selectedOrganizationId.value = orgFromQuery;
-  } else if (organizationId.value) {
-    selectedOrganizationId.value = organizationId.value;
   }
 });
 
@@ -113,8 +108,6 @@ const submit = () => {
     { organizationId: selectedOrganizationId.value, name: name.value, description: description.value },
     {
       onSuccess: async data => {
-        setOrganizationId(selectedOrganizationId.value);
-        setProjectId(data.id);
         queryClient.invalidateQueries({
           predicate: ({ queryKey }) => queryKey.includes('projects') || queryKey.includes('organizations'),
         });

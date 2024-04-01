@@ -23,12 +23,10 @@ import { storeToRefs } from 'pinia';
 import Toast from 'primevue/toast';
 import ConfirmDialog from '@/components/templates/ConfirmDialog.vue';
 import { RouterView, useRouter, type RouteLocationRaw } from 'vue-router';
-import { useOrganizationId } from './composables/tokens';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { initialized } = storeToRefs(authStore);
-const { setOrganizationId } = useOrganizationId();
 
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {
@@ -39,7 +37,6 @@ supabase.auth.onAuthStateChange(event => {
     });
   } else if (event === 'SIGNED_OUT') {
     authStore.clearSession();
-    setOrganizationId(null);
 
     if (router.currentRoute.value.meta.authRequired) {
       router.push({ name: 'Index' });

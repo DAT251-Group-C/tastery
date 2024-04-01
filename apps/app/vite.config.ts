@@ -3,6 +3,25 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig, type ConfigEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { VitePWA } from 'vite-plugin-pwa';
+
+const vitePwaConfig = (isProd: boolean) =>
+  VitePWA({
+    registerType: 'autoUpdate',
+    devOptions: {
+      enabled: !isProd,
+    },
+    srcDir: 'src',
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
+    },
+    manifest: {
+      name: 'Agient',
+      short_name: 'Agient',
+      description: 'Agient',
+      theme_color: '#1c9c4f',
+    },
+  });
 
 export default ({ mode }: ConfigEnv) => {
   const isProd = mode === 'production';
@@ -15,7 +34,7 @@ export default ({ mode }: ConfigEnv) => {
       },
     },
     publicDir: path.resolve(__dirname, './public'),
-    plugins: [vue(), tsconfigPaths()],
+    plugins: [vue(), tsconfigPaths(), vitePwaConfig(isProd)],
     test: {
       globals: true,
       environment: 'happy-dom',
