@@ -35,7 +35,7 @@ const Textarea: TextareaPassThroughOptions = {
       },
 
       // Misc
-      'transition-colors',
+      'transition-[background-color,color,box-shadow]',
     ],
   }),
 };

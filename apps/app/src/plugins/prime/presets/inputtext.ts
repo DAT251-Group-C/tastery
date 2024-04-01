@@ -7,7 +7,7 @@ const InputText: InputTextPassThroughOptions = {
       { 'flex-1 w-[1%]': parent.instance.$name === 'InputGroup' },
 
       // Spacing
-      'm-0 transition-[box-shadow]',
+      'm-0 transition-[background-color,color,box-shadow]',
 
       'text-body-small',
       {
