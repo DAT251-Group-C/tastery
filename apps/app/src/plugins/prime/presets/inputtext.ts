@@ -26,6 +26,7 @@ const InputText: InputTextPassThroughOptions = {
 
       // Invalid State
       { 'ring-error': props.invalid },
+      'outline-none',
 
       // Shape
       { 'rounded-xs': parent.instance.$name !== 'InputGroup' },
@@ -36,7 +37,7 @@ const InputText: InputTextPassThroughOptions = {
 
       // Interactions
       {
-        'outline-none focus:ring-neutral-500': !context.disabled,
+        'focus:ring-neutral-500': !context.disabled && !props.invalid,
         'opacity-60 bg-neutral-900 select-none pointer-events-none cursor-default': context.disabled,
       },
 

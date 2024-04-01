@@ -1,6 +1,6 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 export class UpdateProjectDto {
   @ApiPropertyOptional({ type: String })
@@ -20,4 +20,11 @@ export class UpdateProjectDto {
   @MinLength(1)
   @MaxLength(63)
   public description?: string;
+
+  @ApiProperty({ type: String, isArray: true, minItems: 1, format: 'hostname' })
+  @Type(() => String)
+  @ArrayNotEmpty()
+  @IsOptional()
+  @IsUrl({ require_tld: false }, { each: true })
+  public referrerUrls: string[];
 }

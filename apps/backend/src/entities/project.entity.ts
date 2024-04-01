@@ -9,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import CredentialEntity from './credential.entity';
 import OrganizationEntity from './organization.entity';
 import ToolEntity from './tool.entity';
 
@@ -22,6 +21,14 @@ export default class ProjectEntity extends EntitySchema {
 
   @Column('uuid')
   organizationId: string;
+
+  @Column({
+    type: 'varchar',
+    length: 24,
+    nullable: false,
+    unique: true,
+  })
+  apiKey: string;
 
   @Column({
     type: 'varchar',
@@ -54,8 +61,8 @@ export default class ProjectEntity extends EntitySchema {
   })
   updatedAt: string;
 
-  @OneToMany(() => CredentialEntity, credential => credential.project)
-  credentials: Promise<CredentialEntity[]>;
+  @Column('simple-array')
+  referrerUrls: string[];
 
   @OneToMany(() => ToolEntity, tool => tool.project)
   tools: Promise<ToolEntity[]>;

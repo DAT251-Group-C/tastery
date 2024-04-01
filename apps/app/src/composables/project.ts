@@ -38,7 +38,6 @@ const useProject = (id: Ref<string>) => {
         ...foundProject,
         memberships: [],
         tools: [],
-        credentials: [],
         organization: {
           id: foundProject.organizationId,
           name: '',

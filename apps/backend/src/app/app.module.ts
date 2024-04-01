@@ -13,14 +13,12 @@ import { InviteModule } from './invite/invite.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../common/guards/auth/auth.guard';
 import { MembershipModule } from './membership/membership.module';
-import { CredentialModule } from './credential/credential.module';
 
 @Module({
   imports: [
     HealthModule,
     UserModule,
     OrganizationModule,
-    CredentialModule,
     MembershipModule,
     ProjectModule,
     InviteModule,

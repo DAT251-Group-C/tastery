@@ -88,7 +88,6 @@ export class ProjectController {
         switchMap(async project => ({
           ...project,
           organization: await project.organization,
-          credentials: await project.credentials,
           tools: await project.tools,
         })),
         catchError(err => {

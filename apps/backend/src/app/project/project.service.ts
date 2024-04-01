@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, combineLatest, from, map, switchMap, tap } from 'rxjs';
+import * as short from 'short-uuid';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { PageMetaDto } from '../../common/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
@@ -20,9 +21,12 @@ export class ProjectService {
   ) {}
 
   public createProject(body: CreateProjectDto, organizationId: string, userId: string): Observable<ProjectEntity> {
-    return this.organizationService
-      .userHasAccessToOrganization(organizationId, userId)
-      .pipe(switchMap(({ id }) => this.projectRepository.save(this.projectRepository.create({ ...body, organizationId: id }))));
+    return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
+      switchMap(({ id }) => {
+        const apiKey = this.generateApiKey();
+        return this.projectRepository.save(this.projectRepository.create({ ...body, apiKey, organizationId: id }));
+      }),
+    );
   }
 
   public getProjects(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<ProjectEntity>> {
@@ -106,5 +110,9 @@ export class ProjectService {
         }
       }),
     );
+  }
+
+  private generateApiKey(): string {
+    return `A${short.generate()}0`;
   }
 }

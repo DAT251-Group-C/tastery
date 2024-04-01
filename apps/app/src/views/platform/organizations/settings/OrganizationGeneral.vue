@@ -35,7 +35,7 @@
         <i class="shrink-0 mr-4 font-symbol text-error">warning</i>
         <div>
           <p class="text-body-small text-neutral-200">Deleting this organization will also remove its projects</p>
-          <p class="text-body-small text-neutral-400 mt-1 mb-4">Any chatbots using credentials from this project will no longer work.</p>
+          <p class="text-body-small text-neutral-400 mt-1 mb-4">Any chatbots using this project will no longer work.</p>
           <Button severity="error" outlined size="small" label="Delete organization" @click="deleteDialogVisible = true"></Button>
         </div>
       </div>

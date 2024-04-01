@@ -10,11 +10,9 @@
  */
 
 import {
-  ApiCreateCredentialDto,
   ApiCreateInviteDto,
   ApiCreateOrganizationDto,
   ApiCreateProjectDto,
-  ApiCredential,
   ApiFullMembership,
   ApiFullOrganization,
   ApiFullProject,
@@ -25,7 +23,6 @@ import {
   ApiProject,
   ApiRevokeInviteDto,
   ApiSortOrder,
-  ApiUpdateCredentialDto,
   ApiUpdateMembershipRoleDto,
   ApiUpdateOrganizationDto,
   ApiUpdateUserDto,
@@ -464,95 +461,6 @@ export class V1<SecurityDataType = unknown> {
   organizationControllerDeleteOrganization = (organizationId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
       path: `/v1/organizations/${organizationId}`,
-      method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Credentials
-   * @name CredentialControllerGetCredentials
-   * @request GET:/v1/projects/{projectId}/credentials
-   * @secure
-   */
-  credentialControllerGetCredentials = (
-    projectId: string,
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiCredential[];
-      },
-      any
-    >({
-      path: `/v1/projects/${projectId}/credentials`,
-      method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Credentials
-   * @name CredentialControllerCreateCredential
-   * @request POST:/v1/projects/{projectId}/credentials
-   * @secure
-   */
-  credentialControllerCreateCredential = (projectId: string, data: ApiCreateCredentialDto, params: RequestParams = {}) =>
-    this.http.request<ApiCredential, any>({
-      path: `/v1/projects/${projectId}/credentials`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Credentials
-   * @name CredentialControllerUpdateCredential
-   * @request PATCH:/v1/projects/{projectId}/credentials/{credentialId}
-   * @secure
-   */
-  credentialControllerUpdateCredential = (credentialId: string, projectId: any, data: ApiUpdateCredentialDto, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/projects/${projectId}/credentials/${credentialId}`,
-      method: 'PATCH',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Credentials
-   * @name CredentialControllerDeleteCredential
-   * @request DELETE:/v1/projects/{projectId}/credentials/{credentialId}
-   * @secure
-   */
-  credentialControllerDeleteCredential = (credentialId: string, projectId: any, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/projects/${projectId}/credentials/${credentialId}`,
       method: 'DELETE',
       secure: true,
       ...params,

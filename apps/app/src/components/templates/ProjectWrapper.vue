@@ -127,11 +127,6 @@ const items: MenuItem[] = [
     route: `/platform/projects/${projectId.value}`,
   },
   {
-    label: 'Credentials',
-    icon: 'key',
-    route: `/platform/projects/${projectId.value}/credentials`,
-  },
-  {
     label: 'Tools',
     icon: 'build',
     route: `/platform/projects/${projectId.value}/tools`,

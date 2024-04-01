@@ -2,6 +2,7 @@ import { PrimeVuePTOptions } from 'primevue/config';
 import Avatar from './avatar';
 import Badge from './badge';
 import Button from './button';
+import Chip from './chip';
 import DataTable from './datatable';
 import Dialog from './dialog';
 import Divider from './divider';
@@ -20,6 +21,7 @@ const preset: PrimeVuePTOptions = {
   avatar: Avatar,
   badge: Badge,
   button: Button,
+  chip: Chip,
   datatable: DataTable,
   dialog: Dialog,
   divider: Divider,

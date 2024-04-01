@@ -54,6 +54,31 @@
         </Control>
       </div>
 
+      <div class="grid grid-cols-3 mb-2">
+        <!-- TODO: Tooltip (Add the URLs where the chatbot will be embedded) -->
+        <span class="text-body-small text-neutral-400">Referrer URLs</span>
+        <div class="col-span-2">
+          <div class="flex gap-x-2">
+            <Control hideLabel class="w-full" hideDetails>
+              <InputText
+                v-model="referrerUrl"
+                size="large"
+                placeholder="https://your-domain.com"
+                :invalid="referrerUrl.length > 0 && !referrerValid && referrerUrlAdding === referrerUrl"
+                @keypress.enter.prevent="addReferrer()"
+              ></InputText>
+            </Control>
+            <Button icon="add" size="large" class="!w-[calc(2.5rem-2px)] !h-[calc(2.5rem-2px)] m-px" @click="addReferrer()"></Button>
+          </div>
+          <div>
+            <p v-if="referrerUrls.length === 0" class="text-body-small text-neutral-400 mt-4 mb-3">No URLs have been added</p>
+            <div class="flex flex-wrap gap-2 mt-4 mb-2">
+              <Chip v-for="url in referrerUrls" :key="url" :label="url" removable @remove="removeReferrer(url)" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <hr class="border-neutral-700 -mx-6" />
       <div class="flex items-center gap-x-2">
         <RouterLink to="/platform" tabindex="-1">
@@ -72,19 +97,25 @@ import Logo from '@/components/atoms/Logo.vue';
 import Navbar from '@/components/templates/Navbar.vue';
 import { useOrganizations } from '@/composables/organization';
 import { useCreateProject } from '@/composables/project';
+import { useToaster } from '@/composables/toaster';
+import { isValidUrl } from '@/utils/validators';
 import { useQueryClient } from '@tanstack/vue-query';
 import Button from 'primevue/button';
+import Chip from 'primevue/chip';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const { isPending, error, mutate } = useCreateProject();
 const { organizations, isFetching } = useOrganizations();
 
+const toaster = useToaster();
 const name = ref('');
+const referrerUrl = ref<string>('');
+const referrerUrls = ref<string[]>([]);
 const description = ref('');
 const selectedOrganizationId = ref<string | null>(null);
 const submitted = ref(false);
@@ -98,6 +129,42 @@ onMounted(() => {
   }
 });
 
+const referrerValid = computed(() => isValidUrl(referrerUrl.value));
+const referrerUrlAdding = ref('');
+
+watch(
+  () => referrerUrl.value,
+  () => {
+    referrerUrlAdding.value = '';
+  },
+);
+
+const addReferrer = () => {
+  if (!referrerUrl.value) {
+    return;
+  }
+
+  referrerUrlAdding.value = referrerUrl.value;
+
+  if (!referrerValid.value) {
+    toaster.add({ severity: 'error', summary: 'Invalid URL', detail: 'Please enter a valid URL' });
+    return;
+  }
+
+  if (referrerUrls.value.includes(referrerUrl.value)) {
+    toaster.add({ severity: 'info', summary: 'URL already added', detail: 'This URL has already been added' });
+    return;
+  }
+
+  referrerUrls.value.push(referrerUrl.value);
+  referrerUrl.value = '';
+  referrerUrlAdding.value = '';
+};
+
+const removeReferrer = (url: string) => {
+  referrerUrls.value = referrerUrls.value.filter(u => u !== url);
+};
+
 const submit = () => {
   submitted.value = true;
 
@@ -105,14 +172,19 @@ const submit = () => {
     return;
   }
 
+  if (referrerUrls.value.length === 0) {
+    toaster.add({ severity: 'error', summary: 'No referrer URLs', detail: 'Please add at least one referrer URL' });
+    return;
+  }
+
   mutate(
-    { organizationId: selectedOrganizationId.value, name: name.value, description: description.value },
+    { organizationId: selectedOrganizationId.value, name: name.value, description: description.value, referrerUrls: referrerUrls.value },
     {
       onSuccess: async data => {
         queryClient.invalidateQueries({
           predicate: ({ queryKey }) => queryKey.includes('projects') || queryKey.includes('organizations'),
         });
-        router.push({ name: 'Project', params: { projectId: data.id } });
+        router.push({ name: 'Overview', params: { projectId: data.id } });
       },
     },
   );

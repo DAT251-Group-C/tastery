@@ -114,16 +114,6 @@ const router = createRouter({
           component: () => import('@/views/platform/project/Overview.vue'),
         },
         {
-          path: 'credentials',
-          name: 'Credentials',
-          component: () => import('@/views/platform/project/credentials/Credentials.vue'),
-        },
-        {
-          path: 'credentials/new',
-          name: 'New credential',
-          component: () => import('@/views/platform/project/credentials/NewCredential.vue'),
-        },
-        {
           path: 'tools',
           name: 'Tools',
           component: () => import('@/views/platform/project/Tools.vue'),

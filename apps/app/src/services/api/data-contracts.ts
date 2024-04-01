@@ -114,20 +114,6 @@ export interface ApiProject {
   updatedAt: string;
 }
 
-export interface ApiCredential {
-  /** @format uuid */
-  id: string;
-  /** @format uuid */
-  projectId: string;
-  name: string;
-  /** @minItems 1 */
-  referrerUrls: string[];
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-}
-
 export interface ApiTool {
   /** @format uuid */
   id: string;
@@ -153,7 +139,6 @@ export interface ApiFullProject {
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
-  credentials: ApiCredential[];
   tools: ApiTool[];
   organization: ApiOrganization;
 }
@@ -161,6 +146,8 @@ export interface ApiFullProject {
 export interface ApiCreateProjectDto {
   name: string;
   description: string;
+  /** @minItems 1 */
+  referrerUrls: string[];
 }
 
 export interface ApiFullOrganization {
@@ -181,18 +168,6 @@ export interface ApiCreateOrganizationDto {
 
 export interface ApiUpdateOrganizationDto {
   name?: string;
-}
-
-export interface ApiCreateCredentialDto {
-  name: string;
-  /** @minItems 1 */
-  referrerUrls: string[];
-}
-
-export interface ApiUpdateCredentialDto {
-  name: string;
-  /** @minItems 1 */
-  referrerUrls: string[];
 }
 
 export interface ApiInvite {

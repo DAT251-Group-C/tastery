@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IsString, MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty({ type: String })
@@ -18,4 +18,11 @@ export class CreateProjectDto {
   @MinLength(1)
   @MaxLength(255)
   public description: string;
+
+  @ApiProperty({ type: String, isArray: true, minItems: 1, format: 'hostname' })
+  @Type(() => String)
+  @ArrayNotEmpty()
+  @IsArray()
+  @IsUrl({ require_tld: false }, { each: true })
+  public referrerUrls: string[];
 }
