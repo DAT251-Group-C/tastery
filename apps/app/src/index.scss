@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root:not(.light) {
     --color-neutral-100: 238 251 255;
     --color-neutral-200: 224 247 255;
     --color-neutral-300: 214 222 222;
@@ -30,10 +30,43 @@
     --color-info-dark: 0 52 89;
   }
 
+  :root.light {
+    --color-neutral-100: 0 23 31;
+    --color-neutral-200: 31 36 37;
+    --color-neutral-300: 76 83 80;
+    --color-neutral-400: 98 103 98;
+    --color-neutral-500: 156 158 158;
+    --color-neutral-600: 225 234 231;
+    --color-neutral-700: 230 233 232;
+    --color-neutral-800: 251 251 251;
+    --color-neutral-900: 255 255 255;
+    --color-primary-light: 28 156 79;
+    --color-primary: 40 200 104;
+    --color-primary-dark: 99 227 150;
+    --color-primary-darker: 150 252 191;
+    --color-secondary-light: 4 39 72;
+    --color-secondary: 183 218 251;
+    --color-accent: 201 213 21;
+    --color-error: 145 7 7;
+    --color-error-dark: 255 183 188;
+    --color-success-dark: 40 200 104;
+    --color-success: 16 107 52;
+    --color-warning-dark: 201 213 26;
+    --color-warning: 116 116 10;
+    --color-info-dark: 3 166 219;
+    --color-info: 0 52 89;
+  }
+
   html {
     @apply bg-neutral-900 text-neutral-100;
+  }
 
+  html:not(.light) {
     color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
   }
 
   .font-symbol {

@@ -4,7 +4,7 @@
     <div v-else class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm">
       <h1 class="text-body text-neutral-200 mb-4">Account information</h1>
 
-      <div class="grid grid-cols-3">
+      <div class="grid md:grid-cols-3 gap-4 mb-2">
         <span class="text-body-small text-neutral-400">Email</span>
         <Control hideLabel class="col-span-2" hideDetails>
           <InputText v-model="email" type="email" size="large" disabled readonly></InputText>
@@ -16,7 +16,7 @@
     <form v-else class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm" @submit.prevent="submit()">
       <h1 class="text-body text-neutral-200 mb-4">Profile information</h1>
 
-      <div class="grid grid-cols-3">
+      <div class="grid md:grid-cols-3 gap-4 mb-2">
         <span class="text-body-small text-neutral-400">Name</span>
         <Control hideLabel class="col-span-2" hideDetails>
           <InputText v-model="name" size="large" :disabled="isPending"></InputText>
@@ -47,7 +47,7 @@
       >
         <h1 class="text-body text-neutral-200 mb-4">Password</h1>
 
-        <div class="grid grid-cols-3">
+        <div class="grid md:grid-cols-3 gap-4 mb-2">
           <span class="text-body-small text-neutral-400">Change password</span>
           <Control hideLabel class="col-span-2">
             <InputText v-model="password1" size="large" placeholder="New password" type="password" minlength="8" required></InputText>
@@ -74,6 +74,25 @@
         </div>
       </form>
     </div>
+
+    <Skeleton v-if="isFetching" class="w-full h-[185px] ring-1 ring-neutral-700 rounded-sm"></Skeleton>
+    <form v-else class="flex flex-col gap-y-4 bg-neutral-800 ring-1 ring-neutral-700 px-6 py-4 rounded-sm" @submit.prevent="submit()">
+      <h1 class="text-body text-neutral-200 mb-4">Theme</h1>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-2">
+        <span class="text-body-small text-neutral-400">Interface theme</span>
+        <Control hideLabel class="col-span-2 lg:col-span-1" hint="Choose a theme preference">
+          <Dropdown
+            :modelValue="colorMode"
+            :options="colorModes"
+            optionLabel="label"
+            size="large"
+            optionValue="value"
+            @update:model-value="mode = $event"
+          />
+        </Control>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -85,8 +104,10 @@ import { useUpdateUser, useUser } from '@/composables/user';
 import { supabase } from '@/plugins/supabase';
 import { ApiUser } from '@/services/api/data-contracts';
 import { useAuthStore } from '@/stores/auth';
+import { useColorMode } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import Button from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import { computed, ref, watch } from 'vue';
 
@@ -97,6 +118,14 @@ const { passwordRecovery } = defineProps<{ passwordRecovery?: string }>();
 const { data: user, isLoading, isFetching } = useUser();
 const { mutateAsync: updateUser, isPending, error: updateError } = useUpdateUser();
 const toast = useToaster();
+const mode = useColorMode();
+const { store: colorMode } = mode;
+
+const colorModes = [
+  { label: 'System', value: 'auto' },
+  { label: 'Dark', value: 'dark' },
+  { label: 'Light', value: 'light' },
+];
 
 const submit = async () => {
   try {

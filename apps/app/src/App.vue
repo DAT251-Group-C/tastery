@@ -17,16 +17,18 @@
 </template>
 
 <script setup lang="ts">
+import ConfirmDialog from '@/components/templates/ConfirmDialog.vue';
 import { supabase } from '@/plugins/supabase';
 import { useAuthStore } from '@/stores/auth';
+import { useColorMode } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import Toast from 'primevue/toast';
-import ConfirmDialog from '@/components/templates/ConfirmDialog.vue';
 import { RouterView, useRouter, type RouteLocationRaw } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { initialized } = storeToRefs(authStore);
+useColorMode();
 
 supabase.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_IN') {

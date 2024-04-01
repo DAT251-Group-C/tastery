@@ -79,6 +79,8 @@ const router = createRouter({
           component: () => import('@/views/error/NotFound.vue'),
           meta: {
             title: 'Page not found',
+            platformTitle: '404',
+            platformSubtitle: 'Page not found',
           },
         },
       ],
