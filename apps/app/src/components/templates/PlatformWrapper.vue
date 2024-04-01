@@ -41,7 +41,7 @@
         </template>
 
         <div class="flex flex-col gap-y-2 py-5">
-          <button class="flex items-center text-left text-body-small text-neutral-400 hover:text-neutral-300" @click="signOut()">
+          <button class="flex items-center text-left text-body-small text-neutral-400 hover:text-neutral-300" @click="handleSignOut()">
             <i class="font-symbol text-body">logout</i>
             <span class="ml-2">Log out</span>
           </button>
@@ -64,11 +64,17 @@
 import { useOrganizations } from '@/composables/organization';
 import { signOut } from '@/plugins/supabase';
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Navbar from './Navbar.vue';
 
 const { organizations } = useOrganizations();
 const route = useRoute();
+const router = useRouter();
+
+const handleSignOut = async () => {
+  await signOut();
+  await router.push({ name: 'Index ' });
+};
 
 const organizationItems = computed(() => {
   const items = organizations.value.map<Item>(org => ({

@@ -79,7 +79,7 @@
         <Menu id="projects_menu" ref="projectMenu" :model="projectItems" :popup="true" class="bg-neutral-800 ring-1 ring-neutral-700" />
       </Navbar>
       <main>
-        <RouterView></RouterView>
+        <slot><RouterView></RouterView></slot>
       </main>
     </div>
   </div>
@@ -163,17 +163,15 @@ const userMenuItems: MenuItem[] = [
   {
     label: 'Logout',
     icon: 'logout',
-    command: () => signOut(),
+    command: async () => {
+      await signOut();
+      await router.push({ name: 'Index ' });
+    },
   },
 ];
 
 const items = computed<MenuItem[]>(() => {
   let extraItems = [
-    {
-      label: 'Chatbots',
-      icon: 'robot_2',
-      route: '/platform/bots',
-    },
     {
       label: 'Credentials',
       icon: 'key',

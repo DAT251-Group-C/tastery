@@ -6,6 +6,7 @@ import { MockProxy, mock } from 'jest-mock-extended';
 import appConfig from '../../config/app-conf';
 import { AuthGuard } from './auth.guard';
 import { lastValueFrom } from 'rxjs';
+import { Reflector } from '@nestjs/core';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
@@ -14,7 +15,16 @@ describe('AuthGuard', () => {
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot({ load: [appConfig] })],
-      providers: [AuthGuard, { provide: JwtService, useValue: jwtService }],
+      providers: [
+        AuthGuard,
+        { provide: JwtService, useValue: jwtService },
+        {
+          provide: Reflector,
+          useValue: {
+            getAllAndOverride: () => false,
+          },
+        },
+      ],
     }).compile();
 
     authGuard = module.get<AuthGuard>(AuthGuard);
@@ -60,7 +70,9 @@ describe('AuthGuard', () => {
       switchToHttp: () => ({
         getRequest: () => request,
       }),
-    } as ExecutionContext;
+      getHandler: jest.fn(),
+      getClass: jest.fn(),
+    } as unknown as ExecutionContext;
 
     return context;
   }

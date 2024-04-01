@@ -9,7 +9,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Index',
-      component: () => import('@/views/index/IndexView.vue'),
+      component: () => import('@/views/index/Index.vue'),
     },
     {
       path: '/signup',
@@ -113,6 +113,11 @@ const router = createRouter({
         organizationRequired: true,
         projectRequired: true,
       },
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Page not found',
+      component: () => import('@/views/error/NotFound.vue'),
     },
   ],
 });

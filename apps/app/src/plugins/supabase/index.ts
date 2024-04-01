@@ -14,6 +14,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   },
 });
 
-export const signOut = () => {
-  supabase.auth.signOut({ scope: 'local' });
+export const signOut = async () => {
+  await supabase.auth.signOut({ scope: 'local' });
 };
