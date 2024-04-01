@@ -7,12 +7,14 @@ import { MembershipEntity } from '../../entities';
 import { MembershipController } from './membership.controller';
 import { MembershipService } from './membership.service';
 import { OrganizationModule } from '../organization/organization.module';
+import { ProjectModule } from '../project/project.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([MembershipEntity]),
     forwardRef(() => GuardModule),
     OrganizationModule,
+    ProjectModule,
     ConfigModule.forFeature(appConfig),
   ],
   controllers: [MembershipController],

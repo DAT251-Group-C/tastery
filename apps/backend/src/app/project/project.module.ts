@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../../common/config/app-conf';
@@ -11,9 +11,9 @@ import { ProjectService } from './project.service';
 
 @Module({
   imports: [
-    GuardModule,
-    MembershipModule,
-    OrganizationModule,
+    forwardRef(() => GuardModule),
+    forwardRef(() => OrganizationModule),
+    forwardRef(() => MembershipModule),
     ConfigModule.forFeature(appConfig),
     TypeOrmModule.forFeature([ProjectEntity]),
   ],

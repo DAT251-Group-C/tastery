@@ -10,9 +10,11 @@
  */
 
 import {
+  ApiCreateCredentialDto,
   ApiCreateInviteDto,
   ApiCreateOrganizationDto,
   ApiCreateProjectDto,
+  ApiCredential,
   ApiFullMembership,
   ApiFullOrganization,
   ApiFullProject,
@@ -23,6 +25,7 @@ import {
   ApiProject,
   ApiRevokeInviteDto,
   ApiSortOrder,
+  ApiUpdateCredentialDto,
   ApiUpdateMembershipRoleDto,
   ApiUpdateOrganizationDto,
   ApiUpdateUserDto,
@@ -243,88 +246,6 @@ export class V1<SecurityDataType = unknown> {
   /**
    * No description
    *
-   * @tags Organizations
-   * @name OrganizationControllerGetOrganizations
-   * @request GET:/v1/organizations
-   * @secure
-   */
-  organizationControllerGetOrganizations = (params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganization[], any>({
-      path: `/v1/organizations`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerCreateOrganization
-   * @request POST:/v1/organizations
-   * @secure
-   */
-  organizationControllerCreateOrganization = (data: ApiCreateOrganizationDto, params: RequestParams = {}) =>
-    this.http.request<ApiOrganization, any>({
-      path: `/v1/organizations`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerGetOrganizationById
-   * @request GET:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerGetOrganizationById = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganization, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerUpdateOrganization
-   * @request PATCH:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerUpdateOrganization = (organizationId: string, data: ApiUpdateOrganizationDto, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'PATCH',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerDeleteOrganization
-   * @request DELETE:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerDeleteOrganization = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
    * @tags Projects
    * @name ProjectControllerGetProjects
    * @request GET:/v1/projects
@@ -461,6 +382,177 @@ export class V1<SecurityDataType = unknown> {
   projectControllerDeleteProject = (projectId: string, organizationId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
       path: `/v1/organizations/${organizationId}/projects/${projectId}`,
+      method: 'DELETE',
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Organizations
+   * @name OrganizationControllerGetOrganizations
+   * @request GET:/v1/organizations
+   * @secure
+   */
+  organizationControllerGetOrganizations = (params: RequestParams = {}) =>
+    this.http.request<ApiFullOrganization[], any>({
+      path: `/v1/organizations`,
+      method: 'GET',
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Organizations
+   * @name OrganizationControllerCreateOrganization
+   * @request POST:/v1/organizations
+   * @secure
+   */
+  organizationControllerCreateOrganization = (data: ApiCreateOrganizationDto, params: RequestParams = {}) =>
+    this.http.request<ApiOrganization, any>({
+      path: `/v1/organizations`,
+      method: 'POST',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Organizations
+   * @name OrganizationControllerGetOrganizationById
+   * @request GET:/v1/organizations/{organizationId}
+   * @secure
+   */
+  organizationControllerGetOrganizationById = (organizationId: string, params: RequestParams = {}) =>
+    this.http.request<ApiFullOrganization, any>({
+      path: `/v1/organizations/${organizationId}`,
+      method: 'GET',
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Organizations
+   * @name OrganizationControllerUpdateOrganization
+   * @request PATCH:/v1/organizations/{organizationId}
+   * @secure
+   */
+  organizationControllerUpdateOrganization = (organizationId: string, data: ApiUpdateOrganizationDto, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/organizations/${organizationId}`,
+      method: 'PATCH',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Organizations
+   * @name OrganizationControllerDeleteOrganization
+   * @request DELETE:/v1/organizations/{organizationId}
+   * @secure
+   */
+  organizationControllerDeleteOrganization = (organizationId: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/organizations/${organizationId}`,
+      method: 'DELETE',
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Credentials
+   * @name CredentialControllerGetCredentials
+   * @request GET:/v1/projects/{projectId}/credentials
+   * @secure
+   */
+  credentialControllerGetCredentials = (
+    projectId: string,
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiCredential[];
+      },
+      any
+    >({
+      path: `/v1/projects/${projectId}/credentials`,
+      method: 'GET',
+      query: query,
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Credentials
+   * @name CredentialControllerCreateCredential
+   * @request POST:/v1/projects/{projectId}/credentials
+   * @secure
+   */
+  credentialControllerCreateCredential = (projectId: string, data: ApiCreateCredentialDto, params: RequestParams = {}) =>
+    this.http.request<ApiCredential, any>({
+      path: `/v1/projects/${projectId}/credentials`,
+      method: 'POST',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Credentials
+   * @name CredentialControllerUpdateCredential
+   * @request PATCH:/v1/projects/{projectId}/credentials/{credentialId}
+   * @secure
+   */
+  credentialControllerUpdateCredential = (credentialId: string, projectId: any, data: ApiUpdateCredentialDto, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/projects/${projectId}/credentials/${credentialId}`,
+      method: 'PATCH',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Credentials
+   * @name CredentialControllerDeleteCredential
+   * @request DELETE:/v1/projects/{projectId}/credentials/{credentialId}
+   * @secure
+   */
+  credentialControllerDeleteCredential = (credentialId: string, projectId: any, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/projects/${projectId}/credentials/${credentialId}`,
       method: 'DELETE',
       secure: true,
       ...params,

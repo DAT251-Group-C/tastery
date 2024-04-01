@@ -128,7 +128,7 @@ export class InviteController {
 
   @Post('/organization/:organizationId/accept')
   @ApiBearerAuth()
-  @ApiParam({ name: 'organizationId' })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public acceptInvite(
     @Param('organizationId') organizationId: string,
@@ -151,7 +151,7 @@ export class InviteController {
 
   @Delete('/organization/:organizationId/decline')
   @ApiBearerAuth()
-  @ApiParam({ name: 'organizationId' })
+  @ApiParam({ name: 'organizationId', format: 'uuid' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public declineInvite(@Param('organizationId') organizationId: string, @UserEmail() email: string): Promise<DeleteResult> {
     return lastValueFrom(

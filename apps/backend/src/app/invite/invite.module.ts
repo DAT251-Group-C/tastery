@@ -8,6 +8,7 @@ import { GuardModule } from '../../common/guards/guard.module';
 import { InviteEntity, MembershipEntity } from '../../entities';
 import { MembershipModule } from '../membership/membership.module';
 import { OrganizationModule } from '../organization/organization.module';
+import { ProjectModule } from '../project/project.module';
 import { InviteController } from './invite.controller';
 import { InviteService } from './invite.service';
 
@@ -15,6 +16,7 @@ import { InviteService } from './invite.service';
   imports: [
     TypeOrmModule.forFeature([InviteEntity, MembershipEntity]),
     GuardModule,
+    ProjectModule,
     OrganizationModule,
     MembershipModule,
     EmailModule,
