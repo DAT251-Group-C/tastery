@@ -9,4 +9,6 @@ export class Project {
   @ApiProperty() description: string;
   @ApiPropertyDateTime() createdAt: string;
   @ApiPropertyDateTime() updatedAt: string;
+  @ApiProperty({ type: String, isArray: true, format: 'hostname' }) referrerUrls: string[];
+  @ApiProperty() apiKey: string;
 }

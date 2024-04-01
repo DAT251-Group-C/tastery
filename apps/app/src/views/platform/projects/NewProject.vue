@@ -141,6 +141,7 @@ watch(
 
 const addReferrer = () => {
   if (!referrerUrl.value) {
+    toaster.add({ severity: 'error', summary: 'Invalid URL', detail: 'Please enter a valid URL' });
     return;
   }
 

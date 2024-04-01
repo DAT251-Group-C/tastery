@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsString, IsUUID, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty({ type: String })
@@ -25,4 +25,9 @@ export class CreateProjectDto {
   @IsArray()
   @IsUrl({ require_tld: false }, { each: true })
   public referrerUrls: string[];
+
+  @ApiProperty({ type: String, format: 'uuid' })
+  @Type(() => String)
+  @IsUUID()
+  public organizationId: string;
 }

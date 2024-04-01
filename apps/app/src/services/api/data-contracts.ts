@@ -112,6 +112,8 @@ export interface ApiProject {
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
+  referrerUrls: string[];
+  apiKey: string;
 }
 
 export interface ApiTool {
@@ -139,6 +141,8 @@ export interface ApiFullProject {
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
+  referrerUrls: string[];
+  apiKey: string;
   tools: ApiTool[];
   organization: ApiOrganization;
 }
@@ -148,6 +152,15 @@ export interface ApiCreateProjectDto {
   description: string;
   /** @minItems 1 */
   referrerUrls: string[];
+  /** @format uuid */
+  organizationId: string;
+}
+
+export interface ApiUpdateProjectDto {
+  name?: string;
+  description?: string;
+  /** @minItems 1 */
+  referrerUrls?: string[];
 }
 
 export interface ApiFullOrganization {

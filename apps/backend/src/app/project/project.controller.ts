@@ -29,6 +29,7 @@ import { MembershipRoles } from '../../common/guards/membership-role/membership-
 import { FullProject, Project } from '../../common/models';
 import { MembershipRole } from '../../common/models/membership.model';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectService } from './project.service';
 
 @ApiTags('Projects')
@@ -101,20 +102,15 @@ export class ProjectController {
     );
   }
 
-  @Post('organizations/:organizationId/projects')
+  @Post('projects')
   @ApiBearerAuth()
   @UseGuards(MembershipRoleGuard)
-  @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])
-  @ApiParam({ name: 'organizationId', format: 'uuid' })
+  @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER], 'body')
   @ApiBody({ type: CreateProjectDto })
   @ApiOkResponse({ type: Project })
-  public createProject(
-    @UserId() userId: string,
-    @Param('organizationId', ParseUUIDPipe) organizationId: string,
-    @Body() body: CreateProjectDto,
-  ): Promise<Project> {
+  public createProject(@UserId() userId: string, @Body() body: CreateProjectDto): Promise<Project> {
     return lastValueFrom(
-      this.projectService.createProject(body, organizationId, userId).pipe(
+      this.projectService.createProject(body, userId).pipe(
         take(1),
         catchError(err => {
           throw new BadRequestException(err.message || err);
@@ -123,15 +119,15 @@ export class ProjectController {
     );
   }
 
-  @Patch('organizations/:organizationId/projects/:projectId')
+  @Patch('projects/:projectId')
   @ApiBearerAuth()
   @ApiParam({ name: 'projectId', format: 'uuid' })
-  @ApiBody({ type: CreateProjectDto })
+  @ApiBody({ type: UpdateProjectDto })
   @HttpCode(HttpStatus.NO_CONTENT)
   public updateProject(
     @UserId() userId: string,
     @Param('projectId', ParseUUIDPipe) projectId: string,
-    @Body() body: CreateProjectDto,
+    @Body() body: UpdateProjectDto,
   ): Promise<UpdateResult> {
     return lastValueFrom(
       this.projectService.updateProject(projectId, userId, body).pipe(
@@ -143,7 +139,7 @@ export class ProjectController {
     );
   }
 
-  @Delete('organizations/:organizationId/projects/:projectId')
+  @Delete('projects/:projectId')
   @ApiBearerAuth()
   @UseGuards(MembershipRoleGuard)
   @MembershipRoles([MembershipRole.ADMIN, MembershipRole.OWNER])

@@ -20,8 +20,8 @@ export class ProjectService {
     private readonly organizationService: OrganizationService,
   ) {}
 
-  public createProject(body: CreateProjectDto, organizationId: string, userId: string): Observable<ProjectEntity> {
-    return this.organizationService.userHasAccessToOrganization(organizationId, userId).pipe(
+  public createProject(body: CreateProjectDto, userId: string): Observable<ProjectEntity> {
+    return this.organizationService.userHasAccessToOrganization(body.organizationId, userId).pipe(
       switchMap(({ id }) => {
         const apiKey = this.generateApiKey();
         return this.projectRepository.save(this.projectRepository.create({ ...body, apiKey, organizationId: id }));

@@ -25,6 +25,7 @@ import {
   ApiSortOrder,
   ApiUpdateMembershipRoleDto,
   ApiUpdateOrganizationDto,
+  ApiUpdateProjectDto,
   ApiUpdateUserDto,
   ApiUser,
 } from './data-contracts';
@@ -282,6 +283,24 @@ export class V1<SecurityDataType = unknown> {
    * No description
    *
    * @tags Projects
+   * @name ProjectControllerCreateProject
+   * @request POST:/v1/projects
+   * @secure
+   */
+  projectControllerCreateProject = (data: ApiCreateProjectDto, params: RequestParams = {}) =>
+    this.http.request<ApiProject, any>({
+      path: `/v1/projects`,
+      method: 'POST',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Projects
    * @name ProjectControllerGetProjectsInOrganization
    * @request GET:/v1/organizations/{organizationId}/projects
    * @secure
@@ -321,24 +340,6 @@ export class V1<SecurityDataType = unknown> {
    * No description
    *
    * @tags Projects
-   * @name ProjectControllerCreateProject
-   * @request POST:/v1/organizations/{organizationId}/projects
-   * @secure
-   */
-  projectControllerCreateProject = (organizationId: string, data: ApiCreateProjectDto, params: RequestParams = {}) =>
-    this.http.request<ApiProject, any>({
-      path: `/v1/organizations/${organizationId}/projects`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Projects
    * @name ProjectControllerGetProjectById
    * @request GET:/v1/projects/{projectId}
    * @secure
@@ -356,12 +357,12 @@ export class V1<SecurityDataType = unknown> {
    *
    * @tags Projects
    * @name ProjectControllerUpdateProject
-   * @request PATCH:/v1/organizations/{organizationId}/projects/{projectId}
+   * @request PATCH:/v1/projects/{projectId}
    * @secure
    */
-  projectControllerUpdateProject = (projectId: string, organizationId: string, data: ApiCreateProjectDto, params: RequestParams = {}) =>
+  projectControllerUpdateProject = (projectId: string, data: ApiUpdateProjectDto, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}/projects/${projectId}`,
+      path: `/v1/projects/${projectId}`,
       method: 'PATCH',
       body: data,
       secure: true,
@@ -373,12 +374,12 @@ export class V1<SecurityDataType = unknown> {
    *
    * @tags Projects
    * @name ProjectControllerDeleteProject
-   * @request DELETE:/v1/organizations/{organizationId}/projects/{projectId}
+   * @request DELETE:/v1/projects/{projectId}
    * @secure
    */
-  projectControllerDeleteProject = (projectId: string, organizationId: string, params: RequestParams = {}) =>
+  projectControllerDeleteProject = (projectId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}/projects/${projectId}`,
+      path: `/v1/projects/${projectId}`,
       method: 'DELETE',
       secure: true,
       ...params,

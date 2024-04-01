@@ -1,4 +1,4 @@
-import { ApiCreateProjectDto, ApiFullProject, ApiProject } from '@/services/api/data-contracts';
+import { ApiCreateProjectDto, ApiFullProject, ApiProject, ApiUpdateProjectDto } from '@/services/api/data-contracts';
 import { useAuthStore } from '@/stores/auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
@@ -52,16 +52,29 @@ const useProject = (id: Ref<string>) => {
 const useCreateProject = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ApiProject, AxiosError<ApiError>, ApiCreateProjectDto & { organizationId: string }>({
+  return useMutation<ApiProject, AxiosError<ApiError>, ApiCreateProjectDto>({
     mutationKey: ['createProject'],
-    mutationFn: async data => {
-      const { organizationId, ...rest } = data;
-      return (await client.projectControllerCreateProject(organizationId, rest)).data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    mutationFn: async data => (await client.projectControllerCreateProject(data)).data,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });
 };
 
-export { useCreateProject, useProject, useProjects };
+const useUpdateProject = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError<ApiError>, ApiUpdateProjectDto & { projectId: string }>({
+    mutationKey: ['updateProject'],
+    mutationFn: async data => {
+      const { projectId, ...body } = data;
+      return (await client.projectControllerUpdateProject(projectId, body)).data;
+    },
+    onSuccess: async (_, { projectId: id }) => {
+      await queryClient.invalidateQueries({ queryKey: ['projects'] });
+      await queryClient.invalidateQueries({ queryKey: ['project', { id }] });
+    },
+  });
+};
+
+export { useCreateProject, useProject, useProjects, useUpdateProject };
