@@ -13,6 +13,7 @@ import Menu from './menu';
 import OverlayPanel from './overlaypanel';
 import TabView from './tabview';
 import Tag from './tag';
+import Textarea from './textarea';
 import Toast from './toast';
 
 const preset: PrimeVuePTOptions = {
@@ -31,6 +32,7 @@ const preset: PrimeVuePTOptions = {
   overlaypanel: OverlayPanel,
   tabview: TabView,
   tag: Tag,
+  textarea: Textarea,
   toast: Toast,
 };
 

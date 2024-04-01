@@ -50,7 +50,7 @@
       <div class="grid grid-cols-3">
         <span class="text-body-small text-neutral-400">Description</span>
         <Control hideLabel class="col-span-2">
-          <InputText v-model="description" size="large" placeholder="Project description" required></InputText>
+          <Textarea v-model="description" size="large" rows="3" placeholder="Project description" required class="max-h-[12rem]"></Textarea>
         </Control>
       </div>
 
@@ -76,6 +76,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
