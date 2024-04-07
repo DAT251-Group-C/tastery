@@ -9,26 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  ApiCreateInviteDto,
-  ApiCreateOrganizationDto,
-  ApiCreateProjectDto,
-  ApiFullMembership,
-  ApiFullOrganization,
-  ApiFullProject,
-  ApiInvite,
-  ApiMembership,
-  ApiOrganization,
-  ApiPageDto,
-  ApiProject,
-  ApiRevokeInviteDto,
-  ApiSortOrder,
-  ApiUpdateMembershipRoleDto,
-  ApiUpdateOrganizationDto,
-  ApiUpdateProjectDto,
-  ApiUpdateUserDto,
-  ApiUser,
-} from './data-contracts';
+import { ApiCreateRecipeDto, ApiPageDto, ApiRecipe, ApiSortOrder, ApiUpdateRecipeDto, ApiUpdateUserDto, ApiUser } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class V1<SecurityDataType = unknown> {
@@ -119,12 +100,11 @@ export class V1<SecurityDataType = unknown> {
   /**
    * No description
    *
-   * @tags Memberships
-   * @name MembershipControllerGetMemberships
-   * @request GET:/v1/memberships
-   * @secure
+   * @tags Recipes
+   * @name RecipeControllerGetRecipes
+   * @request GET:/v1/recipes
    */
-  membershipControllerGetMemberships = (
+  recipeControllerGetRecipes = (
     query?: {
       order?: ApiSortOrder;
       /**
@@ -132,6 +112,7 @@ export class V1<SecurityDataType = unknown> {
        * @default 1
        */
       page?: number;
+      search?: string;
       /**
        * @min 1
        * @max 50
@@ -143,153 +124,27 @@ export class V1<SecurityDataType = unknown> {
   ) =>
     this.http.request<
       ApiPageDto & {
-        data: ApiMembership[];
+        data: ApiRecipe[];
       },
       any
     >({
-      path: `/v1/memberships`,
+      path: `/v1/recipes`,
       method: 'GET',
       query: query,
-      secure: true,
       format: 'json',
       ...params,
     });
   /**
    * No description
    *
-   * @tags Memberships
-   * @name MembershipControllerGetMembership
-   * @request GET:/v1/memberships/{organizationId}
+   * @tags Recipes
+   * @name RecipeControllerCreateRecipe
+   * @request POST:/v1/recipes
    * @secure
    */
-  membershipControllerGetMembership = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiFullMembership, any>({
-      path: `/v1/memberships/${organizationId}`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Memberships
-   * @name MembershipControllerGetMembershipsInOrganization
-   * @request GET:/v1/organizations/{organizationId}/memberships
-   * @secure
-   */
-  membershipControllerGetMembershipsInOrganization = (
-    organizationId: string,
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiFullMembership[];
-      },
-      any
-    >({
-      path: `/v1/organizations/${organizationId}/memberships`,
-      method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Memberships
-   * @name MembershipControllerUpdateMembershipRole
-   * @request POST:/v1/organizations/{organizationId}/memberships/role
-   * @secure
-   */
-  membershipControllerUpdateMembershipRole = (organizationId: string, data: ApiUpdateMembershipRoleDto, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}/memberships/role`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Memberships
-   * @name MembershipControllerRemoveMembership
-   * @request DELETE:/v1/organizations/{organizationId}/memberships/{userId}
-   * @secure
-   */
-  membershipControllerRemoveMembership = (organizationId: string, userId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}/memberships/${userId}`,
-      method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Projects
-   * @name ProjectControllerGetProjects
-   * @request GET:/v1/projects
-   * @secure
-   */
-  projectControllerGetProjects = (
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiProject[];
-      },
-      any
-    >({
-      path: `/v1/projects`,
-      method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Projects
-   * @name ProjectControllerCreateProject
-   * @request POST:/v1/projects
-   * @secure
-   */
-  projectControllerCreateProject = (data: ApiCreateProjectDto, params: RequestParams = {}) =>
-    this.http.request<ApiProject, any>({
-      path: `/v1/projects`,
+  recipeControllerCreateRecipe = (data: ApiCreateRecipeDto, params: RequestParams = {}) =>
+    this.http.request<ApiRecipe, any>({
+      path: `/v1/recipes`,
       method: 'POST',
       body: data,
       secure: true,
@@ -300,69 +155,28 @@ export class V1<SecurityDataType = unknown> {
   /**
    * No description
    *
-   * @tags Projects
-   * @name ProjectControllerGetProjectsInOrganization
-   * @request GET:/v1/organizations/{organizationId}/projects
-   * @secure
+   * @tags Recipes
+   * @name RecipeControllerGetRecipeById
+   * @request GET:/v1/recipes/{recipeId}
    */
-  projectControllerGetProjectsInOrganization = (
-    organizationId: string,
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiProject[];
-      },
-      any
-    >({
-      path: `/v1/organizations/${organizationId}/projects`,
+  recipeControllerGetRecipeById = (recipeId: string, params: RequestParams = {}) =>
+    this.http.request<ApiRecipe, any>({
+      path: `/v1/recipes/${recipeId}`,
       method: 'GET',
-      query: query,
-      secure: true,
       format: 'json',
       ...params,
     });
   /**
    * No description
    *
-   * @tags Projects
-   * @name ProjectControllerGetProjectById
-   * @request GET:/v1/projects/{projectId}
+   * @tags Recipes
+   * @name RecipeControllerUpdateRecipe
+   * @request PATCH:/v1/recipes/{recipeId}
    * @secure
    */
-  projectControllerGetProjectById = (projectId: string, params: RequestParams = {}) =>
-    this.http.request<ApiFullProject, any>({
-      path: `/v1/projects/${projectId}`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Projects
-   * @name ProjectControllerUpdateProject
-   * @request PATCH:/v1/projects/{projectId}
-   * @secure
-   */
-  projectControllerUpdateProject = (projectId: string, data: ApiUpdateProjectDto, params: RequestParams = {}) =>
+  recipeControllerUpdateRecipe = (recipeId: string, data: ApiUpdateRecipeDto, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/projects/${projectId}`,
+      path: `/v1/recipes/${recipeId}`,
       method: 'PATCH',
       body: data,
       secure: true,
@@ -372,254 +186,16 @@ export class V1<SecurityDataType = unknown> {
   /**
    * No description
    *
-   * @tags Projects
-   * @name ProjectControllerDeleteProject
-   * @request DELETE:/v1/projects/{projectId}
+   * @tags Recipes
+   * @name RecipeControllerDeleteRecipe
+   * @request DELETE:/v1/recipes/{recipeId}
    * @secure
    */
-  projectControllerDeleteProject = (projectId: string, params: RequestParams = {}) =>
+  recipeControllerDeleteRecipe = (recipeId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/projects/${projectId}`,
+      path: `/v1/recipes/${recipeId}`,
       method: 'DELETE',
       secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerGetOrganizations
-   * @request GET:/v1/organizations
-   * @secure
-   */
-  organizationControllerGetOrganizations = (params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganization[], any>({
-      path: `/v1/organizations`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerCreateOrganization
-   * @request POST:/v1/organizations
-   * @secure
-   */
-  organizationControllerCreateOrganization = (data: ApiCreateOrganizationDto, params: RequestParams = {}) =>
-    this.http.request<ApiOrganization, any>({
-      path: `/v1/organizations`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerGetOrganizationById
-   * @request GET:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerGetOrganizationById = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<ApiFullOrganization, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'GET',
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerUpdateOrganization
-   * @request PATCH:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerUpdateOrganization = (organizationId: string, data: ApiUpdateOrganizationDto, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'PATCH',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Organizations
-   * @name OrganizationControllerDeleteOrganization
-   * @request DELETE:/v1/organizations/{organizationId}
-   * @secure
-   */
-  organizationControllerDeleteOrganization = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/organizations/${organizationId}`,
-      method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerGetInvites
-   * @request GET:/v1/invites
-   * @secure
-   */
-  inviteControllerGetInvites = (
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiInvite[];
-      },
-      any
-    >({
-      path: `/v1/invites`,
-      method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerGetInviteByHash
-   * @request GET:/v1/invites/{hash}
-   */
-  inviteControllerGetInviteByHash = (hash: string, params: RequestParams = {}) =>
-    this.http.request<ApiInvite, any>({
-      path: `/v1/invites/${hash}`,
-      method: 'GET',
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerGetOrganizationInvites
-   * @request GET:/v1/invites/organization/{organizationId}
-   * @secure
-   */
-  inviteControllerGetOrganizationInvites = (
-    organizationId: string,
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiInvite[];
-      },
-      any
-    >({
-      path: `/v1/invites/organization/${organizationId}`,
-      method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerCreateInvite
-   * @request POST:/v1/invites/organization/{organizationId}/create
-   * @secure
-   */
-  inviteControllerCreateInvite = (organizationId: string, data: ApiCreateInviteDto, params: RequestParams = {}) =>
-    this.http.request<ApiInvite, any>({
-      path: `/v1/invites/organization/${organizationId}/create`,
-      method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerAcceptInvite
-   * @request POST:/v1/invites/organization/{organizationId}/accept
-   * @secure
-   */
-  inviteControllerAcceptInvite = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/invites/organization/${organizationId}/accept`,
-      method: 'POST',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerDeclineInvite
-   * @request DELETE:/v1/invites/organization/{organizationId}/decline
-   * @secure
-   */
-  inviteControllerDeclineInvite = (organizationId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/invites/organization/${organizationId}/decline`,
-      method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Invites
-   * @name InviteControllerRevokeInvite
-   * @request DELETE:/v1/invites/organization/{organizationId}/revoke
-   * @secure
-   */
-  inviteControllerRevokeInvite = (organizationId: string, data: ApiRevokeInviteDto, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/invites/organization/${organizationId}/revoke`,
-      method: 'DELETE',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
       ...params,
     });
 }

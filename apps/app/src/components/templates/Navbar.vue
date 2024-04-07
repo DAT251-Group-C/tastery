@@ -1,7 +1,11 @@
 <template>
-  <nav class="w-full grid grid-cols-[1fr,_auto] gap-x-4 items-center bg-primary-800 border-b border-neutral-300 py-2 px-5 h-12">
+  <nav
+    class="fixed top-0 left-0 w-full bg-neutral-100 z-10 grid grid-cols-[1fr,_auto] gap-x-4 items-center bg-primary-800 border-b border-neutral-300 py-2 px-5 h-12"
+  >
     <div class="flex gap-x-4 items-center h-8">
-      <p class="text-primary-dark text-body-small">Tastery</p>
+      <RouterLink to="/">
+        <p class="text-primary-dark text-body-bold italic">Tastery</p>
+      </RouterLink>
       <slot></slot>
     </div>
     <div class="flex gap-x-4 items-center h-8">
@@ -13,6 +17,7 @@
       </RouterLink>
     </div>
   </nav>
+  <div class="h-12"></div>
 </template>
 
 <script setup lang="ts">

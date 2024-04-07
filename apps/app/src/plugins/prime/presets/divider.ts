@@ -52,8 +52,8 @@ const Divider: DividerPassThroughOptions = {
 
       // Color
       {
-        'before:border-t before:border-neutral-700': props.layout === 'horizontal',
-        'before:border-l before:border-neutral-700': props.layout === 'vertical',
+        'before:border-t before:border-neutral-300': props.layout === 'horizontal',
+        'before:border-l before:border-neutral-300': props.layout === 'vertical',
       },
     ],
   }),

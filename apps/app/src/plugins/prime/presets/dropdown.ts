@@ -13,19 +13,19 @@ const Dropdown: DropdownPassThroughOptions = {
       // Shape
       { 'rounded-xs': parent.instance.$name !== 'InputGroup' },
       { 'first:rounded-l-xs rounded-none last:rounded-r-xs': parent.instance.$name === 'InputGroup' },
-      { 'border-0 border-y border-l last:border-r border-neutral-700': parent.instance.$name === 'InputGroup' },
+      { 'border-0 border-y border-l last:border-r border-neutral-600': parent.instance.$name === 'InputGroup' },
       { 'first:ml-0 ml-[-1px]': parent.instance.$name === 'InputGroup' },
 
       // Color and Background
-      'bg-neutral-800 transition-[box-shadow]',
+      'bg-neutral-200 transition-[box-shadow]',
 
       // States
       'ring-1 ring-inset',
       {
-        'ring-neutral-500': state.focused,
+        'ring-neutral-700': state.focused,
       },
 
-      { 'ring-neutral-700': !props.invalid && !state.focused },
+      { 'ring-neutral-600': !props.invalid && !state.focused },
 
       // Invalid State
       { 'ring-error': props.invalid && !state.focused },
@@ -49,10 +49,10 @@ const Dropdown: DropdownPassThroughOptions = {
       'bg-transparent',
       'border-0',
       {
-        'text-neutral-300': props.modelValue !== undefined,
-        'text-neutral-500': props.modelValue === undefined,
+        'text-neutral-700': props.modelValue !== undefined,
+        'text-neutral-600': props.modelValue === undefined,
       },
-      'placeholder:text-neutral-500',
+      'placeholder:text-neutral-600',
 
       // Sizing and Spacing
       'w-[1%]',
@@ -88,7 +88,7 @@ const Dropdown: DropdownPassThroughOptions = {
 
       // Color and Background
       'bg-transparent',
-      'text-neutral-300',
+      'text-neutral-600',
 
       // Size
       'w-8',
@@ -110,9 +110,9 @@ const Dropdown: DropdownPassThroughOptions = {
       'rounded-xs',
 
       // Color
-      'bg-neutral-800',
-      'text-neutral-300',
-      'ring-1 ring-inset ring-neutral-700',
+      'bg-neutral-200',
+      'text-neutral-800',
+      'ring-1 ring-inset ring-neutral-600',
     ],
   },
   wrapper: {
@@ -146,14 +146,14 @@ const Dropdown: DropdownPassThroughOptions = {
       'py-2 px-4',
 
       // Color
-      { 'text-neutral-400': !context.focused && !context.selected && !context.disabled },
-      { 'text-neutral-500': !context.focused && !context.selected && context.disabled },
-      { 'bg-neutral-700 text-neutral-300': context.focused && !context.selected },
-      { 'bg-neutral-700 text-neutral-200': context.focused && context.selected },
-      { 'bg-neutral-700 text-neutral-300': !context.focused && context.selected },
+      { 'text-neutral-700': !context.focused && !context.selected && !context.disabled },
+      { 'text-neutral-600': !context.focused && !context.selected && context.disabled },
+      { 'bg-neutral-300 text-neutral-700': context.focused && !context.selected },
+      { 'bg-neutral-300 text-neutral-800': context.focused && context.selected },
+      { 'bg-neutral-300 text-neutral-700': !context.focused && context.selected },
 
       //States
-      'hover:bg-neutral-700/50 hover:text-neutral-300',
+      'hover:bg-neutral-300/50 hover:text-neutral-800',
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-info',
 
       // Misc
@@ -173,8 +173,8 @@ const Dropdown: DropdownPassThroughOptions = {
       'py-2 px-4',
 
       // Color
-      'text-neutral-300',
-      'bg-neutral-800',
+      'text-neutral-700',
+      'bg-neutral-200',
 
       // Misc
       'cursor-auto',
@@ -189,7 +189,7 @@ const Dropdown: DropdownPassThroughOptions = {
       'py-2 px-4',
 
       // Color
-      'text-neutral-500',
+      'text-neutral-600',
       'bg-transparent',
     ],
   },
@@ -204,8 +204,8 @@ const Dropdown: DropdownPassThroughOptions = {
       'rounded-tr-xs',
 
       // Color
-      'text-neutral-400',
-      'bg-neutral-800',
+      'text-neutral-700',
+      'bg-neutral-200',
     ],
   },
   filterContainer: {
@@ -248,7 +248,7 @@ const Dropdown: DropdownPassThroughOptions = {
   clearIcon: {
     class: [
       // Color
-      'text-neutral-400',
+      'text-neutral-600',
 
       // Position
       'absolute',

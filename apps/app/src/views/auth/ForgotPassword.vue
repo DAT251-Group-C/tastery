@@ -1,9 +1,9 @@
 <template>
   <Auth>
     <template v-if="emailSent">
-      <h1 class="mt-8 mb-2 text-neutral-100">Check your email</h1>
-      <p class="text-body-small text-neutral-400 mb-4">
-        We've sent an email to <span class="text-neutral-200">{{ emailModel }}</span
+      <h1 class="mt-8 mb-2 text-neutral-800">Check your email</h1>
+      <p class="text-body-small text-neutral-600 mb-4">
+        We've sent an email to <span class="text-neutral-800">{{ emailModel }}</span
         >. Please click the link in the email to continue resetting your password.
       </p>
       <Button
@@ -16,10 +16,10 @@
       />
     </template>
     <template v-else>
-      <h1 class="mt-8 mb-2 text-neutral-100">Reset your password</h1>
-      <p class="text-body-small text-neutral-400 mb-6">Type in your email and we'll send you a link to reset your password</p>
+      <h1 class="mt-8 mb-2 text-neutral-800">Reset your password</h1>
+      <p class="text-body-small text-neutral-600 mb-6">Type in your email and we'll send you a link to reset your password</p>
       <form class="flex flex-col gap-y-5" @submit.prevent="resetPassword">
-        <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
+        <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-600 px-4 py-3 text-body-small">
           {{ error }}
         </div>
         <Control label="Email" hideDetails class="my-4">
@@ -27,11 +27,11 @@
         </Control>
         <Button type="submit" size="large" :disabled="pending" :loading="pending" loadingIcon="progress_activity">Send reset email</Button>
       </form>
-      <div class="text-caption text-neutral-400 mt-6">
+      <div class="text-caption text-neutral-600 mt-6">
         <p class="flex justify-center items-center">
           Already have an account?
           <RouterLink to="/signin" tabindex="-1">
-            <Button link class="!text-caption !px-1" label="Sign in now"></Button>
+            <Button link class="!text-caption !px-1 !text-neutral-800 hover:!text-neutral-600" label="Sign in now"></Button>
           </RouterLink>
         </p>
       </div>

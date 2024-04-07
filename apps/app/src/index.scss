@@ -7,9 +7,9 @@
     --color-neutral-100: 255 255 255;
     --color-neutral-200: 251 251 251;
     --color-neutral-300: 230 233 232;
-    --color-neutral-400: 98 103 98;
-    --color-neutral-500: 225 234 231;
-    --color-neutral-600: 156 158 158;
+    --color-neutral-400: 225 234 231;
+    --color-neutral-500: 156 158 158;
+    --color-neutral-600: 98 103 98;
     --color-neutral-700: 76 83 80;
     --color-neutral-800: 31 36 37;
     --color-neutral-900: 0 23 31;
@@ -68,8 +68,8 @@
     @apply w-full px-5 space-y-6 mx-auto my-16 max-w-7xl;
   }
 
-  .platform-view {
-    @apply w-full px-5 space-y-6 my-6;
+  .small-view {
+    @apply w-full px-5 space-y-6 mx-auto my-16 max-w-4xl;
   }
 
   h1 {

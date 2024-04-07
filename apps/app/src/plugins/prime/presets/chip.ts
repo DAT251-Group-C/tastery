@@ -13,8 +13,8 @@ const Chip: ChipPassThroughOptions = {
       'rounded-full',
 
       // Colors
-      'text-neutral-300',
-      'bg-neutral-700',
+      'text-neutral-900',
+      'bg-neutral-300',
     ],
   },
   label: {
@@ -35,7 +35,7 @@ const Chip: ChipPassThroughOptions = {
     class: [
       // Shape
       'rounded-full',
-      'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800 focus:bg-neutral-800 focus:text-neutral-200',
+      'text-neutral-700 hover:text-neutral-800 hover:bg-neutral-300 focus:bg-neutral-300 focus:text-neutral-800',
       'font-symbol ml-1 -mr-1.5',
       'text-[1rem] w-4 h-4',
       'cursor-pointer',

@@ -8,8 +8,9 @@ export default class Recipe {
   @ApiPropertyUUID() userId: string;
   @ApiProperty() name: string;
   @ApiProperty() description: string;
-  @ApiProperty({ isArray: true, items: { type: 'string' } }) tags: string[];
-  @ApiProperty({ type: Ingredient }) ingredients: Ingredient[];
+  @ApiProperty() instructions: string;
+  @ApiProperty({ isArray: true, type: String }) tags: string[];
+  @ApiProperty({ type: Ingredient, isArray: true }) ingredients: Ingredient[];
   @ApiPropertyDateTime() createdAt: string;
   @ApiPropertyDateTime() updatedAt: string;
 }

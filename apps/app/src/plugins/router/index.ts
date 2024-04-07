@@ -42,6 +42,29 @@ const router = createRouter({
       },
     },
     {
+      path: '/profile',
+      name: 'Your Profile',
+      component: () => import('@/views/auth/Profile.vue'),
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
+      path: '/recipe/:id',
+      name: 'Recipe',
+      component: () => import('@/views/recipe/Recipe.vue'),
+      props: true,
+    },
+    {
+      path: '/recipe/:id/edit',
+      name: 'Edit Recipe',
+      component: () => import('@/views/recipe/EditRecipe.vue'),
+      props: true,
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'Page not found',
       component: () => import('@/views/error/NotFound.vue'),

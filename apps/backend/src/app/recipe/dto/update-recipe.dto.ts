@@ -10,7 +10,7 @@ export class UpdateRecipeDto {
   @IsOptional()
   @MinLength(1)
   @MaxLength(255)
-  name: string;
+  name?: string;
 
   @ApiPropertyOptional({ type: String })
   @Type(() => String)
@@ -18,13 +18,21 @@ export class UpdateRecipeDto {
   @IsOptional()
   @MinLength(1)
   @MaxLength(255)
-  description: string;
+  description?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @Type(() => String)
+  @IsString()
+  @IsOptional()
+  @MinLength(1)
+  @MaxLength(2083)
+  instructions?: string;
 
   @ApiPropertyOptional({ type: String, isArray: true })
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  tags: string[];
+  tags?: string[];
 
   @ApiPropertyOptional({ type: CreateIngredientDto, isArray: true, minItems: 1 })
   @Type(() => CreateIngredientDto)
@@ -32,5 +40,5 @@ export class UpdateRecipeDto {
   @ArrayNotEmpty()
   @IsArray()
   @IsOptional()
-  ingredients: CreateIngredientDto[];
+  ingredients?: CreateIngredientDto[];
 }

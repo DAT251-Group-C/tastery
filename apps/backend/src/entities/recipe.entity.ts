@@ -28,6 +28,14 @@ export default class RecipeEntity {
   })
   description: string;
 
+  @Column({
+    type: 'varchar',
+    length: 2083,
+    nullable: false,
+    default: '',
+  })
+  instructions: string;
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP(6)',
