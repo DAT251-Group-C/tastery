@@ -81,6 +81,7 @@ describe('RecipeController', () => {
         const createRecipeDto: CreateRecipeDto = {
         name: 'Test Recipe',
         description: 'Test Description',
+        instructions: 'Test Instructions',
         tags: ['Tag1', 'Tag2'],
         ingredients: [
             {
