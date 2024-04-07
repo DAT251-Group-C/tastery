@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
@@ -32,11 +32,11 @@ export class CreateIngredientDto {
   @MaxLength(255)
   name: string;
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @Type(() => String)
   @IsUrl()
   @IsOptional()
-  image: string;
+  image?: string;
 
   @ApiProperty({ enum: IngredientUnit, enumName: 'ingredient_unit' })
   @IsEnum(IngredientUnit)

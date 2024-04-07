@@ -9,6 +9,7 @@ import Divider from './divider';
 import Dropdown from './dropdown';
 import IconField from './iconfield';
 import InputIcon from './inputicon';
+import InputNumber from './inputnumber';
 import InputText from './inputtext';
 import Menu from './menu';
 import OverlayPanel from './overlaypanel';
@@ -29,6 +30,7 @@ const preset: PrimeVuePTOptions = {
   // @ts-expect-error - IconField hasnt been added to the PrimeVuePTOptions yet.
   iconfield: IconField,
   inputicon: InputIcon,
+  inputnumber: InputNumber,
   inputtext: InputText,
   menu: Menu,
   overlaypanel: OverlayPanel,

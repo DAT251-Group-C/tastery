@@ -22,7 +22,7 @@ export default class IngredientEntity {
     length: 2083,
     nullable: true,
   })
-  image: string;
+  image?: string;
 
   @PrimaryColumn('uuid')
   recipeId: string;

@@ -13,8 +13,8 @@ const Chip: ChipPassThroughOptions = {
       'rounded-full',
 
       // Colors
-      'text-neutral-300',
-      'bg-neutral-700',
+      'text-neutral-900',
+      'bg-neutral-300',
     ],
   },
   label: {

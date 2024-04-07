@@ -46,9 +46,9 @@ const Button: ButtonPassThroughOptions = {
 
       // Primary Button
       {
-        'text-neutral-100': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
-        'bg-primary': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
-        'ring-1 ring-primary-light': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
+        'text-neutral-800': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
+        'bg-primary-light': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
+        'ring-1 ring-primary': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,
       },
       // Primary Text Button
       { 'text-primary-light hover:bg-primary-light/25': props.text && props.severity === null && !props.plain },

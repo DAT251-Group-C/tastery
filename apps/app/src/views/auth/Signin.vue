@@ -61,11 +61,7 @@ const signIn = async () => {
   if (response.error) {
     error.value = response.error.message;
   } else {
-    if (props.hash) {
-      router.push({ name: 'Invite', params: { hash: props.hash } });
-    } else {
-      router.push({ name: 'Projects' });
-    }
+    router.push({ name: 'Index' });
   }
 
   isPending.value = false;
