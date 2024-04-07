@@ -38,8 +38,8 @@ const router = createRouter({
       name: 'New recipe',
       component: () => import('@/views/recipe/CreateRecipe.vue'),
       meta: {
-        authRequired: true
-      }
+        authRequired: true,
+      },
     },
     {
       path: '/:pathMatch(.*)*',

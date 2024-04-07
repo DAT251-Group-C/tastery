@@ -1,6 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsEnum, IsInstance, IsNumber, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MaxLength,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 import { IngredientUnit } from '../../../common/models/ingredient.model';
 
 export class CreateIngredientDto {
@@ -54,8 +65,8 @@ export class CreateRecipeDto {
 
   @ApiProperty({ type: CreateIngredientDto, isArray: true, minItems: 1 })
   @Type(() => CreateIngredientDto)
+  @ValidateNested({ each: true })
   @ArrayNotEmpty()
   @IsArray()
-  @IsInstance(CreateIngredientDto, { each: true })
   ingredients: CreateIngredientDto[];
 }

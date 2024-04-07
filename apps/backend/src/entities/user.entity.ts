@@ -1,9 +1,9 @@
-import { Column, CreateDateColumn, Entity, EntitySchema, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({
   name: 'users',
 })
-export default class UserEntity extends EntitySchema {
+export default class UserEntity {
   @PrimaryColumn('uuid')
   id: string;
 

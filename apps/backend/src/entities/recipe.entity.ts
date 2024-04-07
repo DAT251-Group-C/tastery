@@ -1,26 +1,15 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  EntitySchema,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import IngredientEntity from './ingredient.entity';
 import UserEntity from './user.entity';
 
 @Entity({
   name: 'recipes',
 })
-export default class RecipeEntity extends EntitySchema {
+export default class RecipeEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @PrimaryColumn({ type: 'uuid' })
+  @Column({ type: 'uuid' })
   userId: string;
 
   @Column({
@@ -53,7 +42,7 @@ export default class RecipeEntity extends EntitySchema {
   })
   tags: string[];
 
-  @OneToMany(() => IngredientEntity, ingredient => ingredient.recipe, { eager: true })
+  @OneToMany(() => IngredientEntity, ingredient => ingredient.recipe, { eager: true, cascade: true })
   ingredients: IngredientEntity[];
 
   @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })

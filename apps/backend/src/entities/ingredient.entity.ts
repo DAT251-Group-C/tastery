@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, EntitySchema, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { IngredientUnit } from '../common/models/ingredient.model';
 import RecipeEntity from './recipe.entity';
 
 @Entity({
   name: 'ingredients',
 })
-export default class IngredientEntity extends EntitySchema {
+export default class IngredientEntity {
   @PrimaryColumn()
   ean: string;
 
@@ -44,6 +44,8 @@ export default class IngredientEntity extends EntitySchema {
 
   @ManyToOne(() => RecipeEntity, recipe => recipe.id, {
     onDelete: 'CASCADE',
+    nullable: false,
+    orphanedRowAction: 'delete',
   })
   @JoinColumn({ name: 'recipeId' })
   recipe: Promise<RecipeEntity>;

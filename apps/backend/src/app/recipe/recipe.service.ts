@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Observable, combineLatest, from, map, tap } from 'rxjs';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { v4 } from 'uuid';
 import { PageMetaDto } from '../../common/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
@@ -18,10 +18,14 @@ export class RecipeService {
     private readonly recipeRepository: Repository<RecipeEntity>,
     @InjectRepository(IngredientEntity)
     private readonly ingredientRepository: Repository<IngredientEntity>,
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
   ) {}
 
   public getRecipes(pageOptionsDto: PageOptionsDto): Observable<PageDto<RecipeEntity>> {
     const query = this.recipeRepository.createQueryBuilder('recipe');
+
+    query.leftJoinAndSelect('recipe.ingredients', 'ingredient');
 
     if (pageOptionsDto.search) {
       query.where('recipe.name like :search', { search: `%${pageOptionsDto.search}%` });
@@ -54,40 +58,30 @@ export class RecipeService {
 
   public createRecipe(userId: string, data: CreateRecipeDto): Observable<RecipeEntity> {
     const id = v4();
-
-    const ingredients = data.ingredients.map(ingredient => {
-      return this.ingredientRepository.create({
-        ...ingredient,
-        recipeId: id,
-      });
-    });
-
     const recipe = this.recipeRepository.create({
-      id,
+      ...data,
       userId,
-      name: data.name,
-      description: data.description,
-      ingredients,
+      id,
     });
+
+    recipe.ingredients = data.ingredients.map(ingredient => this.ingredientRepository.create({ ...ingredient, recipeId: recipe.id }));
+
     return from(this.recipeRepository.save(recipe));
   }
 
-  public updateRecipe(id: string, data: UpdateRecipeDto): Observable<UpdateResult> {
-    const dto = {
-      ...data,
-      ingredients: data.ingredients
-        ? data.ingredients.map(ingredient => {
-            return this.ingredientRepository.create({
-              ...ingredient,
-              recipeId: id,
-            });
-          })
-        : undefined,
-    };
-    return from(this.recipeRepository.update({ id }, dto)).pipe(
-      tap((result: UpdateResult) => {
-        if (result.affected === 0) {
-          throw new ResourceNotFoundException(`Recipe with id ${id} not found`);
+  public updateRecipe(id: string, data: UpdateRecipeDto): Observable<void> {
+    const { ingredients, ...rest } = data;
+
+    const manager = this.ingredientRepository.manager;
+
+    return from(
+      manager.transaction(async transactionalEntityManager => {
+        await transactionalEntityManager.update(RecipeEntity, { id }, rest);
+
+        if (ingredients) {
+          const recipe = await transactionalEntityManager.findOneOrFail(RecipeEntity, { where: { id } });
+          recipe.ingredients = ingredients.map(ingredient => this.ingredientRepository.create({ ...ingredient, recipeId: id }));
+          await transactionalEntityManager.save(RecipeEntity, recipe);
         }
       }),
     );

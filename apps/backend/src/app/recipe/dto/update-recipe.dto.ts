@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsInstance, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsOptional, IsString, MaxLength, MinLength, ValidateNested } from 'class-validator';
 import { CreateIngredientDto } from './create-recipe.dto';
 
 export class UpdateRecipeDto {
@@ -28,9 +28,9 @@ export class UpdateRecipeDto {
 
   @ApiPropertyOptional({ type: CreateIngredientDto, isArray: true, minItems: 1 })
   @Type(() => CreateIngredientDto)
+  @ValidateNested({ each: true })
   @ArrayNotEmpty()
   @IsArray()
   @IsOptional()
-  @IsInstance(CreateIngredientDto, { each: true })
   ingredients: CreateIngredientDto[];
 }

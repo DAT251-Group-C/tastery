@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { catchError, lastValueFrom, take } from 'rxjs';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 import { ApiOkResponsePaginated } from '../../common/decorators/api-ok-response-paginated.decorator';
 import { Public } from '../../common/decorators/public.decorator';
 import { UserId } from '../../common/decorators/user-id.decorator';
@@ -95,7 +95,7 @@ export class RecipeController {
   @ApiParam({ name: 'recipeId', format: 'uuid' })
   @ApiBody({ type: UpdateRecipeDto })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public updateRecipe(@Param('recipeId') recipeId: string, @Body() body: UpdateRecipeDto): Promise<UpdateResult> {
+  public updateRecipe(@Param('recipeId') recipeId: string, @Body() body: UpdateRecipeDto): Promise<void> {
     return lastValueFrom(
       this.recipeService.updateRecipe(recipeId, body).pipe(
         take(1),
