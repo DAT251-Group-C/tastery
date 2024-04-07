@@ -22,7 +22,8 @@
     "migrations:run": "nx migrations:run backend",
     "migrations:revert": "nx migrations:revert backend",
     "migrations:show": "nx migrations:show backend",
-    "schema:drop": "nx schema:drop backend"
+    "schema:drop": "nx schema:drop backend",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
