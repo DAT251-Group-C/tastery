@@ -106,15 +106,15 @@ const Button: ButtonPassThroughOptions = {
 
       // Neutral Button
       {
-        'text-neutral-300': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
-        'bg-neutral-800': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
-        'ring-1 ring-neutral-700': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
+        'text-neutral-700': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
+        'bg-neutral-200': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
+        'ring-1 ring-neutral-400': props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
       },
       // Neutral Text Button
-      { 'text-neutral-300 hover:bg-neutral-700/25': props.text && props.severity === 'neutral' && !props.plain },
+      { 'text-neutral-300 hover:bg-neutral-400/25': props.text && props.severity === 'neutral' && !props.plain },
       // Neutral Outlined Button
       {
-        'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-700/25': props.outlined && props.severity === 'neutral' && !props.plain,
+        'text-neutral-300 ring-1 ring-neutral-300 hover:bg-neutral-400/25': props.outlined && props.severity === 'neutral' && !props.plain,
       },
 
       // Error Button
@@ -181,7 +181,7 @@ const Button: ButtonPassThroughOptions = {
 
       // Neutral
       {
-        'hover:bg-neutral-700 hover:ring-neutral-600':
+        'hover:bg-neutral-400 hover:ring-neutral-600':
           !props.link && props.severity === 'neutral' && !props.text && !props.outlined && !props.plain,
       },
       // Text & Outlined Button

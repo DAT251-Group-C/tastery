@@ -29,6 +29,7 @@
         @click="save()"
       ></Button>
     </div>
+    <Button label="Sign out" @click="signOut()"></Button>
   </div>
 </template>
 
@@ -38,7 +39,9 @@ import { useToaster } from '@/composables/toaster';
 import { useUpdateUser, useUser } from '@/composables/user';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import { signOut as _signOut } from '@/plugins/supabase';
 import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const name = ref('');
 
@@ -69,5 +72,11 @@ const save = async () => {
       detail: updateError.value?.response?.data.message ?? 'An error occurred',
     });
   }
+};
+
+const router = useRouter();
+const signOut = async () => {
+  await _signOut();
+  router.push({ name: 'Index' });
 };
 </script>

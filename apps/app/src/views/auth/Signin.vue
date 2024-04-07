@@ -1,10 +1,10 @@
 <template>
   <Auth>
-    <h1 class="mt-8 mb-2 text-neutral-100">Welcome back</h1>
-    <p class="text-body-small text-neutral-400 mb-10">Sign in to your account</p>
+    <h1 class="mt-8 mb-2 text-neutral-800">Welcome back</h1>
+    <p class="text-body-small text-neutral-600 mb-10">Sign in to your account</p>
     <form class="flex flex-col gap-y-5" @submit.prevent="signIn">
       <Button severity="neutral" :label="'Continue with Google'" size="large" @click="signInWithGoogle()"></Button>
-      <Divider><span class="bg-neutral-800 text-neutral-300 px-2">or</span></Divider>
+      <Divider><span class="bg-neutral-200 text-neutral-600 px-2">or</span></Divider>
       <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
         {{ error }}
       </div>
@@ -13,7 +13,11 @@
       </Control>
       <div class="relative">
         <RouterLink :to="{ name: 'Forgot password', query: { email: emailModel || undefined } }" tabindex="-1">
-          <Button link class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0" label="Forgot password?"></Button>
+          <Button
+            link
+            class="!absolute -right-2 top-2.5 !text-caption self-end -mt-3 mb-0 !text-neutral-800 hover:!text-neutral-600"
+            label="Forgot password?"
+          ></Button>
         </RouterLink>
         <Control label="Password" hideDetails>
           <InputText v-model="passwordModel" required type="password" placeholder="••••••••" size="large" />
@@ -21,11 +25,11 @@
       </div>
       <Button type="submit" size="large" :disabled="isPending" :loading="isPending" loadingIcon="progress_activity">Sign In</Button>
     </form>
-    <div class="text-caption text-neutral-400 mt-6">
+    <div class="text-caption text-neutral-600 mt-6">
       <p class="flex justify-center items-center">
         Don't have an account?
         <RouterLink :to="{ name: 'Sign up', query: { hash } }" tabindex="-1">
-          <Button link class="!text-caption !px-1" label="Sign up now"></Button>
+          <Button link class="!text-caption !px-1 !text-neutral-800 hover:!text-neutral-600" label="Sign up now"></Button>
         </RouterLink>
       </p>
     </div>
