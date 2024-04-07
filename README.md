@@ -23,7 +23,7 @@ pnpm serve:backend
 Then, start the frontend server:
 
 ```bash
-pnpm serve:frontend
+pnpm serve:app
 ```
 
 You should not have the app running on `localhost:8080` and the backend running on `localhost:3000`.
