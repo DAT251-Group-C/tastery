@@ -1,28 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from '../common/config/app-conf';
-import entities from '../entities';
-import { GatewayModule } from './gateway/gateway.module';
-import { HealthModule } from './health/health.module';
-import { UserModule } from './user/user.module';
-import { OrganizationModule } from './organization/organization.module';
-import { ProjectModule } from './project/project.module';
-import { InviteModule } from './invite/invite.module';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../common/guards/auth/auth.guard';
-import { MembershipModule } from './membership/membership.module';
+import entities from '../entities';
+import { HealthModule } from './health/health.module';
+import { RecipeModule } from './recipe/recipe.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     HealthModule,
     UserModule,
-    OrganizationModule,
-    MembershipModule,
-    ProjectModule,
-    InviteModule,
-    GatewayModule,
+    RecipeModule,
     ConfigModule.forRoot({
       load: [appConfig],
     }),

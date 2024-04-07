@@ -26,12 +26,6 @@ const router = createRouter({
       }),
     },
     {
-      path: '/invite',
-      name: 'Invite',
-      component: () => import('@/views/auth/Invite.vue'),
-      props: route => ({ hash: route.query.hash }),
-    },
-    {
       path: '/signin',
       name: 'Sign in',
       component: () => import('@/views/auth/Signin.vue'),
@@ -40,102 +34,12 @@ const router = createRouter({
       }),
     },
     {
-      path: '/platform',
-      redirect: '/platform/projects',
-      component: () => import('@/components/templates/PlatformWrapper.vue'),
-      children: [
-        {
-          path: 'profile',
-          name: 'Profile',
-          component: () => import('@/views/platform/account/Profile.vue'),
-          props: route => ({ passwordRecovery: route.query.passwordRecovery }),
-          meta: {
-            platformTitle: 'Account',
-            platformSubtitle: 'Profile',
-          },
-        },
-        {
-          path: 'projects',
-          name: 'Projects',
-          component: () => import('@/views/platform/projects/Projects.vue'),
-          meta: {
-            platformTitle: 'Dashboard',
-            platformSubtitle: 'Projects',
-          },
-        },
-        {
-          path: 'organizations/:organizationId',
-          name: 'Organization',
-          component: () => import('@/views/platform/organizations/Organization.vue'),
-          meta: {
-            platformTitle: 'Organization',
-            platformSubtitle: 'Settings',
-          },
-          props: true,
-        },
-        {
-          path: ':pathMatch(.*)*',
-          name: 'Platform page not found',
-          component: () => import('@/views/error/NotFound.vue'),
-          meta: {
-            title: 'Page not found',
-            platformTitle: '404',
-            platformSubtitle: 'Page not found',
-          },
-        },
-      ],
+      path: '/create',
+      name: 'New recipe',
+      component: () => import('@/views/recipe/CreateRecipe.vue'),
       meta: {
-        authRequired: true,
-      },
-    },
-    {
-      path: '/platform/organizations/new',
-      name: 'Create organization',
-      component: () => import('@/views/platform/organizations/NewOrganization.vue'),
-      meta: {
-        authRequired: true,
-      },
-    },
-    {
-      path: '/platform/projects/new',
-      name: 'Create project',
-      component: () => import('@/views/platform/projects/NewProject.vue'),
-      meta: {
-        authRequired: true,
-      },
-    },
-    {
-      path: '/platform/projects/:projectId',
-      component: () => import('@/components/templates/ProjectWrapper.vue'),
-      children: [
-        {
-          path: '',
-          name: 'Overview',
-          component: () => import('@/views/platform/project/Overview.vue'),
-        },
-        {
-          path: 'tools',
-          name: 'Tools',
-          component: () => import('@/views/platform/project/Tools.vue'),
-        },
-        {
-          path: 'settings',
-          name: 'Project settings',
-          component: () => import('@/views/platform/project/Settings.vue'),
-        },
-        {
-          path: ':pathMatch(.*)*',
-          name: 'Project page not found',
-          component: () => import('@/views/error/NotFound.vue'),
-          meta: {
-            title: 'Page not found',
-          },
-        },
-      ],
-      props: true,
-      meta: {
-        authRequired: true,
-      },
+        authRequired: true
+      }
     },
     {
       path: '/:pathMatch(.*)*',
@@ -148,7 +52,7 @@ const router = createRouter({
 router.beforeEach(authGuard);
 router.beforeEach(to => {
   const title = String(to.meta?.title ?? to.name);
-  document.title = title ? `${title} | Agient` : 'Agient';
+  document.title = title ? `${title} | Tastery` : 'Tastery';
 });
 
 export default router;

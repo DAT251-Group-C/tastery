@@ -16,9 +16,9 @@ const vitePwaConfig = (isProd: boolean) =>
       globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
     },
     manifest: {
-      name: 'Agient',
-      short_name: 'Agient',
-      description: 'Agient',
+      name: 'Tastery',
+      short_name: 'Tastery',
+      description: 'Tastery',
       theme_color: '#1c9c4f',
     },
   });
@@ -30,7 +30,6 @@ export default ({ mode }: ConfigEnv) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        '@agient/widget': path.resolve(__dirname, `../widget/${isProd ? 'dist' : 'public-api'}`),
       },
     },
     publicDir: path.resolve(__dirname, './public'),

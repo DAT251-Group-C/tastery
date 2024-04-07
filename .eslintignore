@@ -2,4 +2,3 @@ node_modules
 dev-dist
 dist
 .nx
-apps/widget/resources/styles.css

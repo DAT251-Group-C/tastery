@@ -9,7 +9,7 @@
         </main>
         <aside class="flex-col items-center justify-center flex-1 flex-shrink hidden basis-1/4 xl:flex">
           <h1 class="text-neutral-300 max-w-lg">
-            This is where I'll write good stuff about Agient once I've gotten a bit further ahead 😍
+            This is where we'll write good stuff about Tastery once we've gotten a bit further ahead 😍
           </h1>
         </aside>
       </div>

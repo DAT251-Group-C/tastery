@@ -6,15 +6,8 @@ const appConfig = registerAs('appConfig', () => ({
     version: 'v1',
     env: 'development',
   },
-  openai: {
-    apiKey: process.env.NX_OPENAI_API_KEY,
-    organization: process.env.NX_OPENAI_ORGANIZATION,
-  },
   jwt: {
     secret: process.env.NX_JWT_SECRET,
-  },
-  frontend: {
-    url: process.env.NX_FRONTEND_URL,
   },
   database: {
     host: process.env.NX_POSTGRES_HOST,
@@ -22,17 +15,6 @@ const appConfig = registerAs('appConfig', () => ({
     user: process.env.NX_POSTGRES_USER,
     password: process.env.NX_POSTGRES_PASSWORD,
     database: process.env.NX_POSTGRES_DATABASE,
-  },
-  resend: {
-    key: process.env.NX_RESEND_KEY,
-  },
-  encryption: {
-    hashIterations: process.env.NX_ENCRYPTION_HASH_ITERATIONS,
-    hashKeyLength: process.env.NX_ENCRYPTION_HASH_KEY_LENGTH,
-    hashDigest: process.env.NX_ENCRYPTION_HASH_DIGEST,
-    authEncryptedKey: process.env.NX_ENCRYPTION_AUTH_ENCRYPTED_KEY,
-    ivKey: process.env.NX_ENCRYPTION_IV_KEY,
-    salt: process.env.NX_ENCRYPTION_SALT,
   },
 }));
 

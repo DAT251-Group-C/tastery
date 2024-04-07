@@ -3,8 +3,7 @@
     <h1 class="mt-8 mb-2 text-neutral-100">Welcome back</h1>
     <p class="text-body-small text-neutral-400 mb-10">Sign in to your account</p>
     <form class="flex flex-col gap-y-5" @submit.prevent="signIn">
-      <Button severity="neutral" :label="'Continue with Github'" size="large" @click="signInWithGithub()"></Button>
-      <Button severity="neutral" :label="'Continue with Google'" size="large"></Button>
+      <Button severity="neutral" :label="'Continue with Google'" size="large" @click="signInWithGoogle()"></Button>
       <Divider><span class="bg-neutral-800 text-neutral-300 px-2">or</span></Divider>
       <div v-if="error" class="rounded-xs bg-error-dark ring-1 ring-error text-neutral-300 px-4 py-3 text-body-small">
         {{ error }}
@@ -72,9 +71,9 @@ const signIn = async () => {
   isPending.value = false;
 };
 
-const signInWithGithub = async () => {
+const signInWithGoogle = async () => {
   await supabase.auth.signInWithOAuth({
-    provider: 'github',
+    provider: 'google',
   });
 };
 </script>

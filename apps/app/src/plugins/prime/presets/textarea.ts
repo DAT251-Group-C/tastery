@@ -19,18 +19,18 @@ const Textarea: TextareaPassThroughOptions = {
       'appearance-none',
 
       // Colors
-      'text-neutral-300',
-      'placeholder:text-neutral-500',
-      'bg-neutral-800',
+      'text-neutral-700',
+      'placeholder:text-neutral-600',
+      'bg-neutral-200',
       'ring-1 ring-inset ring-offset-0',
-      { ' ring-neutral-700': !props.invalid },
+      { ' ring-neutral-600': !props.invalid },
 
       // Invalid State
       { 'ring-error': props.invalid },
 
       // States
       {
-        'outline-none focus:ring-neutral-500': !context.disabled,
+        'outline-none focus:ring-neutral-600': !context.disabled,
         'opacity-60 select-none pointer-events-none cursor-default': context.disabled,
       },
 

@@ -1,12 +1,9 @@
 import { EntitySchema } from 'typeorm';
-import { InviteEntity } from './invite.entity';
-import MembershipEntity from './membership.entity';
-import OrganizationEntity from './organization.entity';
-import ProjectEntity from './project.entity';
-import ToolEntity from './tool.entity';
+import IngredientEntity from './ingredient.entity';
+import RecipeEntity from './recipe.entity';
 import UserEntity from './user.entity';
 
-const entities: Array<typeof EntitySchema> = [UserEntity, OrganizationEntity, MembershipEntity, ProjectEntity, ToolEntity, InviteEntity];
+const entities: Array<typeof EntitySchema> = [UserEntity, IngredientEntity, RecipeEntity];
 
-export { InviteEntity, MembershipEntity, OrganizationEntity, ProjectEntity, ToolEntity, UserEntity };
+export { IngredientEntity, RecipeEntity, UserEntity };
 export default entities;

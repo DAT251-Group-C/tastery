@@ -18,4 +18,3 @@ createApp(App)
   .use(prime)
   .use(router)
   .mount('#app');
-// useAgient();

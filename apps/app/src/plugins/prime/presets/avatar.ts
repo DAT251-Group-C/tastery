@@ -31,7 +31,7 @@ const Avatar: AvatarPassThroughOptions = {
       { 'border-2': parent.instance.$style?.name === 'avatargroup' },
 
       // Colors
-      'bg-neutral-200 text-primary-dark',
+      'bg-primary-dark text-neutral-100',
       { 'border-neutral-300': parent.instance.$style?.name === 'avatargroup' },
 
       'uppercase',

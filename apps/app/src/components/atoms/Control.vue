@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2">
-    <label v-if="!hideLabel" :for="id" class="text-body-small text-neutral-400">
+    <label v-if="!hideLabel" :for="id" class="text-body-small text-neutral-700">
       <span v-if="label.length === 0">&nbsp;</span>
       <span v-else>{{ label }}</span>
     </label>
@@ -8,7 +8,7 @@
 
     <template v-if="!hideDetails">
       <div v-if="error" class="text-caption text-error">{{ error }}</div>
-      <div v-else class="text-caption text-neutral-400">
+      <div v-else class="text-caption text-neutral-800">
         <span v-if="hint.length === 0">&nbsp;</span>
         <span v-else>{{ hint }}</span>
       </div>

@@ -1,14 +1,10 @@
-import { FullMembership } from './full-membership.model';
-import { FullOrganization } from './full-organization.model';
-import { FullProject } from './full-project.model';
-import { Invite } from './invite.model';
-import { Membership } from './membership.model';
-import { Organization } from './organization.model';
-import { Project } from './project.model';
-import { FullTool, Tool } from './tool.model';
+import { FullIngredient } from './full-ingredient.model';
+import { FullRecipe } from './full-recipe.model';
+import { Ingredient } from './ingredient.model';
+import Recipe from './recipe.model';
 import { User } from './user.model';
 
-const models = [User, Invite, Membership, FullMembership, Organization, FullOrganization, Project, FullProject, Tool, FullTool];
+const models = [User, Ingredient, Recipe, FullRecipe, FullIngredient];
 
-export { FullMembership, FullOrganization, FullProject, FullTool, Invite, Membership, Organization, Project, Tool, User };
+export { FullIngredient, FullRecipe, Ingredient, Recipe, User };
 export default models;

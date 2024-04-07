@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <h2>Agient</h2>
+    <h2>Tastery</h2>
     <RouterLink to="/signup" tabindex="-1">
       <Button>Sign up</Button>
     </RouterLink>

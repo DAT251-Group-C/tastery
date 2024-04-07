@@ -23,6 +23,10 @@ export class PageOptionsDto {
   @IsOptional()
   readonly page: number = 1;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly search: string = '';
+
   @ApiPropertyOptional({
     minimum: 1,
     maximum: 50,
