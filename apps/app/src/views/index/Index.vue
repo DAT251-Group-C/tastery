@@ -9,10 +9,11 @@
           <Chip
             v-for="filterTag in filterTags"
             :key="filterTag"
-            class="bg-primary-dark !text-neutral-100 cursor-pointer"
+            class="bg-primary-dark !text-neutral-100 cursor-pointer text-caption"
             @click="search = filterTag"
-            >{{ filterTag }}</Chip
           >
+            <span>{{ filterTag }}</span>
+          </Chip>
         </div>
       </div>
       <div class="w-full">

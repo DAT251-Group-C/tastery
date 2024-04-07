@@ -1,6 +1,6 @@
 <template>
   <Navbar></Navbar>
-  <div v-if="recipe" class="view">
+  <div v-if="recipe" class="small-view">
     <div class="flex flex-col gap-y-6">
       <div class="flex gap-2">
         <h3 class="mr-auto">{{ recipe.name }}</h3>

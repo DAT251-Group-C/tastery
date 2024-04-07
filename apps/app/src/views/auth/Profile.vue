@@ -1,20 +1,20 @@
 <template>
   <Navbar></Navbar>
-  <div class="view">
+  <div class="small-view">
     <h2>Your profile</h2>
     <div v-if="userLoading" class="text-center my-16">
       <p v-debounce class="text-body-small text-neutral-600">Loading profile...</p>
     </div>
     <div v-else-if="user" class="flex flex-col gap-y-4 mt-8 rounded-sm ring-1 p-6 ring-neutral-300">
       <div class="grid md:grid-cols-3 gap-4 mb-2">
-        <span class="text-body-small text-neutral-400">Email</span>
+        <span class="text-body-small text-neutral-700">Email</span>
         <Control hideLabel class="col-span-2" hideDetails>
           <InputText v-model="user.email" size="large" readonly disabled class="w-full"></InputText>
         </Control>
       </div>
 
       <div class="grid md:grid-cols-3 gap-4 mb-2">
-        <span class="text-body-small text-neutral-400">Name</span>
+        <span class="text-body-small text-neutral-700">Name</span>
         <Control hideLabel class="col-span-2" hideDetails>
           <InputText v-model="name" size="large" :disabled="isPending" class="w-full"></InputText>
         </Control>

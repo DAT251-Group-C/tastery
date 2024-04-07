@@ -68,8 +68,8 @@
     @apply w-full px-5 space-y-6 mx-auto my-16 max-w-7xl;
   }
 
-  .platform-view {
-    @apply w-full px-5 space-y-6 my-6;
+  .small-view {
+    @apply w-full px-5 space-y-6 mx-auto my-16 max-w-4xl;
   }
 
   h1 {

@@ -1,6 +1,7 @@
 <template>
   <Navbar></Navbar>
   <div class="view">
+    <h3>Create recipe</h3>
     <RecipeEditor :loading="loading" @save="onSave($event)"></RecipeEditor>
   </div>
 </template>
