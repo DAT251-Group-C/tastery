@@ -19,25 +19,23 @@
         ></Button>
       </div>
 
+      <p class="text-body-small text-neutral-600">{{ recipe.description }}</p>
+
       <div class="flex flex-wrap gap-2">
         <Chip v-for="tag in recipe.tags" :key="tag" :label="tag" class="bg-primary-dark !text-neutral-100"></Chip>
       </div>
 
       <p class="text-body-small-bold mt-6">Ingredients</p>
 
-      <div class="flex gap-2">
-        <div
-          v-for="ingredient in recipe.ingredients"
-          :key="ingredient.ean"
-          class="p-4 gap-2 ring-1 ring-neutral-300 rounded-xs min-w-[24rem]"
-        >
-          <p>{{ ingredient.name }}</p>
+      <div class="flex flex-wrap gap-2">
+        <div v-for="ingredient in recipe.ingredients" :key="ingredient.ean" class="px-4 py-2 gap-1 ring-1 ring-neutral-300 rounded-xs">
+          <p class="text-body-small-bold">{{ ingredient.name }}</p>
           <p class="text-neutral-700 text-body-small">Amount: {{ ingredient.amount }} {{ ingredient.unit }}</p>
         </div>
       </div>
 
       <p class="text-body-small-bold mt-6">Instructions</p>
-      <p class="rounded-xs ring-1 ring-neutral-300 p-4">{{ recipe.description }}</p>
+      <p v-for="line in recipe.instructions.split('\n')" :key="line">{{ line }}</p>
     </div>
   </div>
   <div v-else class="view">

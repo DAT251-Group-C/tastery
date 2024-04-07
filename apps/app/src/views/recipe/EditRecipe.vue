@@ -42,6 +42,7 @@ const setData = (recipe: ApiRecipe) => {
     name: recipe.name,
     description: recipe.description,
     tags: recipe.tags,
+    instructions: recipe.instructions,
     ingredients: recipe.ingredients.map(i => ({
       name: i.name,
       amount: i.amount,

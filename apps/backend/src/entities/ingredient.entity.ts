@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { IngredientUnit } from '../common/models/ingredient.model';
 import RecipeEntity from './recipe.entity';
 
@@ -6,7 +6,10 @@ import RecipeEntity from './recipe.entity';
   name: 'ingredients',
 })
 export default class IngredientEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
   ean: string;
 
   @Column({

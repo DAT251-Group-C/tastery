@@ -9,19 +9,19 @@
     <div class="grid grid-cols-3">
       <span class="text-body-small text-neutral-700">Name</span>
       <Control hideLabel class="col-span-2" hideDetails>
-        <InputText v-model="name" size="large" required></InputText>
+        <InputText v-model="name" size="large" placeholder="Recipe name" required></InputText>
       </Control>
     </div>
 
     <div class="grid grid-cols-3">
-      <span class="text-body-small text-neutral-700">Instructions</span>
+      <span class="text-body-small text-neutral-700">Description</span>
       <Control hideLabel class="col-span-2" hideDetails>
-        <Textarea v-model="description" size="large" rows="3" required></Textarea>
+        <Textarea v-model="description" size="large" rows="2" placeholder="Recipe description" required></Textarea>
       </Control>
     </div>
 
     <div class="grid grid-cols-3 mb-2">
-      <span class="text-body-small text-neutral-400">Tags</span>
+      <span class="text-body-small text-neutral-700">Tags</span>
       <div class="col-span-2">
         <div class="flex gap-x-2">
           <Control hideLabel class="w-full" hideDetails>
@@ -30,12 +30,19 @@
           <Button type="button" icon="add" size="large" class="!w-[calc(2.5rem-2px)] !h-[calc(2.5rem-2px)] m-px" @click="addTag()"></Button>
         </div>
         <div>
-          <p v-if="tags.length === 0" class="text-body-small text-neutral-400 mt-4 mb-3">No tags have been added</p>
+          <p v-if="tags.length === 0" class="text-body-small text-neutral-600 mt-4 mb-3">No tags have been added</p>
           <div class="flex flex-wrap gap-2 mt-4 mb-2">
             <Chip v-for="t in tags" :key="t" :label="t" removable @remove="removeTag(t)" />
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="grid grid-cols-3">
+      <span class="text-body-small text-neutral-700">Instructions</span>
+      <Control hideLabel class="col-span-2" hint="Write a step-by-step instruction on how to create the dish">
+        <Textarea v-model="instructions" size="large" rows="5" required placeholder="1. Start by ..."></Textarea>
+      </Control>
     </div>
 
     <div class="flex justify-between">
@@ -79,6 +86,7 @@
         </Control>
       </div>
     </div>
+    <Button v-if="ingredients.length > 0" type="button" label="Add ingredient" class="self-start" @click="addIngredient()"></Button>
 
     <div class="flex justify-end">
       <Button type="submit" label="Save"></Button>
@@ -99,6 +107,7 @@ import Control from '../atoms/Control.vue';
 
 const name = ref('');
 const description = ref('');
+const instructions = ref('');
 const tags = ref<string[]>([]);
 const tag = ref('');
 const ingredients = ref<ApiCreateIngredientDto[]>([]);
@@ -127,6 +136,7 @@ const save = () => {
     name: toRaw(name.value),
     description: toRaw(description.value),
     tags: toRaw(tags.value),
+    instructions: toRaw(instructions.value),
     ingredients: toRaw(ingredients.value),
   });
 };
@@ -134,30 +144,32 @@ const save = () => {
 const setValues = (data: ApiCreateRecipeDto) => {
   name.value = data.name;
   description.value = data.description;
-  tags.value = data.tags;
+  instructions.value = data.instructions;
+
+  tags.value.splice(0, tags.value.length);
+  data.tags.forEach(t => tags.value.push(t));
 
   ingredients.value.splice(0, ingredients.value.length);
   data.ingredients.forEach(i => ingredients.value.push(i));
 };
 
-const unitOptions = [
-  {
-    label: 'Gram',
-    value: ApiIngredientUnit.G,
-  },
-  {
-    label: 'Kilogram',
-    value: ApiIngredientUnit.Kg,
-  },
-  {
-    label: 'Milliliter',
-    value: ApiIngredientUnit.Ml,
-  },
-  {
-    label: 'Liter',
-    value: ApiIngredientUnit.L,
-  },
-];
+const _options: Record<ApiIngredientUnit, string> = {
+  [ApiIngredientUnit.G]: 'Gram',
+  [ApiIngredientUnit.Kg]: 'Kilogram',
+  [ApiIngredientUnit.Ml]: 'Milliliter',
+  [ApiIngredientUnit.L]: 'Liter',
+  [ApiIngredientUnit.Unit]: 'Piece',
+  [ApiIngredientUnit.Tsp]: 'Teaspoon',
+  [ApiIngredientUnit.Tbsp]: 'Tablesp',
+  [ApiIngredientUnit.Clove]: 'Clove',
+  [ApiIngredientUnit.Pinch]: 'Pinch',
+  [ApiIngredientUnit.Slice]: 'Slice',
+};
+
+const unitOptions: Array<{ label: string; value: ApiIngredientUnit }> = Object.entries(_options).map(([key, value]) => ({
+  label: value,
+  value: key as ApiIngredientUnit,
+}));
 
 const addIngredient = () => {
   ingredients.value.push({

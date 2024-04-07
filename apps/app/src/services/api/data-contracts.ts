@@ -52,9 +52,16 @@ export enum ApiIngredientUnit {
   Kg = 'kg',
   Ml = 'ml',
   L = 'l',
+  Unit = 'unit',
+  Tsp = 'tsp',
+  Tbsp = 'tbsp',
+  Clove = 'clove',
+  Pinch = 'pinch',
+  Slice = 'slice',
 }
 
 export interface ApiIngredient {
+  id: string;
   /** @example "7039010019828" */
   ean: string;
   /** @example "John Doe" */
@@ -78,6 +85,7 @@ export interface ApiRecipe {
   userId: string;
   name: string;
   description: string;
+  instructions: string;
   tags: string[];
   ingredients: ApiIngredient[];
   /** @format date-time */
@@ -102,6 +110,7 @@ export interface ApiCreateIngredientDto {
 export interface ApiCreateRecipeDto {
   name: string;
   description: string;
+  instructions: string;
   tags: string[];
   /** @minItems 1 */
   ingredients: ApiCreateIngredientDto[];
@@ -110,6 +119,7 @@ export interface ApiCreateRecipeDto {
 export interface ApiUpdateRecipeDto {
   name?: string;
   description?: string;
+  instructions?: string;
   tags?: string[];
   /** @minItems 1 */
   ingredients?: ApiCreateIngredientDto[];

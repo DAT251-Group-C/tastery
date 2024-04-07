@@ -37,6 +37,7 @@
             </div>
           </RouterLink>
         </div>
+        <p v-if="!isLoading && recipes?.length === 0" class="text-body-small text-neutral-600">No recipes found</p>
         <Button v-if="hasNextPage" label="Load more"></Button>
       </div>
     </div>

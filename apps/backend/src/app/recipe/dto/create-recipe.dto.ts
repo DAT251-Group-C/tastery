@@ -58,6 +58,13 @@ export class CreateRecipeDto {
   @MaxLength(255)
   description: string;
 
+  @ApiProperty({ type: String })
+  @Type(() => String)
+  @IsString()
+  @MinLength(1)
+  @MaxLength(2083)
+  instructions: string;
+
   @ApiProperty({ type: String, isArray: true })
   @IsArray()
   @IsString({ each: true })

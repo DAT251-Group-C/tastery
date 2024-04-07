@@ -3,6 +3,12 @@ export enum IngredientUnit {
   KILOGRAM = 'kg',
   MILLILITER = 'ml',
   LITER = 'l',
+  PIECE = 'unit',
+  TEASPOON = 'tsp',
+  TABLESPOON = 'tbsp',
+  CLOVE = 'clove',
+  PINCH = 'pinch',
+  SLICE = 'slice',
 }
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -10,6 +16,7 @@ import { ApiPropertyDateTime } from '../decorators/api-property-date-iso.decorat
 import { ApiPropertyUUID } from '../decorators/api-property-uuid.decorator';
 
 export class Ingredient {
+  @ApiProperty({ type: String }) id: string;
   @ApiProperty({ type: String, example: '7039010019828' }) ean: string;
   @ApiProperty({ type: String, example: 'John Doe' }) name: string;
   @ApiPropertyOptional({ type: String, format: 'hostname' }) image?: string;
