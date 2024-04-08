@@ -5,7 +5,7 @@
       <p>Loading...</p>
     </div>
   </Suspense>
-  <Toast>
+  <Toast class="z-50">
     <template #closeicon>
       <span class="font-symbol text-[1.25rem] w-5 h-5 shrink-0">close</span>
     </template>
