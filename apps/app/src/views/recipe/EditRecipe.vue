@@ -12,7 +12,7 @@ import RecipeEditor from '@/components/templates/RecipeEditor.vue';
 import { useRecipe, useUpdateRecipe } from '@/composables/recipe';
 import { useToaster } from '@/composables/toaster';
 import { ApiCreateRecipeDto, ApiRecipe } from '@/services/api/data-contracts';
-import { onMounted, ref, toRefs, watch } from 'vue';
+import { onMounted, ref, toRaw, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const toaster = useToaster();
@@ -38,7 +38,8 @@ onMounted(() => {
   }
 });
 
-const setData = (recipe: ApiRecipe) => {
+const setData = (_recipe: ApiRecipe) => {
+  const recipe = toRaw(_recipe);
   data.value = {
     name: recipe.name,
     description: recipe.description,

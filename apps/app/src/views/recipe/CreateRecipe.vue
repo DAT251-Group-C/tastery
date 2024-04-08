@@ -27,7 +27,7 @@ import { useCreateRecipe, useGenerateRecipe } from '@/composables/recipe';
 import { useToaster } from '@/composables/toaster';
 import { ApiCreateRecipeDto } from '@/services/api/data-contracts';
 import Button from 'primevue/button';
-import { ref } from 'vue';
+import { ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
 const dto = ref<ApiCreateRecipeDto | undefined>(undefined);
@@ -57,7 +57,7 @@ const { mutateAsync: generate, isPending: isGenerating } = useGenerateRecipe();
 const generateRecipe = async () => {
   try {
     const response = await generate();
-    dto.value = response;
+    dto.value = toRaw(response);
     toaster.add({ severity: 'success', summary: 'Recipe generated' });
   } catch {
     toaster.add({ severity: 'error', summary: 'Failed to generate recipe' });
