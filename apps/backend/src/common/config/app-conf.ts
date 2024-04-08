@@ -9,6 +9,10 @@ const appConfig = registerAs('appConfig', () => ({
   jwt: {
     secret: process.env.NX_JWT_SECRET,
   },
+  openai: {
+    apiKey: process.env.NX_OPENAI_API_KEY,
+    organization: process.env.NX_OPENAI_ORGANIZATION,
+  },
   database: {
     host: process.env.NX_POSTGRES_HOST,
     port: Number(process.env.NX_POSTGRES_PORT) || 5432,

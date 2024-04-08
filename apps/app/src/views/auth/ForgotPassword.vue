@@ -72,7 +72,7 @@ const startResendCountdown = () => {
   }, 1000);
 };
 
-const redirectTo = `${window.location.origin}/platform/profile?passwordRecovery=true`;
+const redirectTo = `${window.location.origin}/profile?passwordRecovery=true`;
 
 const resetPassword = async () => {
   pending.value = true;

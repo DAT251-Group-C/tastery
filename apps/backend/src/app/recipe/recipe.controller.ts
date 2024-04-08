@@ -55,6 +55,20 @@ export class RecipeController {
     );
   }
 
+  @Get('generate')
+  @Public()
+  @ApiOkResponse({ type: CreateRecipeDto })
+  public generateRecipe(): Promise<CreateRecipeDto> {
+    return lastValueFrom(
+      this.recipeService.createRandomRecipe().pipe(
+        take(1),
+        catchError(err => {
+          throw new BadRequestException(err.message || err);
+        }),
+      ),
+    );
+  }
+
   @Get(':recipeId')
   @Public()
   @ApiParam({ name: 'recipeId', format: 'uuid' })

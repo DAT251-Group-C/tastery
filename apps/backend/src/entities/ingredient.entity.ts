@@ -9,7 +9,11 @@ export default class IngredientEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 63,
+    nullable: true,
+  })
   ean: string;
 
   @Column({
@@ -40,7 +44,6 @@ export default class IngredientEntity {
   @Column({
     type: 'enum',
     enum: IngredientUnit,
-    enumName: 'ingredient_unit',
     nullable: false,
   })
   unit: IngredientUnit;

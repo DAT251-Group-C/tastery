@@ -39,7 +39,7 @@
       <div class="text-caption text-neutral-600 mt-6">
         <p class="flex justify-center items-center">
           Already have an account?
-          <RouterLink :to="{ name: 'Sign in', query: { hash } }" tabindex="-1">
+          <RouterLink :to="{ name: 'Sign in' }" tabindex="-1">
             <Button link class="!text-caption !px-1 !text-neutral-800 hover!text-neutral-600" label="Sign in now"></Button>
           </RouterLink>
         </p>
@@ -57,7 +57,7 @@ import { ref } from 'vue';
 import { supabase } from '../../plugins/supabase';
 import Auth from './Auth.vue';
 
-const props = defineProps<{ email?: string; hash?: string }>();
+const props = defineProps<{ email?: string }>();
 const toaster = useToaster();
 const error = ref('');
 const firstName = ref('');
@@ -84,7 +84,7 @@ const startResendCountdown = () => {
   }, 1000);
 };
 
-const emailRedirectTo = props.hash ? `${window.location.origin}/invite/?hash=${props.hash}` : `${window.location.origin}/platform`;
+const emailRedirectTo = window.location.origin;
 
 const signUp = async () => {
   error.value = '';
@@ -93,7 +93,7 @@ const signUp = async () => {
     email: emailModel.value,
     password: password.value,
     options: {
-      emailRedirectTo,
+      emailRedirectTo: window.location.origin,
       data: {
         firstName: firstName.value,
         lastName: lastName.value,

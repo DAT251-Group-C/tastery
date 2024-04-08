@@ -3,12 +3,13 @@ export enum IngredientUnit {
   KILOGRAM = 'kg',
   MILLILITER = 'ml',
   LITER = 'l',
-  PIECE = 'unit',
+  UNIT = 'unit',
   TEASPOON = 'tsp',
   TABLESPOON = 'tbsp',
   CLOVE = 'clove',
   PINCH = 'pinch',
   SLICE = 'slice',
+  CUP = 'cup',
 }
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';

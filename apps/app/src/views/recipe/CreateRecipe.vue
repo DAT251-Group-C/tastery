@@ -1,20 +1,36 @@
 <template>
   <Navbar></Navbar>
   <div class="view">
-    <h3>Create recipe</h3>
-    <RecipeEditor :loading="loading" @save="onSave($event)"></RecipeEditor>
+    <div class="flex justify-between items-center">
+      <h3>Create recipe</h3>
+      <Button
+        label="Generate mystery recipe!"
+        :loading="isGenerating"
+        loadingIcon="progress_activity"
+        :disabled="isGenerating"
+        @click="generateRecipe()"
+      ></Button>
+    </div>
+    <RecipeEditor
+      :class="{ 'opacity-50 pointer-events-none select-none': isGenerating }"
+      :dto="dto"
+      :loading="loading"
+      @save="onSave($event)"
+    ></RecipeEditor>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Navbar from '@/components/templates/Navbar.vue';
 import RecipeEditor from '@/components/templates/RecipeEditor.vue';
-import { useCreateRecipe } from '@/composables/recipe';
+import { useCreateRecipe, useGenerateRecipe } from '@/composables/recipe';
 import { useToaster } from '@/composables/toaster';
 import { ApiCreateRecipeDto } from '@/services/api/data-contracts';
+import Button from 'primevue/button';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const dto = ref<ApiCreateRecipeDto | undefined>(undefined);
 const toaster = useToaster();
 const router = useRouter();
 const loading = ref(false);
@@ -34,6 +50,17 @@ const onSave = async (data: ApiCreateRecipeDto) => {
     });
   } finally {
     loading.value = false;
+  }
+};
+
+const { mutateAsync: generate, isPending: isGenerating } = useGenerateRecipe();
+const generateRecipe = async () => {
+  try {
+    const response = await generate();
+    dto.value = response;
+    toaster.add({ severity: 'success', summary: 'Recipe generated' });
+  } catch {
+    toaster.add({ severity: 'error', summary: 'Failed to generate recipe' });
   }
 };
 </script>

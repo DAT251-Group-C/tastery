@@ -156,6 +156,20 @@ export class V1<SecurityDataType = unknown> {
    * No description
    *
    * @tags Recipes
+   * @name RecipeControllerGenerateRecipe
+   * @request GET:/v1/recipes/generate
+   */
+  recipeControllerGenerateRecipe = (params: RequestParams = {}) =>
+    this.http.request<ApiCreateRecipeDto, any>({
+      path: `/v1/recipes/generate`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Recipes
    * @name RecipeControllerGetRecipeById
    * @request GET:/v1/recipes/{recipeId}
    */

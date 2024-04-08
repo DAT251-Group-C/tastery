@@ -35,6 +35,15 @@ const useCreateRecipe = () => {
   });
 };
 
+const useGenerateRecipe = () => {
+  return useMutation<ApiCreateRecipeDto, AxiosError<ApiError>>({
+    mutationKey: ['generateRecipe'],
+    mutationFn: async () => {
+      return (await client.recipeControllerGenerateRecipe()).data;
+    },
+  });
+};
+
 const useUpdateRecipe = () => {
   const queryClient = useQueryClient();
 
@@ -66,4 +75,4 @@ const useDeleteRecipe = () => {
   });
 };
 
-export { useCreateRecipe, useDeleteRecipe, useRecipe, useRecipes, useUpdateRecipe };
+export { useCreateRecipe, useDeleteRecipe, useGenerateRecipe, useRecipe, useRecipes, useUpdateRecipe };

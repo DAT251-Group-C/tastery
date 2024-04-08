@@ -58,6 +58,7 @@ export enum ApiIngredientUnit {
   Clove = 'clove',
   Pinch = 'pinch',
   Slice = 'slice',
+  Cup = 'cup',
 }
 
 export interface ApiIngredient {
@@ -100,7 +101,7 @@ export enum ApiSortOrder {
 }
 
 export interface ApiCreateIngredientDto {
-  ean: string;
+  ean?: string;
   amount: number;
   name: string;
   image?: string;

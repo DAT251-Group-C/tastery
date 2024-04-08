@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { Observable, combineLatest, from, map, tap } from 'rxjs';
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
+import { DeleteResult, Repository } from 'typeorm';
 import { v4 } from 'uuid';
 import { PageMetaDto } from '../../common/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
 import { PageDto } from '../../common/dto/page.dto';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
+import { IngredientUnit } from '../../common/models/ingredient.model';
 import { IngredientEntity, RecipeEntity } from '../../entities';
+import { OpenAIService } from '../openai/openai.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 
@@ -18,8 +20,7 @@ export class RecipeService {
     private readonly recipeRepository: Repository<RecipeEntity>,
     @InjectRepository(IngredientEntity)
     private readonly ingredientRepository: Repository<IngredientEntity>,
-    @InjectDataSource()
-    private readonly dataSource: DataSource,
+    private readonly openAiService: OpenAIService,
   ) {}
 
   public getRecipes(pageOptionsDto: PageOptionsDto): Observable<PageDto<RecipeEntity>> {
@@ -95,5 +96,120 @@ export class RecipeService {
         }
       }),
     );
+  }
+
+  private func = {
+    name: 'create_recipe',
+    description: 'Will create a recipe based on the provided parameters',
+    parameters: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'The name of the recipe',
+          minLength: 1,
+          maxLength: 255,
+        },
+        description: {
+          type: 'string',
+          description: 'The description of the recipe',
+          minLength: 1,
+          maxLength: 255,
+        },
+        instructions: {
+          type: 'string',
+          description: 'Full instructions on how to prepare the recipe from start to finish',
+          minLength: 1,
+          maxLength: 2083,
+        },
+        tags: {
+          type: 'array',
+          description: 'Array of tags or categories describing the recipe. Should be human readable and capitalized',
+          items: {
+            type: 'string',
+          },
+        },
+        ingredients: {
+          type: 'array',
+          description: 'Array of ingredients required to make the recipe',
+          items: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string',
+                description: 'The name of the ingredient',
+                minLength: 1,
+                maxLength: 255,
+              },
+              amount: {
+                type: 'number',
+                description: 'The amount of the ingredient required',
+              },
+              unit: {
+                enum: Object.values(IngredientUnit),
+              },
+            },
+            required: ['name', 'amount', 'unit'],
+          },
+        },
+      },
+      required: ['name', 'description', 'instructions', 'tags', 'ingredients'],
+    },
+  };
+
+  public createRandomRecipe(retry = 3): Observable<CreateRecipeDto> {
+    const openai = this.openAiService.get();
+
+    if (retry === -1) {
+      throw new Error('Failed to generate a recipe');
+    }
+
+    return from(
+      openai.chat.completions.create({
+        model: 'gpt-3.5-turbo-1106',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a cook that helps creating recipes for users. You figure things out without any further input or comments from the user.
+            You are creative and can come up with new ideas for recipes. You can also provide suggestions for ingredients and cooking methods.
+            You are explicit in your instructions and provide clear and concise information. You are also able to provide information on the nutritional value of the recipe.`,
+          },
+          {
+            role: 'user',
+            content:
+              'Hello! Can you please create a recipe for me? I am looking for something new and exciting to try out. I am open to any suggestions. Make it interesting and unique! It can also be a classic.',
+          },
+        ],
+        tools: [
+          {
+            type: 'function',
+            function: this.func,
+          },
+        ],
+      }),
+    ).pipe(
+      switchMap(response => {
+        if (response.choices[0].finish_reason === 'tool_calls') {
+          const data = response.choices[0].message.tool_calls?.[0];
+
+          if (!data) {
+            return this.createRandomRecipe(retry - 1);
+          }
+
+          if (data.function.name !== 'create_recipe') {
+            return this.createRandomRecipe(retry - 1);
+          }
+
+          return of(this.toRecipe(JSON.parse(data.function.arguments)));
+        } else {
+          return this.createRandomRecipe(retry - 1);
+        }
+      }),
+    );
+  }
+
+  // eslint-disable-next-line
+  private toRecipe(data: any): CreateRecipeDto {
+    return data as CreateRecipeDto;
   }
 }

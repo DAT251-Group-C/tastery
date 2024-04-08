@@ -15,9 +15,10 @@ import {
 import { IngredientUnit } from '../../../common/models/ingredient.model';
 
 export class CreateIngredientDto {
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @Type(() => String)
   @IsString()
+  @IsOptional()
   ean: string;
 
   @ApiProperty({ type: Number })

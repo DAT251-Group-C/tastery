@@ -57,17 +57,17 @@
       :key="i"
       class="grid grid-cols-3 gap-x-4 gap-y-8 bg-neutral-100 ring-1 ring-neutral-300 rounded-sm p-6"
     >
-      <span class="text-body-small text-neutral-700">EAN</span>
+      <!-- <span class="text-body-small text-neutral-700">EAN</span>
       <Control hideLabel hideDetails>
         <InputText v-model="ingredient.ean" size="large" required></InputText>
       </Control>
-      <Button type="button" class="justify-self-end" severity="neutral" icon="delete" @click="removeIngredient(i)"></Button>
+      <div></div> -->
 
       <span class="text-body-small text-neutral-700">Name</span>
       <Control hideLabel hideDetails>
         <InputText v-model="ingredient.name" size="large" required></InputText>
       </Control>
-      <div></div>
+      <Button type="button" class="justify-self-end" severity="neutral" icon="delete" @click="removeIngredient(i)"></Button>
 
       <span class="text-body-small text-neutral-700">Amount</span>
       <div class="grid grid-cols-[auto_1fr] gap-x-2 justify-between w-full">
@@ -164,6 +164,7 @@ const _options: Record<ApiIngredientUnit, string> = {
   [ApiIngredientUnit.Clove]: 'Clove',
   [ApiIngredientUnit.Pinch]: 'Pinch',
   [ApiIngredientUnit.Slice]: 'Slice',
+  [ApiIngredientUnit.Cup]: 'Cup',
 };
 
 const unitOptions: Array<{ label: string; value: ApiIngredientUnit }> = Object.entries(_options).map(([key, value]) => ({
