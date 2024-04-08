@@ -56,7 +56,6 @@ export class RecipeController {
   }
 
   @Get('generate')
-  @Public()
   @ApiOkResponse({ type: CreateRecipeDto })
   public generateRecipe(): Promise<CreateRecipeDto> {
     return lastValueFrom(
