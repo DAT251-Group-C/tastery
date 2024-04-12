@@ -9,12 +9,14 @@ import entities from '../entities';
 import { HealthModule } from './health/health.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { UserModule } from './user/user.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
     HealthModule,
     UserModule,
     RecipeModule,
+    FavoriteModule,
     ConfigModule.forRoot({
       load: [appConfig],
     }),

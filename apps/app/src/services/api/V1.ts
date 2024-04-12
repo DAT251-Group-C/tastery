@@ -9,7 +9,17 @@
  * ---------------------------------------------------------------
  */
 
-import { ApiCreateRecipeDto, ApiPageDto, ApiRecipe, ApiSortOrder, ApiUpdateRecipeDto, ApiUpdateUserDto, ApiUser } from './data-contracts';
+import {
+  ApiCreateFavoriteDto,
+  ApiCreateRecipeDto,
+  ApiFavorite,
+  ApiPageDto,
+  ApiRecipe,
+  ApiSortOrder,
+  ApiUpdateRecipeDto,
+  ApiUpdateUserDto,
+  ApiUser,
+} from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
 export class V1<SecurityDataType = unknown> {
@@ -208,6 +218,78 @@ export class V1<SecurityDataType = unknown> {
   recipeControllerDeleteRecipe = (recipeId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
       path: `/v1/recipes/${recipeId}`,
+      method: 'DELETE',
+      secure: true,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoriteControllerCreateFavorite
+   * @request POST:/v1/favorites
+   * @secure
+   */
+  favoriteControllerCreateFavorite = (data: ApiCreateFavoriteDto, params: RequestParams = {}) =>
+    this.http.request<ApiFavorite, any>({
+      path: `/v1/favorites`,
+      method: 'POST',
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoriteControllerGetFavorites
+   * @request GET:/v1/favorites
+   * @secure
+   */
+  favoriteControllerGetFavorites = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      search?: string;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiFavorite[];
+      },
+      any
+    >({
+      path: `/v1/favorites`,
+      method: 'GET',
+      query: query,
+      secure: true,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoriteControllerDeleteFavorite
+   * @request DELETE:/v1/favorites/{favoriteId}
+   * @secure
+   */
+  favoriteControllerDeleteFavorite = (favoriteId: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/favorites/${favoriteId}`,
       method: 'DELETE',
       secure: true,
       ...params,

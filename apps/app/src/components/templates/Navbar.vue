@@ -7,6 +7,7 @@
         <p class="text-primary-dark text-body-bold italic">Tastery</p>
       </RouterLink>
       <slot></slot>
+      <RouterLink to="/favorites">Favorites</RouterLink>
     </div>
     <div class="flex gap-x-4 items-center h-8">
       <RouterLink v-if="!isAuthenticated" to="/signin">
@@ -16,6 +17,7 @@
         <Avatar size="large">{{ user.name[0] }}</Avatar>
       </RouterLink>
     </div>
+    
   </nav>
   <div class="h-12"></div>
 </template>
