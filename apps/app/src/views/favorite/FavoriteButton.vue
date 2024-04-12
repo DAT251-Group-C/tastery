@@ -20,9 +20,6 @@ const { isAuthenticated } = useAuthStore();
 
 // Local state to track if the recipe is favorited
 const isFavorite = ref(false);
-// Mutation hooks for creating and deleting favorites
-//const createFavorite = useCreateFavorite();
-//const deleteFavorite = useDeleteFavorite();
 
 const { mutateAsync: createFavorite } = useCreateFavorite();
 const { mutateAsync: deleteFavorite } = useDeleteFavorite();

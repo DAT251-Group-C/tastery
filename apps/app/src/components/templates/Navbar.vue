@@ -7,7 +7,7 @@
         <p class="text-primary-dark text-body-bold italic">Tastery</p>
       </RouterLink>
       <slot></slot>
-      <RouterLink to="/favorites">Favorites</RouterLink>
+      <RouterLink to="/favorite">Favorites</RouterLink>
     </div>
     <div class="flex gap-x-4 items-center h-8">
       <RouterLink v-if="!isAuthenticated" to="/signin">

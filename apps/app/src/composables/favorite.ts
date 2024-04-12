@@ -6,8 +6,25 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 import { AxiosError } from 'axios';
 import { Ref } from 'vue';
 
-// Gets user favorites
-const useFavorites = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
+const useFavorites = (order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
+    return useInfiniteQuery({
+      queryKey: ['favorites', { order, take }],
+      queryFn: async ({ pageParam = 1 }) => {
+        const response = await client.favoriteControllerGetFavorites({
+          page: pageParam,
+          order,
+          take,
+        });
+        return response.data;  
+      },
+      getNextPageParam: (lastPage) => {
+        return lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined;
+      },
+      initialPageParam: 1,
+    });
+  };
+  
+/* const useFavorites = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
     return useInfiniteQuery({
     queryKey: ['favorites', { search, order, take }],
     queryFn: async ({ pageParam = 1 }) => {
@@ -24,7 +41,7 @@ const useFavorites = (search: Ref<string> | string = '', order: ApiSortOrder = A
         return lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined;
     },
     });
-};
+}; */
 
 // useCreateFavorite
 // useCreateFavorite.js (in your composable)

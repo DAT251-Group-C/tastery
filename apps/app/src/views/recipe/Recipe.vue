@@ -53,7 +53,7 @@ import Button from 'primevue/button';
 import Chip from 'primevue/chip';
 import { toRefs, computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import FavoriteButton from '@/components/templates/FavoriteButton.vue'; // Make sure this path is correct
+import FavoriteButton from '@/views/favorite/FavoriteButton.vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { useCreateFavorite, useDeleteFavorite } from '@/composables/favorite';
