@@ -2,42 +2,42 @@
   <Navbar></Navbar>
   <div class="view">
     <div class="flex justify-between">
-      <h1>Favorite Recipes recipes</h1>
+      <h1>Favorite Recipes</h1>
     </div>
-    <div v-if="isFetching" class="my-4 text-body-small text-neutral-600">Loading...</div>
-    <div v-else-if="recipes?.length > 0" :class="['grid grid-cols-2 my-4 gap-4']">
-      <RouterLink
-        v-for="recipe in recipes"
+    <div v-if="isLoading" class="text-body-small text-neutral-600">
+      Loading...
+    </div>
+    <div v-else-if="favoriteRecipes.length" class="grid grid-cols-2 gap-4">
+      <div
+        v-for="recipe in favoriteRecipes"
         :key="recipe.id"
-        :to="`/recipe/${recipe.id}`"
-        class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm min-h-[136px] hover:bg-neutral-200 hover:ring-primary"
+        class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm hover:bg-neutral-200 hover:ring-primary"
       >
-        <p class="text-body-bold">{{ recipe.name }}</p>
-        <p class="line-clamp-2 text-body-small text-neutral-600">{{ recipe.description }}</p>
-      </RouterLink>
+        <h3>{{ recipe.name }}</h3>
+        <p>{{ recipe.description }}</p>
+      </div>
     </div>
-    <p v-else class="text-body-small text-neutral-600">No favorite recipes found</p>
+    <p v-else class="text-body-small text-neutral-600">No favorite recipes found.</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import Navbar from '@/components/templates/Navbar.vue';
+import { ref, watchEffect } from 'vue';
 import { useFavorites } from '@/composables/favorite';
-import { RouterLink } from 'vue-router';
-import { computed, ref, onMounted } from 'vue';
+import Navbar from '@/components/templates/Navbar.vue';
+import { ApiFavorite } from '@/services/api/data-contracts';
 
-const { data, isFetching, isLoading, fetchNextPage, hasNextPage } = useFavorites();
-//const isLoading = ref(true);
+const favoriteRecipes = ref<ApiFavorite[]>([]);  // Use correct type for your data
+const isLoading = ref(true);
 
-// Adjust this to handle the data structure returned by your favorites endpoint
+const { data, isLoading: isFavoritesLoading } = useFavorites();
 
-const recipes = computed(() => data.value?.pages.flatMap(page => page.data));
-
-
-onMounted(async () => {
-  if (hasNextPage) {
-    await fetchNextPage();
+// Fetch favorites on component mount
+watchEffect(() => {
+  if (data.value) {
+    // Ensure you access the .value of data, which should contain your actual array of favorites
+    favoriteRecipes.value = data.value.pages.flatMap(page => page.data);
+    isLoading.value = false;
   }
-  isLoading.value = false;
 });
 </script>

@@ -294,4 +294,19 @@ export class V1<SecurityDataType = unknown> {
       secure: true,
       ...params,
     });
+  /**
+   * No description
+   *
+   * @tags Favorites
+   * @name FavoriteControllerCheckFavorite
+   * @request GET:/v1/favorites/check/{recipeId}
+   * @secure
+   */
+  favoriteControllerCheckFavorite = (recipeId: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/favorites/check/${recipeId}`,
+      method: 'GET',
+      secure: true,
+      ...params,
+    });
 }

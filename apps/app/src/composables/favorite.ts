@@ -1,28 +1,18 @@
 import { ApiError, client } from '@/services/api-client';
-import { ApiFavorite, ApiPageDto, ApiSortOrder } from '@/services/api/data-contracts'; // Assume ApiFavorite is your data contract for favorites
-import { useAuthStore } from '@/stores/auth';
-import { getValue } from '@/utils/vue';
+import { ApiFavorite, ApiSortOrder } from '@/services/api/data-contracts'; // Assume ApiFavorite is your data contract for favorites
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { Ref } from 'vue';
+import { getValue } from '@/utils/vue';
 
-const useFavorites = (order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
-    return useInfiniteQuery({
-      queryKey: ['favorites', { order, take }],
-      queryFn: async ({ pageParam = 1 }) => {
-        const response = await client.favoriteControllerGetFavorites({
-          page: pageParam,
-          order,
-          take,
-        });
-        return response.data;  
-      },
-      getNextPageParam: (lastPage) => {
-        return lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined;
-      },
-      initialPageParam: 1,
-    });
-  };
+const useFavorites = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
+  return useInfiniteQuery({
+    queryKey: ['favorites', { search, order, take }],
+    queryFn: async ({ pageParam: page }) => (await client.favoriteControllerGetFavorites({ page, order, take, search: getValue(search) })).data,
+    initialPageParam: 1,
+    getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
+  });
+};
   
 /* const useFavorites = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
     return useInfiniteQuery({
@@ -58,25 +48,23 @@ const useCreateFavorite = () => {
       },
     });
   };
-  
-  
 
-
-
-/* const useCreateFavorite = () => {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-    mutationKey: ['createFavorite'],
-    mutationFn: async (recipeId: string) => {
-        return (await client.favoriteControllerCreateFavorite({ recipeId })).data;
-    },
-    onSuccess: () => {
-        // Invalidate and refetch favorites to update the list with the newly added favorite
-        queryClient.invalidateQueries({ queryKey: ['favorites'] });
-    },
+  const useCheckFavorite = (recipeId: string) => {
+    return useQuery<boolean, AxiosError>({
+      queryKey: ['checkFavorite', recipeId],
+      queryFn: async (): Promise<boolean> => { // Explicitly mark the return type as Promise<boolean>
+        try {
+          const response = await client.favoriteControllerCheckFavorite(recipeId);
+          return response.data === true; // Adjusted to explicitly return true or false
+        } catch (error) {
+          throw new Error('Failed to fetch favorite status');
+        }
+      },
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
     });
-}; */
+  };
+  
 
 const useDeleteFavorite = () => {
     const queryClient = useQueryClient();
@@ -93,5 +81,4 @@ const useDeleteFavorite = () => {
     });
 };
 
-
-export { useFavorites, useCreateFavorite, useDeleteFavorite };
+export { useFavorites, useCreateFavorite, useDeleteFavorite, useCheckFavorite };

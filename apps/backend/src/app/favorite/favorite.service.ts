@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { FavoriteEntity, IngredientEntity, RecipeEntity, UserEntity } from '../../entities';
-import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, from, map, of, switchMap, tap, throwError } from 'rxjs';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 import { PageDto } from '../../common/dto/page.dto';
 import { PageMetaDto } from '../../common/dto/page-meta.dto';
@@ -34,11 +34,24 @@ constructor(
     // favorite.service.ts
 
     public createFavorite(userId: string, recipeId: string): Observable<FavoriteEntity> {
-        const favorite = new FavoriteEntity();
-        favorite.user = { id: userId } as UserEntity; // This assumes you do not need the complete user entity
-        favorite.recipe = { id: recipeId } as RecipeEntity; // This assumes you do not need the complete recipe entity
-    
-        return from(this.favoriteRepository.save(favorite));
+        return from(this.favoriteRepository.findOne({
+            where: {
+                user: { id: userId }, // Assuming there's a relation named 'user'
+                recipe: { id: recipeId } // Assuming there's a relation named 'recipe'
+            }
+        })).pipe(
+            switchMap((existingFavorite) => {
+                if (existingFavorite) {
+                    return throwError(() => new HttpException('Favorite already exists', HttpStatus.BAD_REQUEST));
+                }
+                const favorite = this.favoriteRepository.create({
+                    user: { id: userId } as UserEntity,
+                    recipe: { id: recipeId } as RecipeEntity
+                });
+                return from(this.favoriteRepository.save(favorite));
+            }),
+            catchError((error) => throwError(() => new HttpException('Failed to create favorite: ' + error.message, HttpStatus.INTERNAL_SERVER_ERROR)))
+        );
     }
   
         
@@ -74,6 +87,17 @@ constructor(
                 const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
                 return new PageDto(recipes, pageMetaDto);
             }),
+        );
+    }
+
+    public checkFavorite(userId: string, recipeId: string): Observable<boolean> {
+        return from(this.favoriteRepository.findOne({
+            where: {
+                user: { id: userId },
+                recipe: { id: recipeId }
+            }
+        })).pipe(
+            map(favorite => !!favorite) // Convert the result to a boolean
         );
     }
     
