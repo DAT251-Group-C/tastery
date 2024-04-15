@@ -284,12 +284,12 @@ export class V1<SecurityDataType = unknown> {
    *
    * @tags Favorites
    * @name FavoriteControllerDeleteFavorite
-   * @request DELETE:/v1/favorites/{favoriteId}
+   * @request DELETE:/v1/favorites/{recipeId}
    * @secure
    */
-  favoriteControllerDeleteFavorite = (favoriteId: string, params: RequestParams = {}) =>
+  favoriteControllerDeleteFavorite = (recipeId: string, params: RequestParams = {}) =>
     this.http.request<void, any>({
-      path: `/v1/favorites/${favoriteId}`,
+      path: `/v1/favorites/${recipeId}`,
       method: 'DELETE',
       secure: true,
       ...params,

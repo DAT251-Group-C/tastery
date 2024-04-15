@@ -65,14 +65,13 @@ const useCreateFavorite = () => {
     });
   };
   
-
 const useDeleteFavorite = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
     mutationKey: ['deleteFavorite'],
-    mutationFn: async (favoriteId: string) => {
-        await client.favoriteControllerDeleteFavorite(favoriteId);
+    mutationFn: async (recipeId: string) => {
+        await client.favoriteControllerDeleteFavorite(recipeId);
     },
     onSuccess: () => {
         // Invalidate and refetch favorites to reflect the deletion

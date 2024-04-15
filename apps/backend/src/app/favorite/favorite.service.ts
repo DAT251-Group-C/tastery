@@ -57,11 +57,12 @@ constructor(
         
 
 
-    public deleteFavorite(id: string): Observable<DeleteResult> {
-        return from(this.favoriteRepository.delete({ id })).pipe(
+    deleteFavorite(userId: string, recipeId: string): Observable<DeleteResult> {
+        // Attempt to delete the favorite based on both userId and recipeId
+        return from(this.favoriteRepository.delete({ user: { id: userId }, recipe: { id: recipeId } })).pipe(
           tap((result: DeleteResult) => {
             if (result.affected === 0) {
-              throw new ResourceNotFoundException(`Favorite with id ${id} not found`);
+              throw new ResourceNotFoundException(`Favorite for user ${userId} and recipe ${recipeId} not found`);
             }
           }),
         );
@@ -100,27 +101,6 @@ constructor(
             map(favorite => !!favorite) // Convert the result to a boolean
         );
     }
-    
-
-/*     public getUserFavorites(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<RecipeEntity>> {
-        const queryBuilder = this.favoriteRepository.createQueryBuilder('favorite')
-            .leftJoinAndSelect('favorite.recipe', 'recipe') // Assuming 'recipe' is correctly setup for lazy loading
-            .where('favorite.userId = :userId', { userId })
-            .orderBy('favorite.createdAt', pageOptionsDto.order)
-            .skip(pageOptionsDto.skip)
-            .take(pageOptionsDto.take);
-    
-        return from(queryBuilder.getManyAndCount()).pipe(
-            switchMap(async ([favorites, itemCount]) => {
-                const recipes = await Promise.all(favorites.map(async favorite => await favorite.recipe));
-                const pageMetaDto = new PageMetaDto({
-                    itemCount,
-                    pageOptionsDto,
-                });
-                return new PageDto(recipes, pageMetaDto);
-            }),
-        );
-    } */
 
     public getRecipeFavorites(recipeId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<UserEntity>> {
         const queryBuilder = this.favoriteRepository.createQueryBuilder('favorite')

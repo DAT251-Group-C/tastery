@@ -45,13 +45,13 @@ export class FavoriteController {
     }
     
 
-    @Delete(':favoriteId')
+    @Delete(':recipeId')
     @ApiBearerAuth()
-    @ApiParam({ name: 'favoriteId', description: 'Favorite ID', type: 'string' })
+    @ApiParam({ name:'recipeId', format: 'uuid'})
     @HttpCode(HttpStatus.NO_CONTENT)
-    deleteFavorite( @Param('favoriteId') favoriteId: string): Promise<DeleteResult> {
+    deleteFavorite( @UserId() userId: string, @Param('recipeId') recipeId: string): Promise<DeleteResult> {
         return lastValueFrom(
-            this.favoriteService.deleteFavorite(favoriteId).pipe(
+            this.favoriteService.deleteFavorite(userId, recipeId).pipe(
                 take(1),
                 catchError(err => {
                     if (err instanceof ResourceNotFoundException) {
