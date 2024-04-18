@@ -1,6 +1,6 @@
 <template>
-  <button class="favorite-button" @click="toggleFavorite">
-    <i :class="isFavorite ? 'pi pi-star-fill' : 'pi pi-star'"></i>
+  <button class="favorite-button bg-primary-dark text-neutral-100" @click="toggleFavorite">
+    <i :class="isFavorite ? 'pi pi-star' : 'pi pi-star-fill'"></i>
   </button>
 </template>
 
@@ -44,26 +44,29 @@ const toggleFavorite = async () => {
 </script>
 
 <style scoped>
+.flex-container {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .favorite-button {
-  background: var(--color-primary); /* Primary background */
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  outline: none;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%; /* Makes the button rounded */
-  width: 40px; /* Sets a fixed width */
-  height: 40px; /* Sets a fixed height */
+  padding: 0.5rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transform: translateX(-50%);
+}
+
+.favorite-button:hover {
+  transform: scale(1.1) translateX(-45%);
+  transition: transform 0.3s ease;
 }
 
 .pi {
-  font-size: 1.5em; /* Adjust size to fit your design */
-  color: var(--color-neutral-600); /* Default icon color */
-}
-
-.pi-star-fill {
-  color: var(--color-primary); /* Change this to your theme's primary color */
+  font-size: 1.4em;
 }
 </style>
