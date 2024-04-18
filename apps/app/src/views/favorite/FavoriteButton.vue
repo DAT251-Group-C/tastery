@@ -1,20 +1,18 @@
 <template>
-  <button @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
-    {{ isFavorite ? 'Unfavorite' : 'Favorite' }}
+  <button class="favorite-button" @click="toggleFavorite">
+    <i :class="isFavorite ? 'pi pi-star-fill' : 'pi pi-star'"></i>
   </button>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useCreateFavorite, useDeleteFavorite } from '@/composables/favorite';
-import { useAuthStore } from '@/stores/auth'; // Assuming useAuthStore handles authentication state
 
 const props = defineProps({
   recipeId: String,
   initialIsFavorite: Boolean
 });
 
-// Local state to track if the recipe is favorited
 const isFavorite = ref(props.initialIsFavorite);
 
 const { mutateAsync: createFavorite } = useCreateFavorite();
@@ -26,7 +24,7 @@ watch(() => props.initialIsFavorite, (newValue) => {
 
 const toggleFavorite = async () => {
   if (isFavorite.value) {
-    await deleteFavorite(props.recipeId || '') // Pass as an object
+    await deleteFavorite(props.recipeId || '')
       .then(() => {
         isFavorite.value = false; // Optimistically update the UI
       })
@@ -34,7 +32,7 @@ const toggleFavorite = async () => {
         console.error('Error removing favorite:', error);
       });
   } else {
-    await createFavorite({ recipeId: props.recipeId ?? '' }) // Pass as an object
+    await createFavorite({ recipeId: props.recipeId ?? '' })
       .then(() => {
         isFavorite.value = true; // Optimistically update the UI
       })
@@ -46,7 +44,26 @@ const toggleFavorite = async () => {
 </script>
 
 <style scoped>
-.is-favorite {
-  color: red; 
+.favorite-button {
+  background: var(--color-primary); /* Primary background */
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Makes the button rounded */
+  width: 40px; /* Sets a fixed width */
+  height: 40px; /* Sets a fixed height */
+}
+
+.pi {
+  font-size: 1.5em; /* Adjust size to fit your design */
+  color: var(--color-neutral-600); /* Default icon color */
+}
+
+.pi-star-fill {
+  color: var(--color-primary); /* Change this to your theme's primary color */
 }
 </style>

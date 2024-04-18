@@ -46,5 +46,10 @@ export default ({ mode }: ConfigEnv) => {
         dir: '../../node_modules/.vitest',
       },
     },
+    server: {
+      fs: {
+        strict: false, // Set true before deployment after fixing the import issue of primeicons. Has to be made as an plugin?
+      }
+    },
   });
 };

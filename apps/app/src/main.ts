@@ -7,6 +7,7 @@ import prime from './plugins/prime';
 import router from './plugins/router';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import 'primeicons/primeicons.css';
 
 const pinia = createPinia();
 
