@@ -49,6 +49,7 @@
     "openai": "^4.29.2",
     "pg": "^8.11.3",
     "pinia": "^2.1.7",
+    "primeicons": "^7.0.0",
     "primevue": "^3.50.0",
     "reflect-metadata": "^0.2.1",
     "resend": "^3.2.0",

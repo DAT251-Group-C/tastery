@@ -69,6 +69,10 @@ const router = createRouter({
       name: 'Page not found',
       component: () => import('@/views/error/NotFound.vue'),
     },
+    { 
+      path: '/favorite', 
+      name: 'Favorite', 
+      component: () => import('@/views/recipe/Favorite.vue') },
   ],
 });
 

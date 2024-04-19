@@ -26,6 +26,8 @@ const vitePwaConfig = (isProd: boolean) =>
 export default ({ mode }: ConfigEnv) => {
   const isProd = mode === 'production';
 
+  const pnpmStorePath = path.resolve(process.cwd(), 'node_modules/.pnpm');
+
   return defineConfig({
     resolve: {
       alias: {
@@ -44,6 +46,15 @@ export default ({ mode }: ConfigEnv) => {
       coverage: { reportsDirectory: '../../coverage/apps/app', provider: 'v8' },
       cache: {
         dir: '../../node_modules/.vitest',
+      },
+    },
+    server: {
+      fs: {
+        // Allow serving assets from pnpm's store directory
+        allow: [
+          path.resolve(__dirname, 'node_modules'),
+          pnpmStorePath,
+        ],
       },
     },
   });

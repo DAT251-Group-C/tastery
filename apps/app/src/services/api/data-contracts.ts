@@ -125,3 +125,16 @@ export interface ApiUpdateRecipeDto {
   /** @minItems 1 */
   ingredients?: ApiCreateIngredientDto[];
 }
+
+export type ApiCreateFavoriteDto = object;
+
+export interface ApiFavorite {
+  /** @format uuid */
+  id: string;
+  /** @format uuid */
+  userId: string;
+  /** @format uuid */
+  recipeId: string;
+  /** @format date-time */
+  createdAt: string;
+}

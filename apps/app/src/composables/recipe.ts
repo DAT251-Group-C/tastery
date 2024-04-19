@@ -14,6 +14,27 @@ const useRecipes = (search: Ref<string> | string = '', order: ApiSortOrder = Api
   });
 };
 
+const useRecipesByIds = (recipeIds: Ref<string[]>) => {
+  return useQuery<ApiRecipe[], AxiosError>({
+    queryKey: ['recipesByIds', recipeIds],
+    queryFn: async () => {
+      if (recipeIds.value.length === 0) {
+        return []; // Avoids running the query if no IDs are provided
+      }
+      try {
+        const responses = await Promise.all(
+          recipeIds.value.map(id => client.recipeControllerGetRecipeById(id))
+        );
+        return responses.map(res => res.data); // assuming res.data holds your actual recipe data
+      } catch (error) {
+        console.error("Error fetching recipes by IDs:", error);
+        throw error; // Properly propagate the error for error boundaries or further handling
+      }
+    },
+    enabled: recipeIds.value.length > 0 // Only run the query if there are IDs
+  });
+};
+
 const useRecipe = (id: Ref<string> | string) => {
   return useQuery<ApiRecipe, AxiosError<ApiError>>({
     queryKey: ['recipe', { id }],
@@ -75,4 +96,4 @@ const useDeleteRecipe = () => {
   });
 };
 
-export { useCreateRecipe, useDeleteRecipe, useGenerateRecipe, useRecipe, useRecipes, useUpdateRecipe };
+export { useCreateRecipe, useDeleteRecipe, useGenerateRecipe, useRecipe, useRecipes, useUpdateRecipe, useRecipesByIds};
