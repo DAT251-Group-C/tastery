@@ -77,7 +77,6 @@ const enabled = computed(() => isAuthenticated.value);
 
 const { data: isFavorite, isLoading, error } = useCheckFavorite(id.value, { enabled: enabled.value });
 
-
 const onDelete = async () => {
   try {
     await deleteRecipe(id.value);

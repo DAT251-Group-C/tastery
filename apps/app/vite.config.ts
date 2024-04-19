@@ -26,6 +26,8 @@ const vitePwaConfig = (isProd: boolean) =>
 export default ({ mode }: ConfigEnv) => {
   const isProd = mode === 'production';
 
+  const pnpmStorePath = path.resolve(process.cwd(), 'node_modules/.pnpm');
+
   return defineConfig({
     resolve: {
       alias: {
@@ -48,8 +50,12 @@ export default ({ mode }: ConfigEnv) => {
     },
     server: {
       fs: {
-        strict: true, // Set true before deployment after fixing the import issue of primeicons. Has to be made as an plugin?
-      }
+        // Allow serving assets from pnpm's store directory
+        allow: [
+          path.resolve(__dirname, 'node_modules'),
+          pnpmStorePath,
+        ],
+      },
     },
   });
 };

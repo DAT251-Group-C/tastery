@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useCreateFavorite, useDeleteFavorite } from '@/composables/favorite';
+import 'primeicons/primeicons.css';
 
 const props = defineProps({
   recipeId: String,
@@ -23,22 +24,15 @@ watch(() => props.initialIsFavorite, (newValue) => {
 });
 
 const toggleFavorite = async () => {
-  console.log("Toggling favorite status for recipe:", props.recipeId);
   if (isFavorite.value) {
     await deleteFavorite(props.recipeId || '')
       .then(() => {
         isFavorite.value = false; // Optimistically update the UI
-      })
-      .catch(error => {
-        console.error('Error removing favorite:', error);
       });
   } else {
     await createFavorite({ recipeId: props.recipeId ?? '' })
       .then(() => {
         isFavorite.value = true; // Optimistically update the UI
-      })
-      .catch(error => {
-        console.error('Error adding favorite:', error);
       });
   }
 };
