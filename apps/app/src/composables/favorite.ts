@@ -61,8 +61,8 @@ const useCreateFavorite = () => {
         }
       },
       ...options, // Spread additional options into the useQuery call
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
+      staleTime: 0,
+      refetchOnWindowFocus: 'always',
     });
   };
   
