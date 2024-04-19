@@ -1,6 +1,6 @@
 import { ApiError, client } from '@/services/api-client';
 import { ApiFavorite, ApiSortOrder } from '@/services/api/data-contracts'; // Assume ApiFavorite is your data contract for favorites
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, useQueryOptions } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
 import { Ref } from 'vue';
 import { getValue } from '@/utils/vue';
@@ -49,17 +49,18 @@ const useCreateFavorite = () => {
     });
   };
 
-  const useCheckFavorite = (recipeId: string) => {
+  const useCheckFavorite = (recipeId: string, options?: UseQueryOptions<boolean, AxiosError>) => {
     return useQuery<boolean, AxiosError>({
       queryKey: ['checkFavorite', recipeId],
-      queryFn: async (): Promise<boolean> => { // Explicitly mark the return type as Promise<boolean>
+      queryFn: async (): Promise<boolean> => {
         try {
           const response = await client.favoriteControllerCheckFavorite(recipeId);
-          return response.data === true; // Adjusted to explicitly return true or false
-        } catch (error) {
+          return response.data === true; // Assuming response.data directly returns a boolean
+        } catch ( error ) {
           throw new Error('Failed to fetch favorite status');
         }
       },
+      ...options, // Spread additional options into the useQuery call
       staleTime: Infinity,
       refetchOnWindowFocus: false,
     });

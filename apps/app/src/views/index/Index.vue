@@ -29,8 +29,7 @@
             v-for="recipe in recipes"
             :key="recipe.id"
             :to="`/recipe/${recipe.id}`"
-            class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm min-h-[136px] hover:bg-neutral-200 hover:ring-primary"
-          >
+            class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm min-h-[136px] hover:bg-neutral-200 hover:ring-primary">
             <p class="text-body-bold">{{ recipe.name }}</p>
             <p class="line-clamp-2 text-body-small text-neutral-600">{{ recipe.description }}</p>
             <div class="flex flex-wrap gap-2 mt-auto">

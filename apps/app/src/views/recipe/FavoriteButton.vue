@@ -23,6 +23,7 @@ watch(() => props.initialIsFavorite, (newValue) => {
 });
 
 const toggleFavorite = async () => {
+  console.log("Toggling favorite status for recipe:", props.recipeId);
   if (isFavorite.value) {
     await deleteFavorite(props.recipeId || '')
       .then(() => {

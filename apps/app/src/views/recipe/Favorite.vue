@@ -7,7 +7,6 @@
         <p class="text-body-bold h-10 flex items-center">Filters</p>
         <div class="flex flex-wrap gap-2 ring-1 ring-neutral-300 p-4 rounded-sm my-4">
           <!-- This could potentially filter the display of favorite recipes if needed -->
-          <!-- Otherwise, remove or adjust this section according to your design needs -->
         </div>
       </div>
       <div class="w-full">
@@ -21,8 +20,7 @@
             v-for="recipe in favoriteRecipes"
             :key="recipe.id"
             :to="`/recipe/${recipe.id}`"
-            class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm min-h-[136px] hover:bg-neutral-200 hover:ring-primary"
-          >
+            class="flex flex-col ring-1 ring-neutral-300 p-4 gap-y-2 rounded-sm min-h-[136px] hover:bg-neutral-200 hover:ring-primary">
             <p class="text-body-bold">{{ recipe.name }}</p>
             <p class="line-clamp-2 text-body-small text-neutral-600">{{ recipe.description }}</p>
             <div class="flex flex-wrap gap-2 mt-auto">

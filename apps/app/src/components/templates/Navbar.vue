@@ -7,7 +7,8 @@
         <p class="text-primary-dark text-body-bold italic">Tastery</p>
       </RouterLink>
       <slot></slot>
-      <RouterLink to="/favorite">Favorites</RouterLink>
+      <RouterLink v-if="isAuthenticated" to="/favorite">Favorites</RouterLink>
+      <RouterLink v-else to="/signin">Favorites</RouterLink>
     </div>
     <div class="flex gap-x-4 items-center h-8">
       <RouterLink v-if="!isAuthenticated" to="/signin">
@@ -33,4 +34,5 @@ const authStore = useAuthStore();
 const { isAuthenticated } = storeToRefs(authStore);
 
 const { data: user } = useUser();
+
 </script>
