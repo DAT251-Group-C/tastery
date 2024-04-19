@@ -48,7 +48,7 @@ export default ({ mode }: ConfigEnv) => {
     },
     server: {
       fs: {
-        strict: false, // Set true before deployment after fixing the import issue of primeicons. Has to be made as an plugin?
+        strict: true, // Set true before deployment after fixing the import issue of primeicons. Has to be made as an plugin?
       }
     },
   });
