@@ -1,4 +1,5 @@
 {
+  "neverConnectToCloud": true,
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
@@ -45,6 +46,5 @@
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "useInferencePlugins": false,
-  "nxCloudAccessToken": "YjE0YTM0NjUtY2Q4OS00NTU1LTljYmUtZDNhMzQzNzZjMTJkfHJlYWQtd3JpdGU="
+  "useInferencePlugins": false
 }
