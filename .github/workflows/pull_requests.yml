@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  project: app
+  project: tastery
   account-id: 53b218bcbcf8884b7fb40d27ee50ac09
 
 jobs:
