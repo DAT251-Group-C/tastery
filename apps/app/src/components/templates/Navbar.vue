@@ -4,7 +4,7 @@
   >
     <div class="flex gap-x-4 items-center h-8">
       <RouterLink to="/">
-        <p class="text-primary-dark text-body-bold italic">Tastery</p>
+        <img src="~@/assets/logo.svg" class="h-8" alt="Tastery Logo" />
       </RouterLink>
       <slot></slot>
     </div>

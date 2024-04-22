@@ -23,7 +23,7 @@
       <p class="text-body-small text-neutral-600">{{ recipe.description }}</p>
 
       <div class="flex flex-wrap gap-2">
-        <Chip v-for="tag in recipe.tags" :key="tag" :label="tag" class="bg-primary-dark !text-neutral-100"></Chip>
+        <Tag v-for="tag in recipe.tags" :key="tag" :tag="tag"></Tag>
       </div>
 
       <p class="text-body-small-bold mt-6">Ingredients</p>
@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import FavoriteButton from '@/components/atoms/FavoriteButton.vue';
+import Tag from '@/components/atoms/Tag.vue';
 import Navbar from '@/components/templates/Navbar.vue';
 import { useDeleteRecipe, useRecipe } from '@/composables/recipe';
 import { useToaster } from '@/composables/toaster';
@@ -53,7 +54,6 @@ import { useUser } from '@/composables/user';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import Button from 'primevue/button';
-import Chip from 'primevue/chip';
 import { toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 

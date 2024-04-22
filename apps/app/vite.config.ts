@@ -15,11 +15,48 @@ const vitePwaConfig = (isProd: boolean) =>
     workbox: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
     },
+    includeAssets: [
+      'favicon.ico',
+      'favicon-16x16.ico',
+      'favicon-32x32.ico',
+      'robots.txt',
+      'android-chrome-192x192.png',
+      'android-chrome-512x512.png',
+      'apple-touch-icon.png',
+      'mstile-150x150.png',
+      'safari-pinned-tab.svg',
+    ],
     manifest: {
       name: 'Tastery',
       short_name: 'Tastery',
-      description: 'Tastery',
-      theme_color: '#1c9c4f',
+      description:
+        'Tastery is a vibrant food discovery platform where you can explore a wide variety of recipes and share your own culinary creations with the world. ' +
+        'Dive into the world of flavors with Tastery!',
+      theme_color: '#76B124',
+      icons: [
+        {
+          src: 'android-chrome-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: 'android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: 'android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any',
+        },
+        {
+          src: 'android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
+      ],
     },
   });
 
