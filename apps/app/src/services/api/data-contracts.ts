@@ -126,8 +126,6 @@ export interface ApiUpdateRecipeDto {
   ingredients?: ApiCreateIngredientDto[];
 }
 
-export type ApiCreateFavoriteDto = object;
-
 export interface ApiFavorite {
   /** @format uuid */
   id: string;

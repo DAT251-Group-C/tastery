@@ -6,5 +6,4 @@ import Recipe from './recipe.model';
 export class FullFavorite extends Favorite {
   @ApiProperty({ type: User }) user: User;
   @ApiProperty({ type: Recipe }) recipe: Recipe[];
-
 }

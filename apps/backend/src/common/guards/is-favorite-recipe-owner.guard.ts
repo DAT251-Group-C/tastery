@@ -18,10 +18,7 @@ export class IsFavoriteRecipeOwnerGuard implements CanActivate {
       throw new ForbiddenException('Recipe ID must be provided');
     }
 
-    return combineLatest([
-      this.recipeService.getRecipeById(recipeId),
-      this.authGuard.getAccessTokenFromRequest(context)
-    ]).pipe(
+    return combineLatest([this.recipeService.getRecipeById(recipeId), this.authGuard.getAccessTokenFromRequest(context)]).pipe(
       map(([recipe, accessToken]) => {
         if (!recipe) {
           throw new ForbiddenException('Recipe not found');
@@ -31,7 +28,7 @@ export class IsFavoriteRecipeOwnerGuard implements CanActivate {
           return true;
         }
         throw new ForbiddenException('You are not the owner of this recipe');
-      })
+      }),
     );
   }
 }

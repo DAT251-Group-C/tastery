@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import FavoriteEntity from './favorite.entity';
 
 @Entity({
   name: 'users',
@@ -38,4 +39,7 @@ export default class UserEntity {
     nullable: false,
   })
   updatedAt: string;
+
+  @OneToMany(() => FavoriteEntity, favorite => favorite.user, { cascade: true })
+  favorites: Promise<FavoriteEntity[]>;
 }

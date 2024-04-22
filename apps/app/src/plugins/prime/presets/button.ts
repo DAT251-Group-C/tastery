@@ -1,4 +1,4 @@
-import { ButtonPassThroughOptions } from 'primevue/button';
+import { ButtonPassThroughMethodOptions, ButtonPassThroughOptions } from 'primevue/button';
 
 const Button: ButtonPassThroughOptions = {
   root: ({ props, context, parent }) => ({
@@ -215,9 +215,14 @@ const Button: ButtonPassThroughOptions = {
       { 'flex-1': props.label !== null, 'invisible w-0': props.label === null || props.label === undefined },
     ],
   }),
-  icon: ({ props }) => ({
+  // eslint-disable-next-line
+  icon: ({ props, attrs }: ButtonPassThroughMethodOptions<any> & { attrs: any }) => ({
     class: [
-      `font-symbol mx-0`,
+      'font-symbol',
+      {
+        filled: attrs.filled,
+      },
+      `mx-0`,
       {
         'mr-2': props.iconPos === 'left' && props.label != null,
         'ml-2 order-1': props.iconPos === 'right' && props.label != null,

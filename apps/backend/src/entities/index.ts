@@ -5,5 +5,5 @@ import FavoriteEntity from './favorite.entity';
 
 const entities = [UserEntity, IngredientEntity, RecipeEntity, FavoriteEntity];
 
-export { IngredientEntity, RecipeEntity, UserEntity, FavoriteEntity};
+export { IngredientEntity, RecipeEntity, UserEntity, FavoriteEntity };
 export default entities;

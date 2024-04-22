@@ -10,7 +10,6 @@
  */
 
 import {
-  ApiCreateFavoriteDto,
   ApiCreateRecipeDto,
   ApiFavorite,
   ApiPageDto,
@@ -166,6 +165,43 @@ export class V1<SecurityDataType = unknown> {
    * No description
    *
    * @tags Recipes
+   * @name RecipeControllerGetFavoriteRecipes
+   * @request GET:/v1/recipes/favorites
+   */
+  recipeControllerGetFavoriteRecipes = (
+    query?: {
+      order?: ApiSortOrder;
+      /**
+       * @min 1
+       * @default 1
+       */
+      page?: number;
+      search?: string;
+      /**
+       * @min 1
+       * @max 50
+       * @default 10
+       */
+      take?: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.http.request<
+      ApiPageDto & {
+        data: ApiRecipe[];
+      },
+      any
+    >({
+      path: `/v1/recipes/favorites`,
+      method: 'GET',
+      query: query,
+      format: 'json',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Recipes
    * @name RecipeControllerGenerateRecipe
    * @request GET:/v1/recipes/generate
    */
@@ -226,55 +262,29 @@ export class V1<SecurityDataType = unknown> {
    * No description
    *
    * @tags Favorites
-   * @name FavoriteControllerCreateFavorite
-   * @request POST:/v1/favorites
+   * @name FavoriteControllerCheckFavorite
+   * @request GET:/v1/favorites/check/{recipeId}
    * @secure
    */
-  favoriteControllerCreateFavorite = (data: ApiCreateFavoriteDto, params: RequestParams = {}) =>
-    this.http.request<ApiFavorite, any>({
-      path: `/v1/favorites`,
-      method: 'POST',
-      body: data,
+  favoriteControllerCheckFavorite = (recipeId: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/favorites/check/${recipeId}`,
+      method: 'GET',
       secure: true,
-      type: ContentType.Json,
-      format: 'json',
       ...params,
     });
   /**
    * No description
    *
    * @tags Favorites
-   * @name FavoriteControllerGetFavorites
-   * @request GET:/v1/favorites
+   * @name FavoriteControllerCreateFavorite
+   * @request POST:/v1/favorites/{recipeId}
    * @secure
    */
-  favoriteControllerGetFavorites = (
-    query?: {
-      order?: ApiSortOrder;
-      /**
-       * @min 1
-       * @default 1
-       */
-      page?: number;
-      search?: string;
-      /**
-       * @min 1
-       * @max 50
-       * @default 10
-       */
-      take?: number;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.http.request<
-      ApiPageDto & {
-        data: ApiFavorite[];
-      },
-      any
-    >({
-      path: `/v1/favorites`,
-      method: 'GET',
-      query: query,
+  favoriteControllerCreateFavorite = (recipeId: string, params: RequestParams = {}) =>
+    this.http.request<ApiFavorite, any>({
+      path: `/v1/favorites/${recipeId}`,
+      method: 'POST',
       secure: true,
       format: 'json',
       ...params,
@@ -291,21 +301,6 @@ export class V1<SecurityDataType = unknown> {
     this.http.request<void, any>({
       path: `/v1/favorites/${recipeId}`,
       method: 'DELETE',
-      secure: true,
-      ...params,
-    });
-  /**
-   * No description
-   *
-   * @tags Favorites
-   * @name FavoriteControllerCheckFavorite
-   * @request GET:/v1/favorites/check/{recipeId}
-   * @secure
-   */
-  favoriteControllerCheckFavorite = (recipeId: string, params: RequestParams = {}) =>
-    this.http.request<void, any>({
-      path: `/v1/favorites/check/${recipeId}`,
-      method: 'GET',
       secure: true,
       ...params,
     });

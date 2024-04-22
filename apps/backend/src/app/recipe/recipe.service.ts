@@ -45,6 +45,30 @@ export class RecipeService {
     );
   }
 
+  public getFavoriteRecipes(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<RecipeEntity>> {
+    const query = this.recipeRepository.createQueryBuilder('recipe');
+
+    query.leftJoinAndSelect('recipe.ingredients', 'ingredient');
+
+    query.innerJoin('recipe.favorites', 'favorite', 'favorite.userId = :userId', { userId });
+
+    if (pageOptionsDto.search) {
+      query.where('recipe.name like :search', { search: `%${pageOptionsDto.search}%` });
+      query.orWhere('recipe.tags like :search', { search: `%${pageOptionsDto.search}%` });
+    }
+
+    query.orderBy('recipe.createdAt', pageOptionsDto.order);
+    query.skip(pageOptionsDto.skip);
+    query.take(pageOptionsDto.take);
+
+    return combineLatest([query.getCount(), query.getMany()]).pipe(
+      map(([itemCount, recipes]) => {
+        const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+        return new PageDto(recipes, pageMetaDto);
+      }),
+    );
+  }
+
   public getRecipeById(id: string): Observable<RecipeEntity> {
     return from(this.recipeRepository.findOne({ where: { id } })).pipe(
       map(recipe => {

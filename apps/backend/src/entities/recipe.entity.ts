@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import IngredientEntity from './ingredient.entity';
 import UserEntity from './user.entity';
+import FavoriteEntity from './favorite.entity';
 
 @Entity({
   name: 'recipes',
@@ -52,6 +53,9 @@ export default class RecipeEntity {
 
   @OneToMany(() => IngredientEntity, ingredient => ingredient.recipe, { eager: true, cascade: true })
   ingredients: IngredientEntity[];
+
+  @OneToMany(() => FavoriteEntity, favorite => favorite.recipe, { cascade: true })
+  favorites: Promise<FavoriteEntity[]>;
 
   @ManyToOne(() => UserEntity, user => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

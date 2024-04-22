@@ -51,10 +51,7 @@ export default ({ mode }: ConfigEnv) => {
     server: {
       fs: {
         // Allow serving assets from pnpm's store directory
-        allow: [
-          path.resolve(__dirname, 'node_modules'),
-          pnpmStorePath,
-        ],
+        allow: [path.resolve(__dirname, 'node_modules'), pnpmStorePath],
       },
     },
   });

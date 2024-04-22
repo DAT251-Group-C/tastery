@@ -1,13 +1,12 @@
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createPinia } from 'pinia';
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 import { createApp } from 'vue';
 import App from './App.vue';
 import './index.scss';
 import prime from './plugins/prime';
 import router from './plugins/router';
-import ToastService from 'primevue/toastservice';
-import ConfirmationService from 'primevue/confirmationservice';
-import primeIcons from 'primeicons/primeicons.css';
 
 const pinia = createPinia();
 

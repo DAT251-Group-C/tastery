@@ -55,6 +55,23 @@ export class RecipeController {
     );
   }
 
+  @Get('favorites')
+  @ApiOkResponsePaginated(Recipe)
+  public getFavoriteRecipes(@UserId() userId: string, @Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Recipe>> {
+    return lastValueFrom(
+      this.recipeService.getFavoriteRecipes(userId, pageOptionsDto).pipe(
+        take(1),
+        catchError(err => {
+          if (err instanceof ResourceNotFoundException) {
+            throw new NotFoundException(err.message);
+          }
+
+          throw new BadRequestException(err.message || err);
+        }),
+      ),
+    );
+  }
+
   @Get('generate')
   @ApiOkResponse({ type: CreateRecipeDto })
   public generateRecipe(): Promise<CreateRecipeDto> {

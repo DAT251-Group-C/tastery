@@ -1,8 +1,10 @@
 import { ApiError, client } from '@/services/api-client';
 import { ApiCreateRecipeDto, ApiRecipe, ApiSortOrder, ApiUpdateRecipeDto } from '@/services/api/data-contracts';
+import { useAuthStore } from '@/stores/auth';
 import { getValue } from '@/utils/vue';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { AxiosError } from 'axios';
+import { storeToRefs } from 'pinia';
 import { Ref } from 'vue';
 
 const useRecipes = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
@@ -14,24 +16,17 @@ const useRecipes = (search: Ref<string> | string = '', order: ApiSortOrder = Api
   });
 };
 
-const useRecipesByIds = (recipeIds: Ref<string[]>) => {
-  return useQuery<ApiRecipe[], AxiosError>({
-    queryKey: ['recipesByIds', recipeIds],
-    queryFn: async () => {
-      if (recipeIds.value.length === 0) {
-        return []; // Avoids running the query if no IDs are provided
-      }
-      try {
-        const responses = await Promise.all(
-          recipeIds.value.map(id => client.recipeControllerGetRecipeById(id))
-        );
-        return responses.map(res => res.data); // assuming res.data holds your actual recipe data
-      } catch (error) {
-        console.error("Error fetching recipes by IDs:", error);
-        throw error; // Properly propagate the error for error boundaries or further handling
-      }
-    },
-    enabled: recipeIds.value.length > 0 // Only run the query if there are IDs
+const useFavoriteRecipes = (search: Ref<string> | string = '', order: ApiSortOrder = ApiSortOrder.DESC, take = 10) => {
+  const authStore = useAuthStore();
+  const { isAuthenticated } = storeToRefs(authStore);
+
+  return useInfiniteQuery({
+    queryKey: ['recipes', 'favorite', { search, order, take }],
+    queryFn: async ({ pageParam: page }) =>
+      (await client.recipeControllerGetFavoriteRecipes({ page, order, take, search: getValue(search) })).data,
+    enabled: isAuthenticated,
+    initialPageParam: 1,
+    getNextPageParam: ({ meta }) => (meta.hasNextPage ? meta.page + 1 : undefined),
   });
 };
 
@@ -96,4 +91,4 @@ const useDeleteRecipe = () => {
   });
 };
 
-export { useCreateRecipe, useDeleteRecipe, useGenerateRecipe, useRecipe, useRecipes, useUpdateRecipe, useRecipesByIds};
+export { useCreateRecipe, useDeleteRecipe, useFavoriteRecipes, useGenerateRecipe, useRecipe, useRecipes, useUpdateRecipe };

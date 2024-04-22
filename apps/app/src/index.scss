@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     --color-neutral-100: 255 255 255;
@@ -49,20 +47,40 @@
     font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
 
-    &:not(.large-symbol) {
-      font-variation-settings:
-        "FILL" 0,
-        "wght" 300,
-        "GRAD" 0,
-        "opsz" 24;
+    &:not(.filled) {
+      &:not(.large-symbol) {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      &.large-symbol {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 48;
+      }
     }
 
-    &.large-symbol {
-      font-variation-settings:
-        "FILL" 0,
-        "wght" 300,
-        "GRAD" 0,
-        "opsz" 48;
+    &.filled {
+      &:not(.large-symbol) {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      &.large-symbol {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 48;
+      }
     }
   }
 

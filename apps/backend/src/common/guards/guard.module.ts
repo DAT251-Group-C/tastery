@@ -13,6 +13,6 @@ import { FavoriteModule } from '../../app/favorite/favorite.module';
     forwardRef(() => RecipeModule), // Correct if RecipeModule imports GuardModule
   ],
   providers: [AuthGuard, IsRecipeOwnerGuard, IsFavoriteRecipeOwnerGuard],
-  exports: [AuthGuard, IsRecipeOwnerGuard, IsFavoriteRecipeOwnerGuard]
+  exports: [AuthGuard, IsRecipeOwnerGuard, IsFavoriteRecipeOwnerGuard],
 })
 export class GuardModule {}
