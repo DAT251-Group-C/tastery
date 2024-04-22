@@ -1,1 +1,1 @@
-web: pnpm serve:backend
+web: node ./dist/backend/main.js
