@@ -6,14 +6,16 @@
       <div class="w-full max-w-xs fixed">
         <p class="text-body-bold h-10 flex items-center">Filters</p>
         <div class="flex flex-wrap gap-2 ring-1 ring-neutral-300 p-4 rounded-sm my-4">
-          <Chip
+          <Tag
             v-for="filterTag in filterTags"
             :key="filterTag"
-            class="bg-primary-dark !text-neutral-100 cursor-pointer text-caption"
+            :tag="filterTag"
+            role="button"
+            class="cursor-pointer"
+            tabindex="0"
             @click="search = filterTag"
           >
-            <span>{{ filterTag }}</span>
-          </Chip>
+          </Tag>
         </div>
         <label v-if="isAuthenticated" class="flex gap-x-2 cursor-pointer">
           <input v-model="favorites" type="checkbox" />
@@ -38,7 +40,7 @@
             <p class="text-body-bold">{{ recipe.name }}</p>
             <p class="line-clamp-2 text-body-small text-neutral-600">{{ recipe.description }}</p>
             <div class="flex flex-wrap gap-2 mt-auto">
-              <Chip v-for="tag in recipe.tags" :key="tag" :label="tag" class="bg-primary-dark !text-neutral-100"></Chip>
+              <Tag v-for="tag in recipe.tags" :key="tag" :tag="tag"></Tag>
             </div>
           </RouterLink>
         </div>
@@ -56,12 +58,12 @@
 </template>
 
 <script setup lang="ts">
+import Tag from '@/components/atoms/Tag.vue';
 import Navbar from '@/components/templates/Navbar.vue';
 import { useFavoriteRecipes, useRecipes } from '@/composables/recipe';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import Button from 'primevue/button';
-import Chip from 'primevue/chip';
 import InputText from 'primevue/inputtext';
 import { computed, ref } from 'vue';
 
