@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -56,6 +57,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
 
@@ -77,6 +79,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
 
@@ -116,11 +119,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
 
       - name: Test - Unit
-        run: pnpm run test:unit
+        run: pnpm run test
         env:
           VITE_REST_API_URL: 'https://dat251-group-c-pr-${{ github.event.pull_request.number }}.herokuapp.com'
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
@@ -207,6 +211,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Download dist folder
         uses: actions/download-artifact@v4
