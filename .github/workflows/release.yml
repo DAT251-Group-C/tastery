@@ -1,0 +1,135 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+  lint:
+    name: Lint (ESLint & Prettier)
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run lint
+        run: pnpm run lint
+
+  build:
+    name: Build Application
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+        env:
+          VITE_REST_API_URL: 'https://dat251-group-c-pr-${{ github.event.pull_request.number }}.herokuapp.com'
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY }}
+          NX_OPENAP_API_KEY: ${{ secrets.NX_OPENAI_API_KEY }}
+          NX_OPENAI_ORGANIZATION: ${{ secrets.NX_OPENAI_ORGANIZATION }}
+          NX_POSTGRES_HOST: ${{ secrets.NX_POSTGRES_HOST }}
+          NX_POSTGRES_PORT: ${{ secrets.NX_POSTGRES_PORT }}
+          NX_POSTGRES_USER: ${{ secrets.NX_POSTGRES_USER }}
+          NX_POSTGRES_PASSWORD: ${{ secrets.NX_POSTGRES_PASSWORD }}
+          NX_POSTGRES_DATABASE: ${{ secrets.NX_POSTGRES_DATABASE }}
+          NX_JWT_SECRET: ${{ secrets.NX_JWT_SECRET }}
+
+      - name: Upload dist folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  test_unit:
+    name: Test - Unit
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Test - Unit
+        run: pnpm run test
+        env:
+          VITE_REST_API_URL: 'https://dat251-group-c-pr-${{ github.event.pull_request.number }}.herokuapp.com'
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY }}
+          NX_OPENAP_API_KEY: ${{ secrets.NX_OPENAI_API_KEY }}
+          NX_OPENAI_ORGANIZATION: ${{ secrets.NX_OPENAI_ORGANIZATION }}
+          NX_POSTGRES_HOST: ${{ secrets.NX_POSTGRES_HOST }}
+          NX_POSTGRES_PORT: ${{ secrets.NX_POSTGRES_PORT }}
+          NX_POSTGRES_USER: ${{ secrets.NX_POSTGRES_USER }}
+          NX_POSTGRES_PASSWORD: ${{ secrets.NX_POSTGRES_PASSWORD }}
+          NX_POSTGRES_DATABASE: ${{ secrets.NX_POSTGRES_DATABASE }}
+          NX_JWT_SECRET: ${{ secrets.NX_JWT_SECRET }}
