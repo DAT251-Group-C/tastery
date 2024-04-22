@@ -15,7 +15,7 @@
             <span>{{ filterTag }}</span>
           </Chip>
         </div>
-        <label class="flex gap-x-2 cursor-pointer">
+        <label v-if="isAuthenticated" class="flex gap-x-2 cursor-pointer">
           <input v-model="favorites" type="checkbox" />
           <p class="text-body-bold h-10 flex items-center">Favorites</p>
         </label>
