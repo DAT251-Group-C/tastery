@@ -12,6 +12,8 @@ import { IngredientEntity, RecipeEntity } from '../../entities';
 import { OpenAIService } from '../openai/openai.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { TranslatorService } from '../translator/translator.service';
+
 
 @Injectable()
 export class RecipeService {
@@ -236,4 +238,5 @@ export class RecipeService {
   private toRecipe(data: any): CreateRecipeDto {
     return data as CreateRecipeDto;
   }
+
 }

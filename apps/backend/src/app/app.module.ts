@@ -10,6 +10,8 @@ import { HealthModule } from './health/health.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { UserModule } from './user/user.module';
 import { FavoriteModule } from './favorite/favorite.module';
+import { TranslatorModule } from './translator/translator.module';
+
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { FavoriteModule } from './favorite/favorite.module';
     UserModule,
     RecipeModule,
     FavoriteModule,
+    TranslatorModule,
     ConfigModule.forRoot({
       load: [appConfig],
-    }),
+    }), 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {

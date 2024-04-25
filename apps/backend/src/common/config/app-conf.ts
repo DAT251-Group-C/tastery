@@ -20,6 +20,9 @@ const appConfig = registerAs('appConfig', () => ({
     password: process.env.NX_POSTGRES_PASSWORD,
     database: process.env.NX_POSTGRES_DATABASE,
   },
+  microsoftTranslator: {
+    key: process.env.NX_MICROSOFT_TRANSLATOR_KEY,
+  },
 }));
 
 export default appConfig;
