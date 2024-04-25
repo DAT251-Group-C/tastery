@@ -22,7 +22,6 @@ export class TranslatorService {
   ) {}
 
   public translateText(text: string): Observable<string> {
-    console.log(this.config);
     this.key = this.config.microsoftTranslator.key;
     return from(axios({
       method: 'post',

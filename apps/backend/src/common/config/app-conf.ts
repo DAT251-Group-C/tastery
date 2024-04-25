@@ -21,7 +21,10 @@ const appConfig = registerAs('appConfig', () => ({
     database: process.env.NX_POSTGRES_DATABASE,
   },
   microsoftTranslator: {
-    key: process.env.NX_MICROSOFT_TRANSLATOR_KEY,
+    key: process.env.MICROSOFT_TRANSLATOR_KEY,
+  },
+  kassalapp: {
+    key: process.env.KASSALAPP_KEY,
   },
 }));
 

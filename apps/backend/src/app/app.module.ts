@@ -11,6 +11,8 @@ import { RecipeModule } from './recipe/recipe.module';
 import { UserModule } from './user/user.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { TranslatorModule } from './translator/translator.module';
+import { KassalappModule } from './kassalapp/kassalapp.module';
+
 
 
 @Module({
@@ -20,6 +22,7 @@ import { TranslatorModule } from './translator/translator.module';
     RecipeModule,
     FavoriteModule,
     TranslatorModule,
+    KassalappModule,
     ConfigModule.forRoot({
       load: [appConfig],
     }), 

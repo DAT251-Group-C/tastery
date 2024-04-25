@@ -304,4 +304,18 @@ export class V1<SecurityDataType = unknown> {
       secure: true,
       ...params,
     });
+  /**
+   * No description
+   *
+   * @tags Translator
+   * @name TranslatorControllerTranslate
+   * @request GET:/v1/translator/test-translate
+   */
+  translatorControllerTranslate = (params: RequestParams = {}) =>
+    this.http.request<string, any>({
+      path: `/v1/translator/test-translate`,
+      method: 'GET',
+      format: 'json',
+      ...params,
+    });
 }
