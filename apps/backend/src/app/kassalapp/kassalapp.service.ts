@@ -38,18 +38,22 @@ export class KassalappService {
     );
   }
 
-  searchFirstProductForEachIngredient(ingredients: string[]): Observable<any[]> {
+  searchBestPriceForProducts(ingredients: string[]): Observable<any[]> {
     return from(ingredients).pipe(
-      concatMap(ingredient => 
-        this.searchProducts(ingredient).pipe(
-          map(results => results[0] || null)  // Take the first result or null if no results
-        )
-      ),
-      toArray(),  // Collect all results into a single array
-      catchError(error => {
-        console.error('Error processing ingredients:', error);
-        return of([]);  // Return an empty array in case of an error
-      })
+        concatMap(ingredient => 
+            this.searchProducts(ingredient).pipe(
+                map(results => results.data && results.data.length > 0 ? results.data[0].current_price : null),
+                catchError(error => {
+                    console.error('Error retrieving product details:', error);
+                    return of(null); // Ensure returning Observable if error occurs
+                })
+            )
+        ),
+        toArray(), // Aggregate results into an array
+        catchError(error => {
+            console.error('Error processing ingredients:', error);
+            return of([]); // Return an Observable of an empty array in case of an error
+        })
     );
-  }
+}
 }

@@ -318,4 +318,30 @@ export class V1<SecurityDataType = unknown> {
       format: 'json',
       ...params,
     });
+  /**
+   * No description
+   *
+   * @tags Kassalapp
+   * @name KassalappControllerSearch
+   * @request GET:/v1/kassalapp/{ingredient}
+   */
+  kassalappControllerSearch = (ingredient: string, params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/kassalapp/${ingredient}`,
+      method: 'GET',
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags Kassalapp
+   * @name KassalappControllerSearchMultiple
+   * @request POST:/v1/kassalapp/searchp
+   */
+  kassalappControllerSearchMultiple = (params: RequestParams = {}) =>
+    this.http.request<void, any>({
+      path: `/v1/kassalapp/searchp`,
+      method: 'POST',
+      ...params,
+    });
 }

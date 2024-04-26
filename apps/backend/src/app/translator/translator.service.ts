@@ -44,28 +44,3 @@ export class TranslatorService {
     );
   }
 }
-
-  /* public async translateText(text: string): Promise<string> {
-    
-    const response = await axios({
-        method: 'post',
-        url: `${this.endpoint}/translate`,
-        headers: {
-            'Ocp-Apim-Subscription-Key': "10fff1687325432691199d671f203dc3",
-            //'Ocp-Apim-Subscription-Key': this.key,
-            'Ocp-Apim-Subscription-Region': this.location,
-            'Content-Type': 'application/json',
-            'X-ClientTraceId': uuidv4().toString()
-        },
-        params: {
-            'api-version': '3.0',
-            'from': 'en',
-            'to': 'nb'
-        },
-        data: [{ 'text': text }],
-        responseType: 'json'
-    });
-    console.log(response);
-    return response.data[0].translations[0].text; // Accessing the translated text
-    } */
-

@@ -39,8 +39,23 @@
       <p v-for="line in recipe.instructions.split('\n')" :key="line">{{ line }}</p>
     </div>
   </div>
-  <div v-else class="view">
-    <span class="text-neutral-600 text-body-small">Loading...</span>
+  <div v-if="recipe">
+    <div v-for="ingredient in recipe.ingredients" :key="ingredient.name">
+      <label>{{ ingredient.name }}</label>
+      <select v-if="productsMap.get(ingredient.name)">
+        <option v-if="productsMap.get(ingredient.name).isLoading">Loading...</option>
+        <option v-else-if="productsMap.get(ingredient.name).error">Error loading products</option>
+        <option v-for="product in productsMap.get(ingredient.name).data" :value="product" :key="product.name">
+          {{ product.name }} - ${{ product.current_price }}</option>
+        </select>
+      <select v-else>
+        <!-- Placeholder in case the products are not yet fetched -->
+        <option>Loading products...</option>
+      </select>
+    </div>
+  </div>
+  <div v-else>
+    No recipe loaded.
   </div>
 </template>
 
@@ -48,13 +63,14 @@
 import FavoriteButton from '@/components/atoms/FavoriteButton.vue';
 import Tag from '@/components/atoms/Tag.vue';
 import Navbar from '@/components/templates/Navbar.vue';
+import { useProductsForIngredient, Product } from '@/composables/kassalapp';
 import { useDeleteRecipe, useRecipe } from '@/composables/recipe';
 import { useToaster } from '@/composables/toaster';
 import { useUser } from '@/composables/user';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import Button from 'primevue/button';
-import { toRefs } from 'vue';
+import { toRefs, reactive, onMounted, ref, watch, computed, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{ id: string }>();
@@ -69,6 +85,36 @@ const router = useRouter();
 const { data: recipe } = useRecipe(id);
 const { data: user } = useUser();
 const { mutateAsync: deleteRecipe, error: deleteError, isPending: deletePending } = useDeleteRecipe();
+
+const ingredientQuery = ref('');
+const productQueries = ref([]);
+const productsQuery = useProductsForIngredient(ingredientQuery.value);
+const { data: products, isLoading, error, refetch } = productsQuery;
+
+const productsMap = reactive(new Map());
+
+function setupProductQuery(ingredientName: string) {
+  const query = useProductsForIngredient(ingredientName);
+  productsMap.set(ingredientName, query);
+}
+
+watch(() => recipe.value?.ingredients, (newIngredients, oldIngredients) => {
+  if (newIngredients && newIngredients.length > 0) {
+    newIngredients.forEach(ingredient => {
+      if (!productsMap.has(ingredient.name)) {
+        productsMap.set(ingredient.name, { isLoading: true, data: [], error: null });
+        setupProductQuery(ingredient.name);
+      }
+    });
+    if (oldIngredients) {
+      oldIngredients.forEach(ingredient => {
+        if (!newIngredients.some(newIng => newIng.name === ingredient.name)) {
+          productsMap.delete(ingredient.name);
+        }
+      });
+    }
+  }
+}, { deep: true, immediate: true });
 
 const onDelete = async () => {
   try {
