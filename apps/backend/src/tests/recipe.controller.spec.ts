@@ -131,4 +131,15 @@ describe('RecipeController', () => {
     await controller.updateRecipe('1', updateRecipeDto);
     expect(service.updateRecipe).toHaveBeenCalledWith('1', updateRecipeDto);
   });
+
+  it('should delete a recipe', async () => {
+        // Arrange: Setup any necessary test data or mocks
+        const recipeId = '1';
+
+        // Act: Call the method being tested
+        await controller.deleteRecipe(recipeId);
+
+        // Assert: Verify the expected outcome
+        expect(service.deleteRecipe).toHaveBeenCalledWith(recipeId);
+  });
 });
