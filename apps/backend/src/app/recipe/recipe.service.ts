@@ -29,8 +29,7 @@ export class RecipeService {
     query.leftJoinAndSelect('recipe.ingredients', 'ingredient');
 
     if (pageOptionsDto.search && pageOptionsDto.search.trim() !== '') {
-      const searchTerm = (pageOptionsDto.search.trim().toLowerCase());
-      const searchPattern = `%${searchTerm}%`;
+      const searchPattern = `%${pageOptionsDto.search.trim().toLowerCase()}%`;
       query.where('LOWER(recipe.name) LIKE :search', { search: searchPattern });
       query.orWhere('LOWER(recipe.tags) LIKE :search', { search: searchPattern });
     }
