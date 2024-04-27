@@ -237,5 +237,4 @@ export class RecipeService {
   private toRecipe(data: any): CreateRecipeDto {
     return data as CreateRecipeDto;
   }
-
 }
