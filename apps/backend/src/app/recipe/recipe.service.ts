@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Observable, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
-import { Brackets, DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { v4 } from 'uuid';
 import { PageMetaDto } from '../../common/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/dto/page-options.dto';
