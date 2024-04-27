@@ -48,30 +48,6 @@ export class RecipeService {
     );
   }
 
-  private capitalizeFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  private generateSearchSubstrings(searchString: string): string[] {
-    const terms = searchString.split(/\s+/);
-    const substrings: string[] = [];
-    terms.forEach(term => {
-      for (let i = 1; i <= term.length; i++) {
-        substrings.push(term.substring(0, i));
-      }
-    });
-    return substrings;
-  }
-
-  private filterByLevenshtein(searchString: string, name: string, tags: string[]): boolean {
-    return searchString.split(/\s+/).some(searchTerm =>
-      this.levenshteinDistance(searchTerm, name.toLowerCase()) <= 2 ||
-      tags.some(tag => this.levenshteinDistance(searchTerm, tag.toLowerCase()) <= 2)
-    );
-  }
-
-
-
   public getFavoriteRecipes(userId: string, pageOptionsDto: PageOptionsDto): Observable<PageDto<RecipeEntity>> {
     const query = this.recipeRepository.createQueryBuilder('recipe');
 
@@ -264,34 +240,4 @@ export class RecipeService {
     return data as CreateRecipeDto;
   }
 
-  private levenshteinDistance(s1: string, s2: string): number {
-    const a = s1.length;
-    const b = s2.length;
-    const matrix = [];
-
-    // Initialize the first row and column
-    for (let i = 0; i <= a; i++) matrix[i] = [i];
-    for (let j = 0; j <= b; j++) matrix[0][j] = j;
-
-    // Compute the distances
-    for (let i = 1; i <= a; i++) {
-      for (let j = 1; j <= b; j++) {
-        if (s1[i - 1] === s2[j - 1]) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j] + 1, // deletion
-            matrix[i][j - 1] + 1, // insertion
-            matrix[i - 1][j - 1] + 1 // substitution
-          );
-        }
-      }
-    }
-    return matrix[a][b];
-  }
-
-  private isSimilar(searchTerm: string, target: string): boolean {
-    const targetTerms = target.toLowerCase().split(/\s+/);
-    return targetTerms.some(targetTerm => this.levenshteinDistance(searchTerm, targetTerm) <= 2);
-  }
 }
