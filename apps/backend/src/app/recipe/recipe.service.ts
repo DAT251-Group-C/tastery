@@ -28,9 +28,10 @@ export class RecipeService {
 
     query.leftJoinAndSelect('recipe.ingredients', 'ingredient');
 
-    if (pageOptionsDto.search) {
-      query.where('recipe.name like :search', { search: `%${pageOptionsDto.search}%` });
-      query.orWhere('recipe.tags like :search', { search: `%${pageOptionsDto.search}%` });
+    if (pageOptionsDto.search && pageOptionsDto.search.trim() !== '') {
+      const searchPattern = `%${pageOptionsDto.search.trim().toLowerCase()}%`;
+      query.where('LOWER(recipe.name) LIKE :search', { search: searchPattern });
+      query.orWhere('LOWER(recipe.tags) LIKE :search', { search: searchPattern });
     }
 
     query.orderBy('recipe.createdAt', pageOptionsDto.order);
