@@ -11,7 +11,6 @@ import { IngredientUnit } from '../../common/models/ingredient.model';
 describe('RecipeController', () => {
   let controller: RecipeController;
   let service: jest.Mocked<RecipeService>;
-  let authGuard: AuthGuard;
 
   beforeEach(async () => {
     const mockRecipeService = {

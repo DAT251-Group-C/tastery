@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Observable, from } from 'rxjs';
 import { Repository } from 'typeorm';
 
 import { FavoriteService } from './favorite.service';
