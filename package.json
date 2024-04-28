@@ -89,6 +89,7 @@
     "@vue/test-utils": "^2.4.5",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
+    "cypress": "^13.8.1",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "^2.29.1",
