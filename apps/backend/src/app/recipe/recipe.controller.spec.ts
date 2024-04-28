@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
-import { CreateRecipeDto } from './dto/create-recipe.dto'; // Adjust imports based on your DTO paths
-import { UpdateRecipeDto } from './dto/update-recipe.dto'; // Adjust imports based on your DTO paths
+import { CreateRecipeDto } from './dto/create-recipe.dto'; 
+import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { RecipeController } from './recipe.controller';
 import { RecipeService } from './recipe.service';
 import { AuthGuard } from '../../common/guards/auth/auth.guard';
@@ -16,7 +16,6 @@ describe('RecipeController', () => {
     const mockRecipeService = {
       getRecipes: jest.fn().mockImplementation(() =>
         of([
-          // Your mock implementation
         ]),
       ),
       getRecipeById: jest.fn().mockImplementation((id: string) =>
@@ -49,12 +48,10 @@ describe('RecipeController', () => {
           provide: RecipeService,
           useValue: mockRecipeService,
         },
-        // Mock any other services or guards your controller relies on
         {
           provide: AuthGuard,
           useValue: { canActivate: jest.fn(() => true) },
         },
-        // If there are other guards or dependencies, mock them similarly
       ],
     }).compile();
 

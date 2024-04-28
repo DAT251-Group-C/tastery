@@ -3,8 +3,6 @@ import { UserService } from './user.service';
 import { UserEntity } from '../../entities';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
-import { of, throwError } from 'rxjs';
 import ResourceNotFoundException from '../../common/exceptions/resource-not-found.exception';
 
 describe('UserService', () => {

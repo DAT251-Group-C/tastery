@@ -130,7 +130,7 @@ describe('RecipeService', () => {
             recipeId: 'recipe-id',
             id: 'ingredient-id',
             ean: '',
-            recipe: Promise.resolve<RecipeEntity>({} as RecipeEntity), // Fix: Assign an empty promise of type 'RecipeEntity'
+            recipe: Promise.resolve<RecipeEntity>({} as RecipeEntity),
             createdAt: '',
             updatedAt: '',
           },

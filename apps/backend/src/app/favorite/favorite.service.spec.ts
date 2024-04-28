@@ -19,7 +19,7 @@ describe('FavoriteService', () => {
             findOne: jest.fn(),
             save: jest.fn(),
             delete: jest.fn(),
-            create: jest.fn().mockImplementation(dto => dto), // Simulate the repository's create method
+            create: jest.fn().mockImplementation(dto => dto), 
           },
         },
       ],
@@ -37,8 +37,8 @@ describe('FavoriteService', () => {
       favoriteEntity.userId = userId;
       favoriteEntity.recipeId = recipeId;
 
-      favoriteRepository.findOne.mockReturnValue(Promise.resolve(null)); // Simulate no existing favorite
-      favoriteRepository.save.mockResolvedValue(favoriteEntity); // Simulate saving new favorite
+      favoriteRepository.findOne.mockReturnValue(Promise.resolve(null)); 
+      favoriteRepository.save.mockResolvedValue(favoriteEntity); 
 
       service.createFavorite(userId, recipeId).subscribe(result => {
         expect(result).toEqual(favoriteEntity);
@@ -53,7 +53,7 @@ describe('FavoriteService', () => {
         existingFavorite.userId = userId;
         existingFavorite.recipeId = recipeId;
 
-        favoriteRepository.findOne.mockReturnValue(Promise.resolve(existingFavorite)); // Simulate existing favorite
+        favoriteRepository.findOne.mockReturnValue(Promise.resolve(existingFavorite));
 
         service.createFavorite(userId, recipeId).subscribe((value: FavoriteEntity) => {
             done.fail('Expected an error to be thrown.');
@@ -70,7 +70,7 @@ describe('FavoriteService', () => {
           favorite.userId = userId;
           favorite.recipeId = recipeId;
     
-          favoriteRepository.findOne.mockReturnValue(Promise.resolve(favorite)); // Simulate finding a favorite
+          favoriteRepository.findOne.mockReturnValue(Promise.resolve(favorite));
     
           service.checkFavorite(userId, recipeId).subscribe(result => {
             expect(result).toBe(true);
@@ -82,7 +82,7 @@ describe('FavoriteService', () => {
           const userId = 'user123';
           const recipeId = 'recipe456';
     
-          favoriteRepository.findOne.mockReturnValue(Promise.resolve(null)); // Simulate no favorite found
+          favoriteRepository.findOne.mockReturnValue(Promise.resolve(null));
     
           service.checkFavorite(userId, recipeId).subscribe(result => {
             expect(result).toBe(false);
