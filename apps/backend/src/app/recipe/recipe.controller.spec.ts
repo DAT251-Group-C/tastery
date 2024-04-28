@@ -1,15 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
-import { CreateRecipeDto } from '../app/recipe/dto/create-recipe.dto'; // Adjust imports based on your DTO paths
-import { UpdateRecipeDto } from '../app/recipe/dto/update-recipe.dto'; // Adjust imports based on your DTO paths
-import { RecipeController } from '../app/recipe/recipe.controller';
-import { RecipeService } from '../app/recipe/recipe.service';
-import { AuthGuard } from '../common/guards/auth/auth.guard';
-import { IngredientUnit } from '../common/models/ingredient.model';
+import { CreateRecipeDto } from './dto/create-recipe.dto'; // Adjust imports based on your DTO paths
+import { UpdateRecipeDto } from './dto/update-recipe.dto'; // Adjust imports based on your DTO paths
+import { RecipeController } from './recipe.controller';
+import { RecipeService } from './recipe.service';
+import { AuthGuard } from '../../common/guards/auth/auth.guard';
+import { IngredientUnit } from '../../common/models/ingredient.model';
+
 
 describe('RecipeController', () => {
   let controller: RecipeController;
   let service: jest.Mocked<RecipeService>;
+  let authGuard: AuthGuard;
 
   beforeEach(async () => {
     const mockRecipeService = {
@@ -41,10 +43,6 @@ describe('RecipeController', () => {
       deleteRecipe: jest.fn().mockImplementation(() => of({ affected: 1 })),
     };
 
-    const mockAuthGuard = {
-      canActivate: jest.fn(() => of(true)),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RecipeController],
       providers: [
@@ -55,7 +53,7 @@ describe('RecipeController', () => {
         // Mock any other services or guards your controller relies on
         {
           provide: AuthGuard,
-          useValue: mockAuthGuard,
+          useValue: { canActivate: jest.fn(() => true) },
         },
         // If there are other guards or dependencies, mock them similarly
       ],
@@ -67,8 +65,10 @@ describe('RecipeController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 
+  describe('getRecipeById', () => {
   it('should get a single recipe by id', async () => {
     const result = await controller.getRecipeById('1');
     expect(result).toEqual({
@@ -80,7 +80,9 @@ describe('RecipeController', () => {
     });
     expect(service.getRecipeById).toHaveBeenCalledWith('1');
   });
+  });
 
+  describe('createRecipe', () => {
   it('should create a recipe with ingredients', async () => {
     const createRecipeDto: CreateRecipeDto = {
       name: 'Test Recipe',
@@ -111,7 +113,10 @@ describe('RecipeController', () => {
     );
     expect(service.createRecipe).toHaveBeenCalledWith('user-id', createRecipeDto);
   });
+  
+});
 
+  describe('updateRecipe', () => {
   it('should update a recipe with partial ingredient data', async () => {
     const updateRecipeDto: UpdateRecipeDto = {
       name: 'Updated Recipe',
@@ -131,4 +136,6 @@ describe('RecipeController', () => {
     await controller.updateRecipe('1', updateRecipeDto);
     expect(service.updateRecipe).toHaveBeenCalledWith('1', updateRecipeDto);
   });
+  });
+
 });
